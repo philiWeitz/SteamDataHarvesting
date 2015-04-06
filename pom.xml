@@ -35,6 +35,7 @@
 	<modules>
 		<module>BusinessLogic</module>
 		<module>WebServices</module>
+		<module>AngularJS</module>
 	</modules>
 
 	<build>
