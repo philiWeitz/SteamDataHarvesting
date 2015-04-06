@@ -1,4 +1,6 @@
 
+### java ignore
+
 target/
 
 .settings/
@@ -6,5 +8,10 @@ target/
 .classpath
 .cache
 
+
+### javascript ignore
+
 node_modules/
 bower_components/
+
+.tern-project
