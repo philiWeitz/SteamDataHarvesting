@@ -19,9 +19,11 @@ Steam Data Harvesting
   - \<role rolename="manager-gui"/\>
   - \<user username="admin" password="admin" roles="manager-gui,manager-script"/\>
 
-## Eclipse Import
-- Import the whole project as an existing maven project
-
 ## Eclipse plugins (luna)
 - Eclipse JST Server Adapters
 - Maven Integration for Eclipse (Luna)
+- AngularJS Eclipse
+
+## Eclipse configuration
+- Import the whole project as an existing maven project
+- Right click on SteamDataHarvestingAngularJs -> Configure -> Convert to AngularJs Project
