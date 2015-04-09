@@ -7,17 +7,37 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.uta.steam.bl.ui.UserAchievement;
-import org.uta.steam.bl.ui.UserApp;
 import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.jpa.model.UserAchievementSummary;
+import org.uta.steam.jpa.model.UserApp;
 
 public class UserSteamApi extends AbstractSteamApi {
 
+	
+	public String getUserName(String userId) {
+		String result = StringUtils.EMPTY;
+		
+		String xmlResponse = httpGet(
+				"http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?format=xml&"
+				+ "key=" + SteamUtil.API_KEY 
+				+ "&steamids=" + userId);
+		
+		Document doc = Jsoup.parse(xmlResponse);
+		Elements nameItem = doc.getElementsByTag("realname");
+		
+		if(!nameItem.isEmpty()) {
+			result = nameItem.first().text();
+		}
+		
+		return result;
+	}
 
+	
 	public List<UserApp> getGames(String userId) {		
 		List<UserApp> result = new LinkedList<UserApp>();
 		
@@ -44,7 +64,7 @@ public class UserSteamApi extends AbstractSteamApi {
 	}
 	
 	
-	public UserAchievement getUserAchievementsByAppId(String userId, long appId) {		
+	public UserAchievementSummary getUserAchievementsByAppId(String userId, long appId) {		
 
 		String xmlResponse = httpGet(
 				"https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v1/?format=xml&"
@@ -66,7 +86,7 @@ public class UserSteamApi extends AbstractSteamApi {
 			}
 		}
 		
-		UserAchievement result = new UserAchievement();
+		UserAchievementSummary result = new UserAchievementSummary();
 		result.setAppId(appId);
 		result.setTimestamp(new Date());
 		result.setAchieved(achievCount);

@@ -1,10 +1,16 @@
-package org.uta.steam.bl.ui;
+package org.uta.steam.jpa.model;
 
 import java.util.Date;
 
-public class AppVersion {
+import javax.persistence.Basic;
 
+@SuppressWarnings("serial")
+public class AppVersion extends AbstractEntity {
+
+	@Basic
 	private String title;
+
+	@Basic
 	private Date published;
 	
 	public String getTitle() {

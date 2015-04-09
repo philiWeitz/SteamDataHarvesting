@@ -1,25 +1,36 @@
 package org.uta.steam.bl.test.api;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 import java.util.Map;
 
 import org.junit.Test;
 import org.uta.steam.bl.api.UserSteamApi;
-import org.uta.steam.bl.ui.UserAchievement;
-import org.uta.steam.bl.ui.UserApp;
+import org.uta.steam.bl.test.util.SteamTestUtil;
+import org.uta.steam.jpa.model.UserAchievementSummary;
+import org.uta.steam.jpa.model.UserApp;
 
 public class UserSteamApiTest {
 
-	private static final String USER_ID = "76561198078678436";
-	private static final long APP_ID = 730;	
+		
+	@Test
+	public void getUserNameTest() {
+		UserSteamApi userSteamApi = new UserSteamApi();
+		
+		String userName = userSteamApi.getUserName(SteamTestUtil.USER_ID);
+		assertFalse(userName.isEmpty());
+	}
+	
 	
 	@Test
 	public void getUserGamesTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
 		
-		List<UserApp> userApps = userSteamApi.getGames(USER_ID);
+		List<UserApp> userApps = userSteamApi.getGames(SteamTestUtil.USER_ID);
 		assertFalse(userApps.isEmpty());
 	}
 
@@ -28,13 +39,13 @@ public class UserSteamApiTest {
 	public void getUserAchievementsByAppIdTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
 		
-		UserAchievement userAchievement = 
-				userSteamApi.getUserAchievementsByAppId(USER_ID, APP_ID);
+		UserAchievementSummary userAchievement = 
+				userSteamApi.getUserAchievementsByAppId(SteamTestUtil.USER_ID, SteamTestUtil.APP_ID);
 		
-		assertTrue(userAchievement.getMaximumAchievements() > 0);
+		assertTrue(userAchievement.getMaximumAchievements() >= userAchievement.getAchieved());
 		assertTrue(userAchievement.getAchieved() > 0);	
 		assertNotNull(userAchievement.getTimestamp());
-		assertEquals(APP_ID, userAchievement.getAppId());
+		assertEquals(SteamTestUtil.APP_ID, userAchievement.getAppId());
 	}
 	
 	
@@ -43,7 +54,7 @@ public class UserSteamApiTest {
 		UserSteamApi userSteamApi = new UserSteamApi();
 		
 		Map<String,Long> statMap =
-				userSteamApi.getUserStatisticsByAppId(USER_ID, APP_ID);
+				userSteamApi.getUserStatisticsByAppId(SteamTestUtil.USER_ID, SteamTestUtil.APP_ID);
 		
 		assertFalse(statMap.isEmpty());
 	}

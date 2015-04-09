@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.uta.steam.bl.crawler.GameWebCrawler;
-import org.uta.steam.bl.ui.Review;
+import org.uta.steam.jpa.model.Review;
 
 public class WebCrawlerTest {
 

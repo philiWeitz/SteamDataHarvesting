@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.uta.steam.bl.ui.Review;
+import org.uta.steam.jpa.model.Review;
 
 
 public class GameWebCrawler extends AbstractWebCrawler {

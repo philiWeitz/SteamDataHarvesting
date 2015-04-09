@@ -1,9 +1,15 @@
-package org.uta.steam.bl.ui;
+package org.uta.steam.jpa.model;
 
-public class UserApp {
+import javax.persistence.Entity;
+
+
+@Entity
+@SuppressWarnings("serial")
+public class UserApp extends AbstractEntity {
 
 	private long appid;
 	private long playtime;
+	
 	
 	public long getAppid() {
 		return appid;

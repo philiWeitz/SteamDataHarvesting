@@ -17,9 +17,9 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.uta.steam.bl.ui.AppVersion;
-import org.uta.steam.bl.ui.SteamApp;
 import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.SteamApp;
 
 public class GameSteamApi extends AbstractSteamApi {
 

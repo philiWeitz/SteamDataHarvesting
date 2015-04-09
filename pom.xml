@@ -33,6 +33,7 @@
 	</properties>
 
 	<modules>
+		<module>Datamodel</module>
 		<module>BusinessLogic</module>
 		<module>WebServices</module>
 		<module>AngularJS</module>

@@ -1,14 +1,19 @@
-package org.uta.steam.bl.ui;
+package org.uta.steam.jpa.model;
 
 import java.util.Date;
 
-public class UserAchievement {
+import javax.persistence.Entity;
+
+@Entity
+@SuppressWarnings("serial")
+public class UserAchievementSummary extends AbstractEntity {
 
 	private Date timestamp;
 	
 	private long appId;
 	private long achieved;
 	private long maximumAchievements;
+	
 	
 	public Date getTimestamp() {
 		return timestamp;

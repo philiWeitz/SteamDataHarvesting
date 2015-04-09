@@ -1,8 +1,14 @@
-package org.uta.steam.bl.ui;
+package org.uta.steam.jpa.model;
 
-public class Review {
+import javax.persistence.Basic;
 
+@SuppressWarnings("serial")
+public class Review extends AbstractEntity {
+
+	@Basic
 	private String author;
+	
+	@Basic
 	private String content;
 	
 	public String getAuthor() {
