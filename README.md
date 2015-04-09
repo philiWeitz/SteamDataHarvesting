@@ -8,6 +8,7 @@ Steam Data Harvesting
 
 ## Requirements client side
 - nodejs - https://nodejs.org/
+- restart IDE after nodejs was installed (adds a path variable)
 
 ## Build commands
 - building maven projects + deployment - mv clean install tomcat:redeploy 

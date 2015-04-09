@@ -1,3 +1,3 @@
 cd %~dp0
 cd ..
-bower install
+node_modules\.bin\bower.cmd install
