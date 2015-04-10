@@ -38,7 +38,7 @@ public class UserSteamApi extends AbstractSteamApi {
 	}
 
 	
-	public List<UserApp> getGames(String userId) {		
+	public List<UserApp> getOwnedGames(String userId) {		
 		List<UserApp> result = new LinkedList<UserApp>();
 		
 		String xmlResponse = httpGet(

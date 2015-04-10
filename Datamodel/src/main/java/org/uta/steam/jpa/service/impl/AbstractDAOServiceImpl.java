@@ -135,6 +135,32 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		}
 	}
 
+	
+	@SuppressWarnings("unchecked")
+	protected List<T> issueQuery(String queryString) {
+		List<T> results = Collections.emptyList();
+
+		EntityManager em = getEntityManager();
+		
+		try {
+			em.getTransaction().begin();
+
+			Query query = em.createQuery(queryString);
+			results = query.getResultList();
+
+			em.getTransaction().commit();
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			LOG.error("Error while performing database query " + queryString, e);
+		
+		} finally {
+			em.close();
+		}
+
+		return results;
+	}
+	
 	@SuppressWarnings("unchecked")
 	private Class<T> getGenericClass() {
 		return (Class<T>) ((ParameterizedType) getClass()

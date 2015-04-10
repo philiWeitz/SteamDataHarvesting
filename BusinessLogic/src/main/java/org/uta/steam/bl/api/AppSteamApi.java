@@ -18,20 +18,20 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.jpa.model.AppInfo;
 import org.uta.steam.jpa.model.AppVersion;
-import org.uta.steam.jpa.model.SteamApp;
 
-public class GameSteamApi extends AbstractSteamApi {
+public class AppSteamApi extends AbstractSteamApi {
 
 	private static final Pattern VERSION_PATTERN = 
 			Pattern.compile("version ([0-9].)+[0-9]+");
 	
-	private static Logger LOG = LogManager.getLogger(GameSteamApi.class);
+	private static Logger LOG = LogManager.getLogger(AppSteamApi.class);
 	
 	private ObjectMapper mapper = new ObjectMapper();
 	
 	
-	public SteamApp[] getAllApps() {
+	public AppInfo[] getAppInfos() {
 	
 		String jsonResult =
 				httpGet("http://api.steampowered.com/ISteamApps/GetAppList/v0001/?format=json");
@@ -41,7 +41,7 @@ public class GameSteamApi extends AbstractSteamApi {
 				.replace("}}}", StringUtils.EMPTY);
 		
 		try {
-			return mapper.readValue(jsonResult, SteamApp[].class);			
+			return mapper.readValue(jsonResult, AppInfo[].class);			
 		} catch (JsonParseException e) {
 			LOG.error(e);
 		} catch (JsonMappingException e) {
@@ -50,7 +50,7 @@ public class GameSteamApi extends AbstractSteamApi {
 			LOG.error(e);
 		}
 		
-		return new SteamApp[] {};
+		return new AppInfo[] {};
 	}
 	
 	
@@ -58,8 +58,9 @@ public class GameSteamApi extends AbstractSteamApi {
 		List<AppVersion> result = new LinkedList<AppVersion>();
 		
 		String xmlResponse = httpGet(
-				"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?format=xml&maxlength=1&key=" +
-						SteamUtil.API_KEY + "&appid=" + appId);
+				"https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?format=xml&maxlength=1&"
+				+ "key=" + SteamUtil.API_KEY 
+				+ "&appid=" + appId);
 		
 		Document doc = Jsoup.parse(xmlResponse);
 		Elements newsItems = doc.getElementsByTag("newsitem");

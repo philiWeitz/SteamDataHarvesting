@@ -1,7 +1,9 @@
 package org.uta.steam.jpa.model;
 
 import javax.persistence.Basic;
+import javax.persistence.Entity;
 
+@Entity
 @SuppressWarnings("serial")
 public class Review extends AbstractEntity {
 

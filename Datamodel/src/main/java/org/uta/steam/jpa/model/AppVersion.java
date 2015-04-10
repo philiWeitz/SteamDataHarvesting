@@ -3,7 +3,9 @@ package org.uta.steam.jpa.model;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Entity;
 
+@Entity
 @SuppressWarnings("serial")
 public class AppVersion extends AbstractEntity {
 

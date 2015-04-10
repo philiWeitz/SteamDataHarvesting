@@ -30,7 +30,7 @@ public class UserSteamApiTest {
 	public void getUserGamesTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
 		
-		List<UserApp> userApps = userSteamApi.getGames(SteamTestUtil.USER_ID);
+		List<UserApp> userApps = userSteamApi.getOwnedGames(SteamTestUtil.USER_ID);
 		assertFalse(userApps.isEmpty());
 	}
 

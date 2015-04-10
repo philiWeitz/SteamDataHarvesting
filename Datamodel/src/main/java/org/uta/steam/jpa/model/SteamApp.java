@@ -5,25 +5,33 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
-
+@Entity
 @SuppressWarnings("serial")
 public class SteamApp extends AbstractEntity {
 
 	private long appid;
 	
+	private double price;
+	
 	@Basic
 	private String name;
-	
-	@JsonIgnore
+		
 	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
 	@JoinColumn(name="APP_VERSION", referencedColumnName="id")
 	private Set<AppVersion> versions;
 
+	@ElementCollection(fetch=FetchType.EAGER)
+	private Set<String> dlcs;	
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	private Set<String> tags;		
+		
 	
 	public long getAppid() {
 		return appid;
@@ -33,6 +41,14 @@ public class SteamApp extends AbstractEntity {
 		this.appid = appid;
 	}
 	
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -50,5 +66,28 @@ public class SteamApp extends AbstractEntity {
 
 	public void setVersions(Set<AppVersion> versions) {
 		this.versions = versions;
+	}
+	
+
+	public Set<String> getDlcs() {
+		if(null == dlcs) {
+			dlcs = new HashSet<String>();
+		}
+		return dlcs;
+	}
+
+	public void setDlcs(Set<String> dlcs) {
+		this.dlcs = dlcs;
+	}
+
+	public Set<String> getTags() {
+		if(null == tags) {
+			tags = new HashSet<String>();
+		}
+		return tags;
+	}
+
+	public void setTags(Set<String> tags) {
+		this.tags = tags;
 	}
 }
