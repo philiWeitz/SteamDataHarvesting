@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Test;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.test.util.SteamTestUtil;
-import org.uta.steam.jpa.model.AppInfo;
 import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.SteamApp;
 
 public class GameSteamApiTest {
 
@@ -17,7 +17,7 @@ public class GameSteamApiTest {
 	public void getAppInfosTest() {
 		AppSteamApi gameApi = new AppSteamApi();
 		
-		AppInfo[] steamApps = gameApi.getAppInfos();
+		SteamApp[] steamApps = gameApi.getApps();
 		assertFalse(steamApps.length == 0);
 	}
 

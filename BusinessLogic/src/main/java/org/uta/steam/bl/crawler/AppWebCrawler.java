@@ -9,12 +9,13 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.Review;
 
 
-public class GameWebCrawler extends AbstractWebCrawler {
+public class AppWebCrawler extends AbstractWebCrawler {
 
-	private static Logger LOG = LogManager.getLogger(GameWebCrawler.class);
+	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
 	
 	private static final String BASE_URL = "http://store.steampowered.com/app/";
 	
@@ -22,11 +23,24 @@ public class GameWebCrawler extends AbstractWebCrawler {
 	private Document htmlDoc = null;
 
 	
-	public List<String> getDLCsFromHtmlString(long appId) {
-		Document doc = getHtmlFromUrl(appId);
-		Elements elements = getElementsByClass(doc, "game_area_dlc_name");
+	public List<AppDLC> getDLCs(long appId) {
+		List<AppDLC> result = new LinkedList<AppDLC>();
 		
-		return getInnerHtml(elements);
+		Document doc = getHtmlFromUrl(appId);
+		Elements dlcs = getElementsByClass(doc, "game_area_dlc_row");
+		
+		Iterator<Element> iterator = dlcs.iterator();
+		while (iterator.hasNext()) {
+			Element dlcItem = iterator.next();
+			
+			AppDLC dlc = new AppDLC();
+			dlc.setName(dlcItem.getElementsByClass("game_area_dlc_name").text());
+			dlc.setDlcId(Long.parseLong(dlcItem.attr("data-ds-appid")));
+			
+			result.add(dlc);
+		}
+		
+		return result;
 	}
 	
 	

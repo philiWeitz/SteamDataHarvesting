@@ -22,7 +22,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 	private EntityManagerFactory factory;
 	
-	
+
 	public AbstractDAOServiceImpl() {	
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	}
@@ -119,11 +119,13 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		EntityManager em = getEntityManager();
 		
 		try {
-			T item = getById(id);
 
-			if (null != item) {			
+			if (null != id) {			
 				em.getTransaction().begin();
+				
+				T item = em.find(getGenericClass(), id);
 				em.remove(item);
+				
 				em.getTransaction().commit();				
 			}
 		} catch (Exception e) {

@@ -1,37 +1,69 @@
 package org.uta.steam.bl.test.service;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataService;
-import org.uta.steam.bl.test.util.SteamTestUtil;
-import org.uta.steam.jpa.model.SteamUser;
+import org.uta.steam.jpa.model.SteamApp;
+import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/spring-test-context.xml"})
 public class SteamDataServiceTest {
 
+	private TestDataServiceImpl testDataService = new TestDataServiceImpl();
 	
 	@Autowired
-	SteamDataService steamDataService;
+	private SteamDataService steamDataService;
+	
+	
+	@Before
+	public void init() {
+		testDataService.createTestData();
+	}
+	
+	
+	@Test
+	public void getAppsTest() {
+		List<SteamApp> apps = steamDataService.getAllApps();
+		assertNotSame(0, apps.size());
+	}
 
 	@Test
-	public void extractAndSaveUserDataTest() {
-		// extract the data
-		SteamUser user = steamDataService.extractUserData(SteamTestUtil.USER_ID);
-		assertFalse(user.getUserName().isEmpty());
-		assertFalse(user.getUserId().isEmpty());
-		assertFalse(user.getApps().isEmpty());
-		assertFalse(user.getAchievements().isEmpty());
-
-		// put the user to the database
-		user = steamDataService.saveUserToDatabase(user);
-		assertTrue(user.getId() > 0);
+	public void setAppUpdateListTest() {
+		List<Long> appIds = new LinkedList<Long>();
+		appIds.add(testDataService.getAppNoData().getAppId());
+		appIds.add(testDataService.getAppWithData().getAppId());
+			
+		steamDataService.setAppUpdateList(appIds);
+		List<SteamApp> apps = steamDataService.getAllApps();
+		
+		assertFalse(apps.isEmpty());
+		for(SteamApp app : apps) {
+			assertTrue(app.isGetsUpdated());
+		}
 	}
+	
+	@Test
+	public void updateAppDataFromSteamTest() {			
+		List<Long> appIds = new LinkedList<Long>();
+		appIds.add(testDataService.getAppNoData().getAppId());
+		appIds.add(testDataService.getAppWithData().getAppId());
+		
+		steamDataService.setAppUpdateList(appIds);
+		steamDataService.updateAppDataFromSteam();
+		
+	}	
+	
 }

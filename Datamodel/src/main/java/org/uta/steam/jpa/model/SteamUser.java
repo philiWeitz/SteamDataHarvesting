@@ -6,12 +6,11 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
-@Entity
+
 @SuppressWarnings("serial")
 public class SteamUser extends AbstractEntity {
 

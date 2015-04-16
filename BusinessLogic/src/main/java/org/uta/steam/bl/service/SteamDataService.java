@@ -1,8 +1,11 @@
 package org.uta.steam.bl.service;
 
-import org.uta.steam.jpa.model.SteamUser;
+import java.util.List;
+
+import org.uta.steam.jpa.model.SteamApp;
 
 public interface SteamDataService {
-	SteamUser extractUserData(String userId);
-	SteamUser saveUserToDatabase(SteamUser user);
+	List<SteamApp> getAllApps();
+	void setAppUpdateList(List<Long> appIds);
+	void updateAppDataFromSteam();
 }

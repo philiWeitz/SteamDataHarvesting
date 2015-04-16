@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -15,38 +14,40 @@ import javax.persistence.OneToMany;
 @SuppressWarnings("serial")
 public class SteamApp extends AbstractEntity {
 
-	private long appid;
+	private long appId;
 	
-	private double price;
+	private boolean getsUpdated = false;
 	
 	@Basic
 	private String name;
-		
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="APP_DATA", referencedColumnName="id")
+	private Set<AppData> data;
+	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
 	@JoinColumn(name="APP_VERSION", referencedColumnName="id")
 	private Set<AppVersion> versions;
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> dlcs;	
+	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+	@JoinColumn(name="APP_DLC", referencedColumnName="id")
+	private Set<AppDLC> dlcs;	
 
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> tags;		
+	
+	public long getAppId() {
+		return appId;
+	}
+	
+	public void setAppId(long appid) {
+		this.appId = appid;
+	}
 		
-	
-	public long getAppid() {
-		return appid;
-	}
-	
-	public void setAppid(long appid) {
-		this.appid = appid;
-	}
-	
-	public double getPrice() {
-		return price;
+	public boolean isGetsUpdated() {
+		return getsUpdated;
 	}
 
-	public void setPrice(double price) {
-		this.price = price;
+	public void setGetsUpdated(boolean getsUpdated) {
+		this.getsUpdated = getsUpdated;
 	}
 
 	public String getName() {
@@ -55,6 +56,17 @@ public class SteamApp extends AbstractEntity {
 	
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public Set<AppData> getData() {
+		if(null == data) {
+			data = new HashSet<AppData>();
+		}
+		return data;
+	}
+
+	public void setData(Set<AppData> data) {
+		this.data = data;
 	}
 
 	public Set<AppVersion> getVersions() {
@@ -67,27 +79,15 @@ public class SteamApp extends AbstractEntity {
 	public void setVersions(Set<AppVersion> versions) {
 		this.versions = versions;
 	}
-	
 
-	public Set<String> getDlcs() {
+	public Set<AppDLC> getDlcs() {
 		if(null == dlcs) {
-			dlcs = new HashSet<String>();
+			dlcs = new HashSet<AppDLC>();
 		}
 		return dlcs;
 	}
 
-	public void setDlcs(Set<String> dlcs) {
+	public void setDlcs(Set<AppDLC> dlcs) {
 		this.dlcs = dlcs;
-	}
-
-	public Set<String> getTags() {
-		if(null == tags) {
-			tags = new HashSet<String>();
-		}
-		return tags;
-	}
-
-	public void setTags(Set<String> tags) {
-		this.tags = tags;
 	}
 }

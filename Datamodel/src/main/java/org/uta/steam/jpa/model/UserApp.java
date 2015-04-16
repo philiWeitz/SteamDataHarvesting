@@ -1,9 +1,8 @@
 package org.uta.steam.jpa.model;
 
-import javax.persistence.Entity;
 
 
-@Entity
+
 @SuppressWarnings("serial")
 public class UserApp extends AbstractEntity {
 

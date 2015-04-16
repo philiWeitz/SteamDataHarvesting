@@ -6,7 +6,8 @@ import static org.junit.Assert.assertFalse;
 import java.util.List;
 
 import org.junit.Test;
-import org.uta.steam.bl.crawler.GameWebCrawler;
+import org.uta.steam.bl.crawler.AppWebCrawler;
+import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.Review;
 
 public class WebCrawlerTest {
@@ -15,17 +16,17 @@ public class WebCrawlerTest {
 	
 	@Test
 	public void gettingDLCsListTest() {
-		GameWebCrawler gameWebCrawler = new GameWebCrawler();
+		AppWebCrawler gameWebCrawler = new AppWebCrawler();
 		
 		// get list of DLCs
-		List<String> listOfDLCs = gameWebCrawler.getDLCsFromHtmlString(APP_ID);
+		List<AppDLC> listOfDLCs = gameWebCrawler.getDLCs(APP_ID);
 		assertFalse(listOfDLCs.isEmpty());	
 	}
 	
 	
 	@Test
 	public void getAppPriceTest() {
-		GameWebCrawler gameWebCrawler = new GameWebCrawler();
+		AppWebCrawler gameWebCrawler = new AppWebCrawler();
 		
 		// get price
 		double price = gameWebCrawler.getAppPrice(APP_ID);
@@ -35,7 +36,7 @@ public class WebCrawlerTest {
 	
 	@Test
 	public void getAppTagsTest() {
-		GameWebCrawler gameWebCrawler = new GameWebCrawler();
+		AppWebCrawler gameWebCrawler = new AppWebCrawler();
 		
 		// get tags
 		List<String> tags = gameWebCrawler.getAppTags(APP_ID);
@@ -46,7 +47,7 @@ public class WebCrawlerTest {
 	
 	@Test
 	public void getHelpfulUserReviewsTest() {
-		GameWebCrawler gameWebCrawler = new GameWebCrawler();
+		AppWebCrawler gameWebCrawler = new AppWebCrawler();
 		
 		// get reviews
 		List<Review> reviews = gameWebCrawler.getHelpfulUserReviews(APP_ID);

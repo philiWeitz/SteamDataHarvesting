@@ -2,9 +2,7 @@ package org.uta.steam.jpa.model;
 
 import java.util.Date;
 
-import javax.persistence.Entity;
 
-@Entity
 @SuppressWarnings("serial")
 public class UserAchievementSummary extends AbstractEntity {
 
