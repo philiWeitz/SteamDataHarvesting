@@ -1,6 +1,9 @@
 package org.uta.steam.jpa.service.impl;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.AppData;
@@ -23,6 +26,37 @@ public class TestDataServiceImpl {
 	public void createTestData() {
 		cleanDatabase();
 		createAppTestData();
+	}
+	
+	public void printApp(SteamApp app) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append("\nName: ").append(app.getName());
+		sb.append("\nId: ").append(app.getAppId());	
+		
+		if(!app.getData().isEmpty()) {
+			AppData data = app.getData().iterator().next();
+			
+			sb.append("\nLast data: ");
+			sb.append("\n\tPrice: ").append(data.getPrice());	
+			sb.append("\n\tTags: ").append(data.getTags());		
+		}
+		
+		sb.append("\nDLCs: ");
+		for(AppDLC dlc : app.getDlcs()) {
+			sb.append("\n\tName: ").append(dlc.getName());	
+			sb.append("\n\t\tId: ").append(dlc.getDlcId());		
+		}
+
+		DateFormat format = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
+		
+		sb.append("\nVersions: ");
+		for(AppVersion version : app.getVersions()) {
+			sb.append("\n\tName: ").append(version.getTitle());	
+			sb.append("\n\t\tName: ").append(format.format(version.getPublished()));		
+		}
+		
+		System.out.println(sb.toString());
 	}
 	
 	private void cleanDatabase() {

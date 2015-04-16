@@ -70,6 +70,18 @@ class SteamAppDAOServiceImpl
 	}
 	
 	
+	public SteamApp getWholeAppByAppId(long appId) {
+		SteamApp result = null;
+		
+		result = getAppByAppId(appId);
+		
+		if(null != result) {
+			result = getWholeAppById(result.getId());
+		}
+		
+		return result;
+	}
+	
 	public SteamApp getAppByAppId(long appId) {
 		SteamApp result = null;
 		

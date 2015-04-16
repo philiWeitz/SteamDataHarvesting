@@ -39,6 +39,11 @@ class SteamDataServiceImpl implements SteamDataService {
 		}
 	}
 	
+	public SteamApp getWholeApp(long appId) {
+		return appDaoService.getWholeAppByAppId(appId);
+	}
+	
+	
 	public void updateAppDataFromSteam() {
 		for(SteamApp app : appDaoService.getWholeAppsToUpdate()) {
 			

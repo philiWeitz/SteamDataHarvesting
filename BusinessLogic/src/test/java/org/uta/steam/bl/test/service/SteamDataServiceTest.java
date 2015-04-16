@@ -15,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.jpa.model.SteamApp;
+import org.uta.steam.jpa.model.service.SteamAppDAOService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 
 
@@ -26,6 +27,9 @@ public class SteamDataServiceTest {
 	
 	@Autowired
 	private SteamDataService steamDataService;
+
+	@Autowired
+	private SteamAppDAOService steamAppDaoService;
 	
 	
 	@Before
@@ -57,13 +61,28 @@ public class SteamDataServiceTest {
 	
 	@Test
 	public void updateAppDataFromSteamTest() {			
+
+		SteamApp app = steamDataService.getWholeApp(
+				testDataService.getAppWithData().getAppId());
+		
+		app.getData().clear();
+		app.getDlcs().clear();
+		app.getVersions().clear();
+		app = steamAppDaoService.saveOrUpdate(app);
+		
 		List<Long> appIds = new LinkedList<Long>();
 		appIds.add(testDataService.getAppNoData().getAppId());
 		appIds.add(testDataService.getAppWithData().getAppId());
 		
 		steamDataService.setAppUpdateList(appIds);
 		steamDataService.updateAppDataFromSteam();
-		
-	}	
-	
+
+		app = steamDataService.getWholeApp(app.getAppId());
+		assertNotSame(0, app.getData().size());
+		assertNotSame(0, app.getDlcs().size());
+		assertNotSame(0, app.getVersions().size());
+
+		// for debug
+		testDataService.printApp(app);
+	}
 }
