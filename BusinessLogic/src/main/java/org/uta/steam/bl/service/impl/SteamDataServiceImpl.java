@@ -43,7 +43,7 @@ class SteamDataServiceImpl implements SteamDataService {
 	}
 	
 	
-	public void updateAppDataFromSteam() {
+	public void harvestDataFromSteam() {
 		for(SteamApp app : appDaoService.getWholeAppsToUpdate()) {
 			
 			updateAppData(app);

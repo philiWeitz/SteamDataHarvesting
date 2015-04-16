@@ -75,7 +75,7 @@ public class SteamDataServiceTest {
 		appIds.add(testDataService.getAppWithData().getAppId());
 		
 		steamDataService.setAppUpdateList(appIds);
-		steamDataService.updateAppDataFromSteam();
+		steamDataService.harvestDataFromSteam();
 
 		app = steamDataService.getWholeApp(app.getAppId());
 		assertNotSame(0, app.getData().size());

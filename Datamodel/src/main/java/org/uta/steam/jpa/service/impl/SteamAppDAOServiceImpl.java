@@ -24,6 +24,15 @@ class SteamAppDAOServiceImpl
 			.getLogger(SteamAppDAOServiceImpl.class);
 	
 	
+	public SteamApp getAppByAppIdLazyLoading(long appId) {
+		SteamApp result = issueQuerySingleResult(
+				"SELECT a FROM " + SteamApp.class.getSimpleName() + " a "
+						+ "where a.appId = " + appId);
+		
+		return result;
+	}
+	
+	
 	public SteamApp getWholeAppById(long id) {
 		SteamApp result = null; 
 		
@@ -47,8 +56,36 @@ class SteamAppDAOServiceImpl
 		
 		return result;
 	}
+		
+	
+	// gets all the application data
+	public List<SteamApp> getWholeAppsToUpdate() {
+		List<SteamApp> apps = issueQuery(
+				"SELECT a FROM " + SteamApp.class.getSimpleName() + " a "
+						+ "where a.getsUpdated = true");
+		
+		List<SteamApp> result = new LinkedList<SteamApp>();
+		for(SteamApp app : apps) {
+			result.add(getWholeAppById(app.getId()));
+		}
+				
+		return result;
+	}
 	
 	
+	public SteamApp getWholeAppByAppId(long appId) {
+		SteamApp result = null;
+		
+		result = getAppByAppIdLazyLoading(appId);
+		
+		if(null != result) {
+			result = getWholeAppById(result.getId());
+		}
+		
+		return result;
+	}
+	
+
 	public void setAppUpdateList(List<Long> appIds) {		
 		List<SteamApp> toUpdate = new LinkedList<SteamApp>();
 		
@@ -70,55 +107,14 @@ class SteamAppDAOServiceImpl
 		
 		// add the new ones
 		for(long appId : appIdsToAdd) {
-			SteamApp app = getAppByAppId(appId);
+			SteamApp app = getAppByAppIdLazyLoading(appId);
 			app.setGetsUpdated(true);
 			toUpdate.add(app);
 		}
 		
 		saveOrUpdateAll(toUpdate);
 	}
-	
-	
-	// gets all the application data
-	public List<SteamApp> getWholeAppsToUpdate() {
-		List<SteamApp> apps = issueQuery(
-				"SELECT a FROM " + SteamApp.class.getSimpleName() + " a "
-						+ "where a.getsUpdated = true");
-		
-		List<SteamApp> result = new LinkedList<SteamApp>();
-		for(SteamApp app : apps) {
-			result.add(getWholeAppById(app.getId()));
-		}
-				
-		return result;
-	}
-	
-	
-	public SteamApp getWholeAppByAppId(long appId) {
-		SteamApp result = null;
-		
-		result = getAppByAppId(appId);
-		
-		if(null != result) {
-			result = getWholeAppById(result.getId());
-		}
-		
-		return result;
-	}
-	
-	public SteamApp getAppByAppId(long appId) {
-		SteamApp result = null;
-		
-		List<SteamApp> apps = issueQuery(
-				"SELECT a FROM " + SteamApp.class.getSimpleName() + " a "
-						+ "where a.appId = " + appId);
-		
-		if(!apps.isEmpty()) {
-			result = apps.get(0);
-		}
 
-		return result;
-	}
 
 	public void updateAppList(List<SteamApp> apps) {
 		

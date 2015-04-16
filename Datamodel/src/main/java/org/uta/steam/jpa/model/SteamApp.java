@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 @SuppressWarnings("serial")
 public class SteamApp extends AbstractEntity {
 
+
 	private long appId;
 	
 	private boolean getsUpdated = false;

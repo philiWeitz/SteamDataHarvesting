@@ -5,13 +5,13 @@ import java.util.List;
 import org.uta.steam.jpa.model.SteamApp;
 
 public interface SteamAppDAOService extends AbstractDAOService<SteamApp> {
+
+	SteamApp getAppByAppIdLazyLoading(long appId);
 	
 	SteamApp getWholeAppById(long id);
-	SteamApp getAppByAppId(long appId);
 	SteamApp getWholeAppByAppId(long appId);
-	
-	void setAppUpdateList(List<Long> appIds);
 	List<SteamApp> getWholeAppsToUpdate();
 	
+	void setAppUpdateList(List<Long> appIds);
 	void updateAppList(List<SteamApp> apps);
 }

@@ -197,6 +197,32 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 	
 	
 	@SuppressWarnings("unchecked")
+	protected <A> A issueQuerySingleResult(String queryString) {
+		A result = null;
+
+		EntityManager em = getEntityManager();
+		
+		try {
+			em.getTransaction().begin();
+
+			Query query = em.createQuery(queryString);
+			result = (A) query.getSingleResult();
+
+			em.getTransaction().commit();
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			LOG.error("Error while performing single result database query " + queryString, e);
+		
+		} finally {
+			em.close();
+		}
+
+		return result;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
 	private Class<T> getGenericClass() {
 		return (Class<T>) ((ParameterizedType) getClass()
 				.getGenericSuperclass()).getActualTypeArguments()[0];
