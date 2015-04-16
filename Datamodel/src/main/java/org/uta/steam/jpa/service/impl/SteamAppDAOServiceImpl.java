@@ -1,7 +1,9 @@
 package org.uta.steam.jpa.service.impl;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Resource;
 import javax.persistence.EntityManager;
@@ -47,11 +49,33 @@ class SteamAppDAOServiceImpl
 	}
 	
 	
-	public void addAppToUpdateList(long appId) {
-		SteamApp app = getAppByAppId(appId);
-		app.setGetsUpdated(true);
-
-		saveOrUpdate(app);
+	public void setAppUpdateList(List<Long> appIds) {		
+		List<SteamApp> toUpdate = new LinkedList<SteamApp>();
+		
+		List<SteamApp> apps = issueQuery(
+				"SELECT a FROM " + SteamApp.class.getSimpleName() + " a "
+						+ "where a.getsUpdated = true");
+		
+		List<Long> appIdsToAdd = new LinkedList<Long>(appIds);
+		
+		// deselect the old ones
+		for(SteamApp app : apps) {
+			if(!appIds.contains(app.getAppId())) {
+				app.setGetsUpdated(false);
+				toUpdate.add(app);
+			} else {
+				appIdsToAdd.remove(app.getAppId());
+			}
+		}
+		
+		// add the new ones
+		for(long appId : appIdsToAdd) {
+			SteamApp app = getAppByAppId(appId);
+			app.setGetsUpdated(true);
+			toUpdate.add(app);
+		}
+		
+		saveOrUpdateAll(toUpdate);
 	}
 	
 	
@@ -94,5 +118,22 @@ class SteamAppDAOServiceImpl
 		}
 
 		return result;
+	}
+
+	public void updateAppList(List<SteamApp> apps) {
+		
+		List<Long> appIdsFromDb = issueQuery(
+				"SELECT a.appId FROM " + SteamApp.class.getSimpleName() + " a ");
+	
+		Set<Long> appIdSet = new HashSet<Long>(appIdsFromDb);
+		
+		List<SteamApp> toUpdate = new LinkedList<SteamApp>();
+		for(SteamApp app : apps) {
+			if(!appIdSet.contains(app.getAppId())) {
+				toUpdate.add(app);
+			}
+		}
+		
+		saveOrUpdateAll(toUpdate);
 	}
 }

@@ -1,5 +1,6 @@
 package org.uta.steam.bl.service.impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -34,9 +35,7 @@ class SteamDataServiceImpl implements SteamDataService {
 	}
 	
 	public void setAppUpdateList(List<Long> appIds) {
-		for(long appId : appIds) {
-			appDaoService.addAppToUpdateList(appId);
-		}
+		appDaoService.setAppUpdateList(appIds);
 	}
 	
 	public SteamApp getWholeApp(long appId) {
@@ -117,5 +116,9 @@ class SteamDataServiceImpl implements SteamDataService {
 			data.setReviews(new HashSet<Review>(appWebCrawler.getHelpfulUserReviews(dlc.getDlcId())));			
 			dlc.getData().add(data);
 		}
+	}
+
+	public void updateAppListFromSteam() {
+		appDaoService.updateAppList(new ArrayList<SteamApp>());
 	}
 }

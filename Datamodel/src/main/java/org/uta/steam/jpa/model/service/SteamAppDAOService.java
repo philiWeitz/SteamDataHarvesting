@@ -10,6 +10,8 @@ public interface SteamAppDAOService extends AbstractDAOService<SteamApp> {
 	SteamApp getAppByAppId(long appId);
 	SteamApp getWholeAppByAppId(long appId);
 	
-	void addAppToUpdateList(long appId);
-	List<SteamApp> getWholeAppsToUpdate();	
+	void setAppUpdateList(List<Long> appIds);
+	List<SteamApp> getWholeAppsToUpdate();
+	
+	void updateAppList(List<SteamApp> apps);
 }

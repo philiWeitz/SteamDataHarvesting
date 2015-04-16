@@ -10,4 +10,6 @@ public interface SteamDataService {
 	
 	void setAppUpdateList(List<Long> appIds);
 	void updateAppDataFromSteam();
+	
+	void updateAppListFromSteam();
 }

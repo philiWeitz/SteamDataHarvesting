@@ -61,6 +61,38 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		return result;
 	}
 
+	
+	public T saveOrUpdateAll(List<T> items) {
+		T result = null;
+
+		EntityManager em = getEntityManager();
+
+		try {
+			em.getTransaction().begin();
+
+			for(T item : items) {
+				if (null == item.getId()) {
+					// new item
+					em.persist(item);
+					result = item;
+				} else {
+					// update item
+					result = em.merge(item);
+				}
+			}
+			em.getTransaction().commit();
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			LOG.error("Error while saving list of \"" + getGenericClass() + "\"", e);
+
+		} finally {
+			em.close();
+		}
+
+		return result;
+	}
+	
 	public T getById(Long id) {
 		T result = null;
 
@@ -139,8 +171,8 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 	
 	@SuppressWarnings("unchecked")
-	protected List<T> issueQuery(String queryString) {
-		List<T> results = Collections.emptyList();
+	protected <A> List<A> issueQuery(String queryString) {
+		List<A> results = Collections.emptyList();
 
 		EntityManager em = getEntityManager();
 		
@@ -162,6 +194,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 		return results;
 	}
+	
 	
 	@SuppressWarnings("unchecked")
 	private Class<T> getGenericClass() {
