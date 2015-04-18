@@ -1,10 +1,13 @@
 package org.uta.steam.bl.service.impl;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Resource;
 
@@ -31,7 +34,18 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	
 	public List<SteamApp> getAllApps() {
-		return appDaoService.getAll();
+		List<SteamApp> result = appDaoService.getAll();
+		
+		Set<AppData> emptyDataSet = Collections.emptySet();
+		Set<AppDLC> emptyDLCSet = Collections.emptySet();
+		Set<AppVersion> emptyVersionSet = Collections.emptySet();
+		
+		for(SteamApp app : result) {
+			app.setData(emptyDataSet);
+			app.setDlcs(emptyDLCSet);
+			app.setVersions(emptyVersionSet);
+		}
+		return result;
 	}
 	
 	public void setAppUpdateList(List<Long> appIds) {

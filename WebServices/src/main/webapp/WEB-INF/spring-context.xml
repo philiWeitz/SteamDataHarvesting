@@ -1,0 +1,39 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:aop="http://www.springframework.org/schema/aop"
+  xmlns:context="http://www.springframework.org/schema/context"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+           http://www.springframework.org/schema/aop
+           http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+           http://www.springframework.org/schema/context
+           http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service">
+		<context:include-filter type="annotation" expression="javax.annotation.Resource"/>
+	</context:component-scan>
+
+
+    <!-- email trigger definition -->
+<!-- 	<bean id="EmailScheduler" class="example.scheduler.EmailChronTrigger"/> -->
+
+<!-- 	<bean id="StartupEmailScheduler" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
+<!-- 	  	<property name="targetObject"><ref local="EmailScheduler" /></property> -->
+<!-- 	    <property name="targetMethod"><value>init</value></property> -->
+<!-- 	    <property name="arguments"> -->
+<!-- 			<list> -->
+<!-- 		    	<value>0/20 * * * * ?</value> -->
+<!-- 		    </list> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+
+	<!-- Remove this for production -->
+	<bean id="TestDataService" class="org.uta.steam.jpa.service.impl.TestDataServiceImpl"/>
+
+	<bean id="InvokeTestData" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	      <property name="targetObject"><ref local="TestDataService" /></property>
+	      <property name="targetMethod"><value>createTestData</value></property>
+	 </bean>
+
+</beans>
