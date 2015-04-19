@@ -24,7 +24,7 @@ import org.uta.steam.jpa.model.Review;
 public class AppWebCrawler extends AbstractWebCrawler {
 
 	private static final Pattern NUMBER_PATTERN = Pattern
-			.compile("[1-9][0-9]* ");
+			.compile("[0-9][0-9]* ");
 
 	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
 
@@ -156,12 +156,11 @@ public class AppWebCrawler extends AbstractWebCrawler {
 				review.setContent(reviewElement.getElementsByClass("content")
 						.text());
 
-				String reviewHeader = reviewElement
-						.getElementsByClass("header").text();
+				String reviewHeader = reviewElement.getElementsByClass("header").text();
+				
 				if (!reviewHeader.isEmpty()) {
 					reviewHeader = reviewHeader.replaceAll(",", "");
-					Matcher matcher = NUMBER_PATTERN.matcher(reviewHeader
-							.toLowerCase());
+					Matcher matcher = NUMBER_PATTERN.matcher(reviewHeader.toLowerCase());
 
 					try {
 						matcher.find();
@@ -171,9 +170,7 @@ public class AppWebCrawler extends AbstractWebCrawler {
 						review.setPeopleSeen(Long.parseLong(matcher.group()
 								.trim()));
 					} catch (Exception e) {
-						LOG.error(
-								"Error review header: " + reviewHeader + "\n",
-								e);
+						LOG.error("Error review header: " + reviewHeader + "\n", e);
 					}
 				}
 

@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.test.util.SteamTestUtil;
@@ -21,6 +22,7 @@ public class appSteamApiTest {
 	}
 
 	@Test
+	@Ignore
 	public void getVersionsTest() {
 		AppSteamApi gameApi = new AppSteamApi();
 

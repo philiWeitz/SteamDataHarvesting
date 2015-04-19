@@ -78,8 +78,5 @@ public class SteamDataServiceTest {
 		assertNotSame(0, app.getData().size());
 		assertNotSame(0, app.getDlcs().size());
 		assertNotSame(0, app.getVersions().size());
-
-		// for debug
-		testDataService.printApp(app);
 	}
 }

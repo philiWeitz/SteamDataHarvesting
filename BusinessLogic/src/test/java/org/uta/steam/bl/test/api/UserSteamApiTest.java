@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uta.steam.bl.api.UserSteamApi;
 import org.uta.steam.bl.test.util.SteamTestUtil;
@@ -49,6 +50,7 @@ public class UserSteamApiTest {
 	}
 
 	@Test
+	@Ignore
 	public void getUserStatisticsByAppIdTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
 
