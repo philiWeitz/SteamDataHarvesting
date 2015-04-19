@@ -7,7 +7,6 @@ app.constant('Config', {
 app.controller('TemplateCtrl', function ($scope, $http, Config) {
 
     $scope.searchText = '';
-    $scope.watchlist = [];
 
 	/*$scope.games = [
         {appId: '1', name: 'Game 1', getsUpdated: true},
@@ -21,7 +20,7 @@ app.controller('TemplateCtrl', function ($scope, $http, Config) {
             success(function(data, status, headers, config) {
                 console.log('success');
                 console.log(data);
-                $scope.games = data;
+                $scope.games = _.first(data, 200);
 
             }).
             error(function(data, status, headers, config) {
@@ -33,6 +32,8 @@ app.controller('TemplateCtrl', function ($scope, $http, Config) {
         $http.post('/SteamDataHarvestingWebServices/service/app/addToWatchList', appId).
             success(function(data, status, headers, config) {
                 console.log('post success');
+
+                updateGetsUpdated(appId, true);
             }).
             error(function(data, status, headers, config) {
                 console.log('post error');
@@ -43,10 +44,21 @@ app.controller('TemplateCtrl', function ($scope, $http, Config) {
         $http.post('/SteamDataHarvestingWebServices/service/app/removeFromWatchList', appId).
             success(function(data, status, headers, config) {
                 console.log('post success');
+
+                updateGetsUpdated(appId, false);
             }).
             error(function(data, status, headers, config) {
                 console.log('post error');
             });
+    };
+
+    var updateGetsUpdated = function(appId, value){
+
+        var gameIndex = _.findIndex($scope.games, function(game){
+            return game.appId === appId;
+        });
+
+        $scope.games[gameIndex].getsUpdated = value;
     };
 
     $scope.getGames();
