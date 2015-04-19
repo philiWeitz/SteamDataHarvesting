@@ -1,13 +1,11 @@
 package org.uta.steam.rest;
 
 import java.io.IOException;
-import java.util.Arrays;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,22 +82,34 @@ public class AppController {
 	}
 	
 	
-    @RequestMapping(value = "/setWatchList", method = RequestMethod.POST)
-    public HttpStatus saveMessage(@RequestBody String appIdsString, UriComponentsBuilder builder) {
+    @RequestMapping(value = "/addToWatchList", method = RequestMethod.POST)
+    public HttpStatus addToWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
     	
     	try {
-			Long[] appIds = mapper.readValue(appIdsString, Long[].class);
-			steamDataService.setAppUpdateList(Arrays.asList(appIds));
+			Long appId = Long.parseLong(appIdString);
+			steamDataService.addAppToUpdateList(appId);
 	        return HttpStatus.OK;
 	        
-		} catch (JsonParseException e) {
-			LOG.error(e);
-		} catch (JsonMappingException e) {
-			LOG.error(e);
-		} catch (IOException e) {
+		} catch (NumberFormatException e) {
 			LOG.error(e);
 		}
     	
         return HttpStatus.BAD_REQUEST;
     }	
+    
+    
+    @RequestMapping(value = "/removeFromWatchList", method = RequestMethod.POST)
+    public HttpStatus removeFromWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
+    	
+    	try {
+			Long appId = Long.parseLong(appIdString);
+			steamDataService.removeAppFromUpdateList(appId);
+	        return HttpStatus.OK;
+	        
+		} catch (NumberFormatException e) {
+			LOG.error(e);
+		}
+    	
+        return HttpStatus.BAD_REQUEST;
+    }
 }
