@@ -29,28 +29,24 @@ app.controller('TemplateCtrl', function ($scope, $http, Config) {
             });
     };
 
-    var setWatchlist = function(){
+    $scope.addToWatchlist = function(appId){
+        $http.post('/SteamDataHarvestingWebServices/service/app/addToWatchList', appId).
+            success(function(data, status, headers, config) {
+                console.log('post success');
+            }).
+            error(function(data, status, headers, config) {
+                console.log('post error');
+        });
+    };
 
-        console.log('posting');
-        console.log($scope.watchlist);
-
-        $http.post('/setWatchList', {watchlist: $scope.watchlist}).
+    $scope.removeFromWatchlist = function(appId){
+        $http.post('/SteamDataHarvestingWebServices/service/app/removeFromWatchList', appId).
             success(function(data, status, headers, config) {
                 console.log('post success');
             }).
             error(function(data, status, headers, config) {
                 console.log('post error');
             });
-    };
-
-    $scope.addToWatchlist = function(appId){
-        $scope.watchlist.push(appId);
-        setWatchlist();
-    };
-
-    $scope.removeFromWatchlist = function(appId){
-        $scope.watchlist = _.without($scope.watchlist, appId);
-        setWatchlist();
     };
 
     $scope.getGames();
