@@ -129,11 +129,11 @@ class SteamDataServiceImpl implements SteamDataService {
 		appDaoService.updateAppList(appSteamApi.getApps());
 	}
 
-	public void addAppToUpdateList(Long appId) {
-		appDaoService.addAppToUpdateList(appId);
+	public boolean addAppToUpdateList(Long appId) {
+		return appDaoService.addAppToUpdateList(appId);
 	}
 
-	public void removeAppFromUpdateList(Long appId) {
-		appDaoService.removeAppFromUpdateList(appId);
+	public boolean removeAppFromUpdateList(Long appId) {
+		return appDaoService.removeAppFromUpdateList(appId);
 	}
 }
