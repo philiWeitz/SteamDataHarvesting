@@ -95,21 +95,27 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		saveOrUpdateAll(toUpdate);
 	}
 
-	public void addAppToUpdateList(Long appId) {
+	public boolean addAppToUpdateList(Long appId) {
 		SteamApp app = getAppByAppIdLazyLoading(appId);
 		
 		if(null != app) {
 			app.setGetsUpdated(true);
 			saveOrUpdate(app);
+			return true;
 		}
+		
+		return false;
 	}
 
-	public void removeAppFromUpdateList(Long appId) {
+	public boolean removeAppFromUpdateList(Long appId) {
 		SteamApp app = getAppByAppIdLazyLoading(appId);
 		
 		if(null != app) {
 			app.setGetsUpdated(false);
 			saveOrUpdate(app);
+			return true;
 		}
+		
+		return false;
 	}
 }

@@ -83,33 +83,41 @@ public class AppController {
 	
 	
     @RequestMapping(value = "/addToWatchList", method = RequestMethod.POST)
-    public HttpStatus addToWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
+    public ResponseEntity<String> addToWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
     	
     	try {
 			Long appId = Long.parseLong(appIdString);
-			steamDataService.addAppToUpdateList(appId);
-	        return HttpStatus.OK;
-	        
+			
+			if(steamDataService.addAppToUpdateList(appId)) {
+				return new ResponseEntity<String>("OK", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
+			}
+			
 		} catch (NumberFormatException e) {
 			LOG.error(e);
 		}
     	
-        return HttpStatus.BAD_REQUEST;
+    	return new ResponseEntity<String>("Wrong Number Format", HttpStatus.BAD_REQUEST);
     }	
     
     
     @RequestMapping(value = "/removeFromWatchList", method = RequestMethod.POST)
-    public HttpStatus removeFromWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
+    public ResponseEntity<String> removeFromWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
     	
     	try {
 			Long appId = Long.parseLong(appIdString);
-			steamDataService.removeAppFromUpdateList(appId);
-	        return HttpStatus.OK;
+			
+			if(steamDataService.removeAppFromUpdateList(appId)) {
+				return new ResponseEntity<String>("OK", HttpStatus.OK);
+			} else {
+				return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
+			}
 	        
 		} catch (NumberFormatException e) {
 			LOG.error(e);
 		}
     	
-        return HttpStatus.BAD_REQUEST;
+    	return new ResponseEntity<String>("Wrong Number Format", HttpStatus.BAD_REQUEST);
     }
 }
