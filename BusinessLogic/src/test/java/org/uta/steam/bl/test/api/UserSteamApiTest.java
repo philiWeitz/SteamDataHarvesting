@@ -16,46 +16,45 @@ import org.uta.steam.jpa.model.UserApp;
 
 public class UserSteamApiTest {
 
-		
 	@Test
 	public void getUserNameTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
-		
+
 		String userName = userSteamApi.getUserName(SteamTestUtil.USER_ID);
 		assertFalse(userName.isEmpty());
 	}
-	
-	
+
 	@Test
 	public void getUserGamesTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
-		
-		List<UserApp> userApps = userSteamApi.getOwnedGames(SteamTestUtil.USER_ID);
+
+		List<UserApp> userApps = userSteamApi
+				.getOwnedGames(SteamTestUtil.USER_ID);
 		assertFalse(userApps.isEmpty());
 	}
-
 
 	@Test
 	public void getUserAchievementsByAppIdTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
-		
-		UserAchievementSummary userAchievement = 
-				userSteamApi.getUserAchievementsByAppId(SteamTestUtil.USER_ID, SteamTestUtil.APP_ID);
-		
-		assertTrue(userAchievement.getMaximumAchievements() >= userAchievement.getAchieved());
-		assertTrue(userAchievement.getAchieved() > 0);	
+
+		UserAchievementSummary userAchievement = userSteamApi
+				.getUserAchievementsByAppId(SteamTestUtil.USER_ID,
+						SteamTestUtil.APP_ID);
+
+		assertTrue(userAchievement.getMaximumAchievements() >= userAchievement
+				.getAchieved());
+		assertTrue(userAchievement.getAchieved() > 0);
 		assertNotNull(userAchievement.getTimestamp());
 		assertEquals(SteamTestUtil.APP_ID, userAchievement.getAppId());
 	}
-	
-	
+
 	@Test
 	public void getUserStatisticsByAppIdTest() {
 		UserSteamApi userSteamApi = new UserSteamApi();
-		
-		Map<String,Long> statMap =
-				userSteamApi.getUserStatisticsByAppId(SteamTestUtil.USER_ID, SteamTestUtil.APP_ID);
-		
+
+		Map<String, Long> statMap = userSteamApi.getUserStatisticsByAppId(
+				SteamTestUtil.USER_ID, SteamTestUtil.APP_ID);
+
 		assertFalse(statMap.isEmpty());
 	}
 }

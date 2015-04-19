@@ -14,27 +14,26 @@ public class AppVersion extends AbstractEntity {
 
 	@Basic
 	private Date published;
-	
+
 	@Basic
 	private String content;
-	
-	
+
 	public String getTitle() {
 		return title;
 	}
-	
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	
+
 	public Date getPublished() {
 		return published;
 	}
-	
+
 	public void setPublished(Date published) {
 		this.published = published;
 	}
-	
+
 	public void setPublished(String published) {
 		this.published = new Date(Long.parseLong(published) * 1000);
 	}
@@ -45,5 +44,5 @@ public class AppVersion extends AbstractEntity {
 
 	public void setContent(String content) {
 		this.content = content;
-	}	
+	}
 }

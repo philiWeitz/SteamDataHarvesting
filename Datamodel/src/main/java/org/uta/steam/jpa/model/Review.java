@@ -13,22 +13,21 @@ import javax.persistence.TemporalType;
 public class Review extends AbstractEntity {
 
 	private long authorId;
-	
+
 	@Basic
-	private String author;	
-	
+	private String author;
+
 	@Basic
 	@Column(length = 5 * 1024 * 1024)
 	private String content;
-	
+
 	private long peopleSeen;
 	private long peopleHelpful;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "POSTED_DATE")
 	private Date posted;
-	
-		
+
 	public long getAuthorId() {
 		return authorId;
 	}
@@ -40,15 +39,15 @@ public class Review extends AbstractEntity {
 	public String getAuthor() {
 		return author;
 	}
-	
+
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	
+
 	public String getContent() {
 		return content;
 	}
-	
+
 	public void setContent(String content) {
 		this.content = content;
 	}

@@ -18,8 +18,7 @@ public class AbstractSteamApi {
 
 	// HTTP request timeout
 	private static final int REQUEST_TIMEOUT = 1000;
-	
-	
+
 	protected String httpGet(String urlString) {
 		String result = StringUtils.EMPTY;
 		HttpURLConnection httpURLConnection = null;
@@ -54,7 +53,7 @@ public class AbstractSteamApi {
 			httpURLConnection.getInputStream().close();
 
 			result = builder.toString();
-			
+
 		} catch (IOException e) {
 			LOG.error(e);
 		} catch (Exception e) {

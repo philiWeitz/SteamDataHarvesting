@@ -14,18 +14,27 @@
 	</context:component-scan>
 
 
-    <!-- email trigger definition -->
-<!-- 	<bean id="EmailScheduler" class="example.scheduler.EmailChronTrigger"/> -->
+    <!-- data harvesting trigger definition -->
+	<bean id="DataHarvestScheduler" class="org.uta.steam.rest.scheduler.SteamTrigger"/>
 
-<!-- 	<bean id="StartupEmailScheduler" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
-<!-- 	  	<property name="targetObject"><ref local="EmailScheduler" /></property> -->
-<!-- 	    <property name="targetMethod"><value>init</value></property> -->
-<!-- 	    <property name="arguments"> -->
-<!-- 			<list> -->
-<!-- 		    	<value>0/20 * * * * ?</value> -->
-<!-- 		    </list> -->
-<!-- 		</property> -->
-<!-- 	</bean> -->
+	<bean id="StartupDataHarvestingScheduler" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	  	<property name="targetObject"><ref local="DataHarvestScheduler" /></property>
+	    <property name="targetMethod"><value>initDataHarvesting</value></property>
+	    <property name="arguments">
+			<list>
+		    	<value>0/20 * * * * ?</value>
+		    </list>
+		</property>
+	</bean>
+	
+
+	<!-- Stuff which needs to be done while the server starts up the first time -->
+	<bean id="ServerStartup" class="org.uta.steam.rest.common.ServerStartup"/>
+
+	<bean id="InvokeServerStartup"  class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+	      <property name="targetObject"><ref local="ServerStartup" /></property>
+	      <property name="targetMethod"><value>onServerStartup</value></property>
+	 </bean>
 
 
 	<!-- Remove this for production -->

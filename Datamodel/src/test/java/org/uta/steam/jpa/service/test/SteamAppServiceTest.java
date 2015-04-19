@@ -20,39 +20,36 @@ import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/spring-test-context.xml"})
+@ContextConfiguration(locations = { "/spring-test-context.xml" })
 public class SteamAppServiceTest {
 
 	private TestDataServiceImpl testDataService = new TestDataServiceImpl();
 
 	@Autowired
 	SteamAppDAOService steamAppService;
-		
-	
+
 	@Before
 	public void init() {
 		testDataService.createTestData();
 	}
-	
-	
+
 	@Test
-	public void saveAppTest() {		
+	public void saveAppTest() {
 		assertNotSame(0, testDataService.getAppNoData().getId());
-		
-		AppData data = testDataService.getAppWithData().getData().iterator().next();
+
+		AppData data = testDataService.getAppWithData().getData().iterator()
+				.next();
 		assertNotSame(0, data.getId());
 		assertNotNull(data.getCreated());
 	}
 
-	
 	@Test
-	public void getPureAppDataTest() {		
+	public void getPureAppDataTest() {
 
 		List<SteamApp> fromDatabase = steamAppService.getAll();
-		
-		for(SteamApp app : fromDatabase) {
+
+		for (SteamApp app : fromDatabase) {
 			try {
 				app.getData().isEmpty();
 				fail();
@@ -62,49 +59,55 @@ public class SteamAppServiceTest {
 		}
 	}
 
-	
 	@Test
-	public void getFullAppDataTest() {		
-		SteamApp fromDatabase = steamAppService.getWholeAppById(testDataService.getAppWithData().getId());
-		assertEquals(testDataService.getAppWithData().getAppId(), fromDatabase.getAppId());
-		assertEquals(testDataService.getAppWithData().getName(), fromDatabase.getName());
-		assertEquals(testDataService.getAppWithData().getData().size(), fromDatabase.getData().size());
-		assertEquals(testDataService.getAppWithData().getDlcs().size(), fromDatabase.getDlcs().size());
+	public void getFullAppDataTest() {
+		SteamApp fromDatabase = steamAppService.getWholeAppById(testDataService
+				.getAppWithData().getId());
+		assertEquals(testDataService.getAppWithData().getAppId(),
+				fromDatabase.getAppId());
+		assertEquals(testDataService.getAppWithData().getName(),
+				fromDatabase.getName());
+		assertEquals(testDataService.getAppWithData().getData().size(),
+				fromDatabase.getData().size());
+		assertEquals(testDataService.getAppWithData().getDlcs().size(),
+				fromDatabase.getDlcs().size());
 	}
-	
+
 	@Test
 	public void setAppUpdateListTest() {
 		List<SteamApp> appsUpdate = steamAppService.getWholeAppsToUpdate();
 		assertTrue(appsUpdate.isEmpty());
-		
-		List<Long> appIds = 
-				Collections.singletonList(testDataService.getAppNoData().getAppId());
+
+		List<Long> appIds = Collections.singletonList(testDataService
+				.getAppNoData().getAppId());
 		steamAppService.setAppUpdateList(appIds);
-		
+
 		appsUpdate = steamAppService.getWholeAppsToUpdate();
 		assertEquals(1, appsUpdate.size());
-		assertEquals(testDataService.getAppNoData().getAppId(), appsUpdate.get(0).getAppId());
-		
-		
-		appIds = Collections.singletonList(testDataService.getAppWithData().getAppId());
+		assertEquals(testDataService.getAppNoData().getAppId(),
+				appsUpdate.get(0).getAppId());
+
+		appIds = Collections.singletonList(testDataService.getAppWithData()
+				.getAppId());
 		steamAppService.setAppUpdateList(appIds);
-		
+
 		appsUpdate = steamAppService.getWholeAppsToUpdate();
 		assertEquals(1, appsUpdate.size());
-		assertEquals(testDataService.getAppWithData().getAppId(), appsUpdate.get(0).getAppId());	
+		assertEquals(testDataService.getAppWithData().getAppId(), appsUpdate
+				.get(0).getAppId());
 	}
-	
+
 	@Test
 	public void updateAppList() {
 		List<SteamApp> apps = steamAppService.getAll();
 		assertEquals(2, apps.size());
-		
+
 		SteamApp appToAdd = new SteamApp();
 		appToAdd.setAppId(2);
 		appToAdd.setName("App Nr 2");
 		apps.add(appToAdd);
 		steamAppService.updateAppList(apps);
-		
+
 		List<SteamApp> appsUpdated = steamAppService.getAll();
 		assertEquals(3, appsUpdated.size());
 	}

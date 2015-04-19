@@ -14,35 +14,33 @@ import javax.persistence.OneToMany;
 @SuppressWarnings("serial")
 public class SteamApp extends AbstractEntity {
 
-
 	private long appId;
-	
+
 	private boolean getsUpdated = false;
-	
+
 	@Basic
 	private String name;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="APP_DATA", referencedColumnName="id")
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "APP_DATA", referencedColumnName = "id")
 	private Set<AppData> data;
-	
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="APP_VERSION", referencedColumnName="id")
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "APP_VERSION", referencedColumnName = "id")
 	private Set<AppVersion> versions;
 
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@JoinColumn(name="APP_DLC", referencedColumnName="id")
-	private Set<AppDLC> dlcs;	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "APP_DLC", referencedColumnName = "id")
+	private Set<AppDLC> dlcs;
 
-	
 	public long getAppId() {
 		return appId;
 	}
-	
+
 	public void setAppId(long appid) {
 		this.appId = appid;
 	}
-		
+
 	public boolean isGetsUpdated() {
 		return getsUpdated;
 	}
@@ -54,13 +52,13 @@ public class SteamApp extends AbstractEntity {
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public Set<AppData> getData() {
-		if(null == data) {
+		if (null == data) {
 			data = new HashSet<AppData>();
 		}
 		return data;
@@ -71,7 +69,7 @@ public class SteamApp extends AbstractEntity {
 	}
 
 	public Set<AppVersion> getVersions() {
-		if(null == versions) {
+		if (null == versions) {
 			versions = new HashSet<AppVersion>();
 		}
 		return versions;
@@ -82,7 +80,7 @@ public class SteamApp extends AbstractEntity {
 	}
 
 	public Set<AppDLC> getDlcs() {
-		if(null == dlcs) {
+		if (null == dlcs) {
 			dlcs = new HashSet<AppDLC>();
 		}
 		return dlcs;

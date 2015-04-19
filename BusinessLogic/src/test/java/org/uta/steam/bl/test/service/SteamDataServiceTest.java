@@ -18,26 +18,23 @@ import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 
-
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/spring-test-context.xml"})
+@ContextConfiguration(locations = { "/spring-test-context.xml" })
 public class SteamDataServiceTest {
 
 	private TestDataServiceImpl testDataService = new TestDataServiceImpl();
-	
+
 	@Autowired
 	private SteamDataService steamDataService;
 
 	@Autowired
 	private SteamAppDAOService steamAppDaoService;
-	
-	
+
 	@Before
 	public void init() {
 		testDataService.createTestData();
 	}
-	
-	
+
 	@Test
 	public void getAppsTest() {
 		List<SteamApp> apps = steamDataService.getAllApps();
@@ -49,31 +46,31 @@ public class SteamDataServiceTest {
 		List<Long> appIds = new LinkedList<Long>();
 		appIds.add(testDataService.getAppNoData().getAppId());
 		appIds.add(testDataService.getAppWithData().getAppId());
-			
+
 		steamDataService.setAppUpdateList(appIds);
 		List<SteamApp> apps = steamDataService.getAllApps();
-		
+
 		assertFalse(apps.isEmpty());
-		for(SteamApp app : apps) {
+		for (SteamApp app : apps) {
 			assertTrue(app.isGetsUpdated());
 		}
 	}
-	
-	@Test
-	public void updateAppDataFromSteamTest() {			
 
-		SteamApp app = steamDataService.getWholeApp(
-				testDataService.getAppWithData().getAppId());
-		
+	@Test
+	public void updateAppDataFromSteamTest() {
+
+		SteamApp app = steamDataService.getWholeApp(testDataService
+				.getAppWithData().getAppId());
+
 		app.getData().clear();
 		app.getDlcs().clear();
 		app.getVersions().clear();
 		app = steamAppDaoService.saveOrUpdate(app);
-		
+
 		List<Long> appIds = new LinkedList<Long>();
 		appIds.add(testDataService.getAppNoData().getAppId());
 		appIds.add(testDataService.getAppWithData().getAppId());
-		
+
 		steamDataService.setAppUpdateList(appIds);
 		steamDataService.harvestDataFromSteam();
 

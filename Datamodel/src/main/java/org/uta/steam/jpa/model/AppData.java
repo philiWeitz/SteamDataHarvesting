@@ -13,17 +13,16 @@ import javax.persistence.OneToMany;
 @Entity
 @SuppressWarnings("serial")
 public class AppData extends AbstractEntity {
-	
+
 	private double price;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	private Set<String> tags;		
-		
-	@OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-	@JoinColumn(name="APP_REVIEW", referencedColumnName="id")
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Set<String> tags;
+
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "APP_REVIEW", referencedColumnName = "id")
 	private Set<Review> reviews;
 
-	
 	public double getPrice() {
 		return price;
 	}
@@ -33,7 +32,7 @@ public class AppData extends AbstractEntity {
 	}
 
 	public Set<String> getTags() {
-		if(null == tags) {
+		if (null == tags) {
 			tags = new HashSet<String>();
 		}
 		return tags;
@@ -44,7 +43,7 @@ public class AppData extends AbstractEntity {
 	}
 
 	public Set<Review> getReviews() {
-		if(null == reviews) {
+		if (null == reviews) {
 			reviews = new HashSet<Review>();
 		}
 		return reviews;

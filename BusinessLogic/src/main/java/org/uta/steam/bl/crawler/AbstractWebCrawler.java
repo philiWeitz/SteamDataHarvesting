@@ -30,7 +30,6 @@ public class AbstractWebCrawler {
 		return result;
 	}
 
-	
 	protected Elements getElementsByClass(Element element, String className) {
 		if (null != element) {
 			return element.getElementsByClass(className);
@@ -38,15 +37,13 @@ public class AbstractWebCrawler {
 		return null;
 	}
 
-	
 	protected Element getElementById(Element element, String id) {
 		if (null != element) {
 			return element.getElementById(id);
 		}
 		return null;
 	}
-		
-	
+
 	protected Document getHtmlFromUrl(String url) {
 
 		try {
