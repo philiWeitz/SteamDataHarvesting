@@ -1,11 +1,31 @@
-
-
 var app = angular.module('app', []);
 
-app.controller('TemplateCtrl', 
-		
-	function ($scope, $http) {
-		
-		$scope.hello_world = "Hello World";
-	}
-);
+app.constant('Config', {
+	serverUrl : 'localhost:8080'
+});
+
+app.controller('TemplateCtrl', function ($scope, $http, Config) {
+
+    $scope.searchText = '';
+
+	$scope.games = [
+        {appId: '1', name: 'Game 1', getsUpdated: true},
+        {appId: '2', name: 'Game 2', getsUpdated: false},
+        {appId: '3', name: 'Game 3', getsUpdated: false}
+    ];
+
+    $scope.getGames = function(){
+
+        $http.get('/SteamDataHarvestingWebServices/service/app/getAllApps').
+            success(function(data, status, headers, config) {
+                console.log('success');
+                console.log(data);
+                $scope.games = data;
+
+            }).
+            error(function(data, status, headers, config) {
+                console.log('error');
+            });
+    };
+
+});

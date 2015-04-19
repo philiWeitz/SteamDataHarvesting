@@ -15,3 +15,5 @@ node_modules/
 bower_components/
 
 .tern-project
+.idea
+.DS_Store

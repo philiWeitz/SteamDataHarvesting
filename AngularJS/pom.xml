@@ -39,7 +39,7 @@
 			    <groupId>com.kelveden</groupId>
 			    <artifactId>maven-karma-plugin</artifactId>
 			    <configuration>
-			    	<karmaExecutable>${basedir}/node_modules/.bin/karma</karmaExecutable>
+			    	<karmaExecutable>${basedir}/node_modules/karma/bin/karma</karmaExecutable>
 			    	<configFile>src/test/resources/karma.conf.js</configFile>
 			    </configuration>
 			</plugin>
