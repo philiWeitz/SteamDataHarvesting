@@ -11,27 +11,27 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
-@MappedSuperclass @SuppressWarnings("serial")
+@MappedSuperclass
+@SuppressWarnings("serial")
 public abstract class AbstractEntity implements Serializable {
-	
+
 	@Id
 	@GeneratedValue
-    @Column(nullable = false)
+	@Column(nullable = false)
 	private Long id;
-		
+
 	@Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false)
+	@Column(nullable = false)
 	private Date created;
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public Date getCreated() {
 		return created;
 	}
-	
+
 	@PrePersist
 	protected void onCreate() {
 		created = new Date();

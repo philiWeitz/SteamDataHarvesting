@@ -5,11 +5,13 @@ import java.util.List;
 import org.uta.steam.jpa.model.SteamApp;
 
 public interface SteamDataService {
-	List<SteamApp> getAllApps();	
+	List<SteamApp> getAllApps();
+
 	void setAppUpdateList(List<Long> appIds);
 
 	SteamApp getWholeApp(long appId);
-		
-	void harvestDataFromSteam();	
+
+	void harvestDataFromSteam();
+
 	void updateAppListFromSteam();
 }

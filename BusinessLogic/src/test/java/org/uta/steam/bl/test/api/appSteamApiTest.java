@@ -4,28 +4,30 @@ import static org.junit.Assert.assertFalse;
 
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.test.util.SteamTestUtil;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.SteamApp;
 
-public class GameSteamApiTest {
-
+public class appSteamApiTest {
 
 	@Test
 	public void getAppInfosTest() {
 		AppSteamApi gameApi = new AppSteamApi();
-		
-		SteamApp[] steamApps = gameApi.getApps();
-		assertFalse(steamApps.length == 0);
+
+		List<SteamApp> steamApps = gameApi.getApps();
+		assertFalse(steamApps.isEmpty());
 	}
 
 	@Test
+	@Ignore
 	public void getVersionsTest() {
 		AppSteamApi gameApi = new AppSteamApi();
-		
-		List<AppVersion> versions = gameApi.getVersions(SteamTestUtil.APP_ID);
+
+		List<AppVersion> versions =
+		gameApi.getVersions(SteamTestUtil.APP_ID);
 		assertFalse(versions.isEmpty());
 	}
 }

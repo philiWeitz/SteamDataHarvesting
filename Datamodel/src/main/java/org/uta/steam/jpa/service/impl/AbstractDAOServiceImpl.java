@@ -14,19 +14,18 @@ import org.apache.logging.log4j.Logger;
 import org.uta.steam.jpa.model.AbstractEntity;
 
 abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
-	
+
 	private static final String PERSISTENCE_UNIT_NAME = "steam-data-harvesting";
-	
+
 	private static Logger LOG = LogManager
 			.getLogger(AbstractDAOServiceImpl.class);
 
 	private EntityManagerFactory factory;
-	
 
-	public AbstractDAOServiceImpl() {	
+	public AbstractDAOServiceImpl() {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	}
-	
+
 	protected EntityManager getEntityManager() {
 		return factory.createEntityManager();
 	}
@@ -61,7 +60,6 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		return result;
 	}
 
-	
 	public T saveOrUpdateAll(List<T> items) {
 		T result = null;
 
@@ -70,7 +68,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		try {
 			em.getTransaction().begin();
 
-			for(T item : items) {
+			for (T item : items) {
 				if (null == item.getId()) {
 					// new item
 					em.persist(item);
@@ -84,7 +82,8 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			LOG.error("Error while saving list of \"" + getGenericClass() + "\"", e);
+			LOG.error("Error while saving list of \"" + getGenericClass()
+					+ "\"", e);
 
 		} finally {
 			em.close();
@@ -92,7 +91,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 		return result;
 	}
-	
+
 	public T getById(Long id) {
 		T result = null;
 
@@ -107,7 +106,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 			em.getTransaction().rollback();
 			LOG.error("Error while getting \"" + result.getClass() + "\" (id: "
 					+ id + ")", e);
-			
+
 		} finally {
 			em.close();
 		}
@@ -120,7 +119,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		List<T> results = Collections.EMPTY_LIST;
 
 		EntityManager em = getEntityManager();
-		
+
 		try {
 			em.getTransaction().begin();
 
@@ -134,7 +133,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 			em.getTransaction().rollback();
 			LOG.error("Error while getting result list for \""
 					+ getGenericClass() + "\"", e);
-		
+
 		} finally {
 			em.close();
 		}
@@ -147,35 +146,34 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 	}
 
 	public void delete(Long id) {
-		
+
 		EntityManager em = getEntityManager();
-		
+
 		try {
 
-			if (null != id) {			
+			if (null != id) {
 				em.getTransaction().begin();
-				
+
 				T item = em.find(getGenericClass(), id);
 				em.remove(item);
-				
-				em.getTransaction().commit();				
+
+				em.getTransaction().commit();
 			}
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			LOG.error("Error while deleting by id: \"" + id + "\"", e);
-			
+
 		} finally {
 			em.close();
 		}
 	}
 
-	
 	@SuppressWarnings("unchecked")
 	protected <A> List<A> issueQuery(String queryString) {
 		List<A> results = Collections.emptyList();
 
 		EntityManager em = getEntityManager();
-		
+
 		try {
 			em.getTransaction().begin();
 
@@ -187,21 +185,20 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			LOG.error("Error while performing database query " + queryString, e);
-		
+
 		} finally {
 			em.close();
 		}
 
 		return results;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	protected <A> A issueQuerySingleResult(String queryString) {
 		A result = null;
 
 		EntityManager em = getEntityManager();
-		
+
 		try {
 			em.getTransaction().begin();
 
@@ -212,16 +209,16 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 		} catch (Exception e) {
 			em.getTransaction().rollback();
-			LOG.error("Error while performing single result database query " + queryString, e);
-		
+			LOG.error("Error while performing single result database query "
+					+ queryString, e);
+
 		} finally {
 			em.close();
 		}
 
 		return result;
 	}
-	
-	
+
 	@SuppressWarnings("unchecked")
 	private Class<T> getGenericClass() {
 		return (Class<T>) ((ParameterizedType) getClass()

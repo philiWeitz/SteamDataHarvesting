@@ -12,66 +12,63 @@ import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 
-
-
 public class TestDataServiceImpl {
 
 	private SteamApp appNoData = null;
 	private SteamApp appWithData = null;
-	
-	
+
 	private SteamAppDAOService appDaoService = new SteamAppDAOServiceImpl();
 
-	
 	public void createTestData() {
 		cleanDatabase();
 		createAppTestData();
 	}
-	
+
 	public void printApp(SteamApp app) {
 		StringBuilder sb = new StringBuilder();
-		
+
 		sb.append("\nName: ").append(app.getName());
-		sb.append("\nId: ").append(app.getAppId());	
-		
-		if(!app.getData().isEmpty()) {
+		sb.append("\nId: ").append(app.getAppId());
+
+		if (!app.getData().isEmpty()) {
 			AppData data = app.getData().iterator().next();
-			
+
 			sb.append("\nLast data: ");
-			sb.append("\n\tPrice: ").append(data.getPrice());	
-			sb.append("\n\tTags: ").append(data.getTags());		
+			sb.append("\n\tPrice: ").append(data.getPrice());
+			sb.append("\n\tTags: ").append(data.getTags());
 		}
-		
+
 		sb.append("\nDLCs: ");
-		for(AppDLC dlc : app.getDlcs()) {
-			sb.append("\n\tName: ").append(dlc.getName());	
-			sb.append("\n\t\tId: ").append(dlc.getDlcId());		
+		for (AppDLC dlc : app.getDlcs()) {
+			sb.append("\n\tName: ").append(dlc.getName());
+			sb.append("\n\t\tId: ").append(dlc.getDlcId());
 		}
 
 		DateFormat format = new SimpleDateFormat("dd MMM, yyyy", Locale.ENGLISH);
-		
+
 		sb.append("\nVersions: ");
-		for(AppVersion version : app.getVersions()) {
-			sb.append("\n\tName: ").append(version.getTitle());	
-			sb.append("\n\t\tName: ").append(format.format(version.getPublished()));		
+		for (AppVersion version : app.getVersions()) {
+			sb.append("\n\tName: ").append(version.getTitle());
+			sb.append("\n\t\tName: ").append(
+					format.format(version.getPublished()));
 		}
-		
+
 		System.out.println(sb.toString());
 	}
-	
+
 	private void cleanDatabase() {
-		for(SteamApp app : appDaoService.getAll()) {
+		for (SteamApp app : appDaoService.getAll()) {
 			appDaoService.delete(app.getId());
 		}
 	}
-	
+
 	private void createAppTestData() {
 
 		SteamApp app1 = new SteamApp();
 		app1.setAppId(1);
 		app1.setName("App No Data");
 		appNoData = appDaoService.saveOrUpdate(app1);
-		
+
 		SteamApp app2 = new SteamApp();
 		app2.setAppId(226840);
 		app2.setName("App With Data");
@@ -82,7 +79,7 @@ public class TestDataServiceImpl {
 		version.setContent("Version 1 Content");
 		version.setPublished(new Date());
 		app2.getVersions().add(version);
-		
+
 		// set app data
 		AppData data1 = new AppData();
 		data1.setPrice(19.99);
@@ -98,20 +95,20 @@ public class TestDataServiceImpl {
 		appReview1.setPeopleHelpful(50);
 		appReview1.setPosted(new Date());
 		data1.getReviews().add(appReview1);
-		
+
 		app2.getData().add(data1);
-		
+
 		// set DLCs
 		AppDLC dlc1 = new AppDLC();
 		dlc1.setDlcId(123);
 		dlc1.setName("DLC 1 for game 1");
 		dlc1.setReleaseDate(new Date());
-		
+
 		AppData dlcData = new AppData();
 		dlcData.setPrice(19.99);
 		dlcData.getTags().add("TAG4");
 		dlcData.getTags().add("TAG5");
-				
+
 		Review dlcReview = new Review();
 		dlcReview.setAuthorId(1);
 		dlcReview.setAuthor("author review dlc 1");
@@ -121,7 +118,7 @@ public class TestDataServiceImpl {
 		dlcReview.setPosted(new Date());
 		dlcData.getReviews().add(dlcReview);
 		app2.getData().add(dlcData);
-		
+
 		app2.getDlcs().add(dlc1);
 		appWithData = appDaoService.saveOrUpdate(app2);
 	}
