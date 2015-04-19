@@ -3,10 +3,10 @@ package org.uta.steam.jpa.service.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.junit.Before;
@@ -74,29 +74,44 @@ public class SteamAppServiceTest {
 	}
 
 	@Test
-	public void setAppUpdateListTest() {
+	public void addAppToUpdateListTest() {
 		List<SteamApp> appsUpdate = steamAppService.getWholeAppsToUpdate();
 		assertTrue(appsUpdate.isEmpty());
 
-		List<Long> appIds = Collections.singletonList(testDataService
-				.getAppNoData().getAppId());
-		steamAppService.setAppUpdateList(appIds);
+		steamAppService.addAppToUpdateList(testDataService.getAppNoData().getAppId());
 
 		appsUpdate = steamAppService.getWholeAppsToUpdate();
 		assertEquals(1, appsUpdate.size());
 		assertEquals(testDataService.getAppNoData().getAppId(),
 				appsUpdate.get(0).getAppId());
 
-		appIds = Collections.singletonList(testDataService.getAppWithData()
-				.getAppId());
-		steamAppService.setAppUpdateList(appIds);
+		steamAppService.addAppToUpdateList(testDataService.getAppWithData().getAppId());
 
 		appsUpdate = steamAppService.getWholeAppsToUpdate();
-		assertEquals(1, appsUpdate.size());
-		assertEquals(testDataService.getAppWithData().getAppId(), appsUpdate
-				.get(0).getAppId());
+		assertEquals(2, appsUpdate.size());
 	}
 
+	@Test
+	public void removeAppFromUpdateListTest() {
+		steamAppService.addAppToUpdateList(testDataService.getAppNoData().getAppId());
+		steamAppService.addAppToUpdateList(testDataService.getAppWithData().getAppId());
+		
+		List<SteamApp> appsUpdate = steamAppService.getWholeAppsToUpdate();
+		assertSame(2, appsUpdate.size());
+		
+		steamAppService.removeAppFromUpdateList(testDataService.getAppNoData().getAppId());		
+		
+		appsUpdate = steamAppService.getWholeAppsToUpdate();
+		assertEquals(1, appsUpdate.size());
+		assertEquals(testDataService.getAppWithData().getAppId(),
+				appsUpdate.get(0).getAppId());
+
+		steamAppService.removeAppFromUpdateList(testDataService.getAppWithData().getAppId());
+		
+		appsUpdate = steamAppService.getWholeAppsToUpdate();		
+		assertTrue(appsUpdate.isEmpty());
+	}
+	
 	@Test
 	public void updateAppList() {
 		List<SteamApp> apps = steamAppService.getAll();

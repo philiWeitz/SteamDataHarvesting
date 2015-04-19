@@ -7,8 +7,9 @@ import org.uta.steam.jpa.model.SteamApp;
 public interface SteamDataService {
 	List<SteamApp> getAllApps();
 
-	void setAppUpdateList(List<Long> appIds);
-
+	void addAppToUpdateList(Long appId);
+	void removeAppFromUpdateList(Long appId);
+	
 	SteamApp getWholeApp(long appId);
 
 	void harvestDataFromSteam();

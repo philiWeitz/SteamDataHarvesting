@@ -78,35 +78,6 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		return result;
 	}
 
-	public void setAppUpdateList(List<Long> appIds) {
-		List<SteamApp> toUpdate = new LinkedList<SteamApp>();
-
-		List<SteamApp> apps = issueQuery("SELECT a FROM "
-				+ SteamApp.class.getSimpleName() + " a "
-				+ "where a.getsUpdated = true");
-
-		List<Long> appIdsToAdd = new LinkedList<Long>(appIds);
-
-		// deselect the old ones
-		for (SteamApp app : apps) {
-			if (!appIds.contains(app.getAppId())) {
-				app.setGetsUpdated(false);
-				toUpdate.add(app);
-			} else {
-				appIdsToAdd.remove(app.getAppId());
-			}
-		}
-
-		// add the new ones
-		for (long appId : appIdsToAdd) {
-			SteamApp app = getAppByAppIdLazyLoading(appId);
-			app.setGetsUpdated(true);
-			toUpdate.add(app);
-		}
-
-		saveOrUpdateAll(toUpdate);
-	}
-
 	public void updateAppList(List<SteamApp> apps) {
 
 		List<Long> appIdsFromDb = issueQuery("SELECT a.appId FROM "
@@ -122,5 +93,23 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		}
 
 		saveOrUpdateAll(toUpdate);
+	}
+
+	public void addAppToUpdateList(Long appId) {
+		SteamApp app = getAppByAppIdLazyLoading(appId);
+		
+		if(null != app) {
+			app.setGetsUpdated(true);
+			saveOrUpdate(app);
+		}
+	}
+
+	public void removeAppFromUpdateList(Long appId) {
+		SteamApp app = getAppByAppIdLazyLoading(appId);
+		
+		if(null != app) {
+			app.setGetsUpdated(false);
+			saveOrUpdate(app);
+		}
 	}
 }

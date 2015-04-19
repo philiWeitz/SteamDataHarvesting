@@ -44,10 +44,6 @@ class SteamDataServiceImpl implements SteamDataService {
 		return result;
 	}
 
-	public void setAppUpdateList(List<Long> appIds) {
-		appDaoService.setAppUpdateList(appIds);
-	}
-
 	public SteamApp getWholeApp(long appId) {
 		return appDaoService.getWholeAppByAppId(appId);
 	}
@@ -131,5 +127,13 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	public void updateAppListFromSteam() {
 		appDaoService.updateAppList(appSteamApi.getApps());
+	}
+
+	public void addAppToUpdateList(Long appId) {
+		appDaoService.addAppToUpdateList(appId);
+	}
+
+	public void removeAppFromUpdateList(Long appId) {
+		appDaoService.removeAppFromUpdateList(appId);
 	}
 }

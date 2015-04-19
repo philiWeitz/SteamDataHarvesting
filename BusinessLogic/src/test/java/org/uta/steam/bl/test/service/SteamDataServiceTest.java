@@ -4,7 +4,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -42,12 +41,10 @@ public class SteamDataServiceTest {
 	}
 
 	@Test
-	public void setAppUpdateListTest() {
-		List<Long> appIds = new LinkedList<Long>();
-		appIds.add(testDataService.getAppNoData().getAppId());
-		appIds.add(testDataService.getAppWithData().getAppId());
-
-		steamDataService.setAppUpdateList(appIds);
+	public void addAppToUpdateListTest() {
+		steamAppDaoService.addAppToUpdateList(testDataService.getAppNoData().getAppId());
+		steamAppDaoService.addAppToUpdateList(testDataService.getAppWithData().getAppId());
+		
 		List<SteamApp> apps = steamDataService.getAllApps();
 
 		assertFalse(apps.isEmpty());
@@ -67,11 +64,9 @@ public class SteamDataServiceTest {
 		app.getVersions().clear();
 		app = steamAppDaoService.saveOrUpdate(app);
 
-		List<Long> appIds = new LinkedList<Long>();
-		appIds.add(testDataService.getAppNoData().getAppId());
-		appIds.add(testDataService.getAppWithData().getAppId());
+		steamAppDaoService.addAppToUpdateList(testDataService.getAppNoData().getAppId());
+		steamAppDaoService.addAppToUpdateList(testDataService.getAppWithData().getAppId());
 
-		steamDataService.setAppUpdateList(appIds);
 		steamDataService.harvestDataFromSteam();
 
 		app = steamDataService.getWholeApp(app.getAppId());
