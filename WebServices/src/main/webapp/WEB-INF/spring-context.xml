@@ -38,11 +38,11 @@
 
 
 	<!-- Remove this for production -->
-	<bean id="TestDataService" class="org.uta.steam.jpa.service.impl.TestDataServiceImpl"/>
+	<!-- <bean id="TestDataService" class="org.uta.steam.jpa.service.impl.TestDataServiceImpl"/> -->
 
-	<bean id="InvokeTestData" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	      <property name="targetObject"><ref local="TestDataService" /></property>
-	      <property name="targetMethod"><value>createTestData</value></property>
-	 </bean>
+	<!-- <bean id="InvokeTestData" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
+	<!-- 	<property name="targetObject"><ref local="TestDataService" /></property> -->
+	<!--    <property name="targetMethod"><value>createTestData</value></property> -->
+	<!-- </bean> -->
 
 </beans>

@@ -12,23 +12,21 @@
 	<properties>
 		<proj.version>0.0.1-SNAPSHOT</proj.version>
 
-		<junit.version>4.8.1</junit.version>
 		<spring.version>4.0.5.RELEASE</spring.version>
-		<spring.security.version>3.2.4.RELEASE</spring.security.version>
-		<servlet.api.version>2.5</servlet.api.version>
-		<javax.servlet.api.version>3.1.0</javax.servlet.api.version>
-		<javax.annotation.version>1.2</javax.annotation.version>
-
-		<jpa.api.version>1.0.0.Final</jpa.api.version>
-		<hibernate.version>4.3.5.Final</hibernate.version>
-		<hsqldb.version>2.3.2</hsqldb.version>
-
 		<jsoup.version>1.7.2</jsoup.version>
-
 		<log4j.version>2.0-rc1</log4j.version>
 		<quartz.version>2.2.1</quartz.version>
 		<jackson.version>1.9.13</jackson.version>
 		<commons.lang.version>3.3.2</commons.lang.version>
+
+		<javax.annotation.version>1.2</javax.annotation.version>
+		<jpa.api.version>1.0.0.Final</jpa.api.version>
+		<hibernate.version>4.3.5.Final</hibernate.version>
+		<hsqldb.version>2.3.2</hsqldb.version>
+		<psqldb.version>9.1-901-1.jdbc4</psqldb.version>
+
+		<junit.version>4.8.1</junit.version>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
@@ -96,13 +94,6 @@
 		<dependencies>
 
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>${junit.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-webmvc</artifactId>
 				<version>${spring.version}</version>
@@ -115,60 +106,41 @@
 			</dependency>
 
 			<dependency>
-				<groupId>org.springframework</groupId>
-				<artifactId>spring-test</artifactId>
-				<version>${spring.version}</version>
-				<scope>test</scope>
-			</dependency>
-
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-web</artifactId>
-				<version>${spring.security.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.springframework.security</groupId>
-				<artifactId>spring-security-config</artifactId>
-				<version>${spring.security.version}</version>
-			</dependency>
-
-			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>
 				<version>${javax.annotation.version}</version>
 			</dependency>
 
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>servlet-api</artifactId>
-				<version>${servlet.api.version}</version>
-				<scope>provided</scope>
-			</dependency>
 
-			<dependency>
-				<groupId>javax.servlet</groupId>
-				<artifactId>javax.servlet-api</artifactId>
-				<version>${javax.servlet.api.version}</version>
-			</dependency>
+			<!-- Database dependencies -->
 
-			<!-- Hibernate dependencies -->
 			<dependency>
 				<groupId>org.hibernate.javax.persistence</groupId>
 				<artifactId>hibernate-jpa-2.1-api</artifactId>
 				<version>${jpa.api.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>${hibernate.version}</version>
 			</dependency>
+
 			<dependency>
 				<groupId>org.hsqldb</groupId>
 				<artifactId>hsqldb</artifactId>
 				<version>${hsqldb.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>${psqldb.version}</version>
+			</dependency>
+
+
 			<!-- Utils -->
+
 			<dependency>
 				<groupId>org.apache.commons</groupId>
 				<artifactId>commons-lang3</artifactId>
@@ -204,6 +176,24 @@
 				<artifactId>jsoup</artifactId>
 				<version>${jsoup.version}</version>
 			</dependency>
+
+
+			<!-- Test Dependencies -->
+
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>${junit.version}</version>
+				<scope>test</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-test</artifactId>
+				<version>${spring.version}</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

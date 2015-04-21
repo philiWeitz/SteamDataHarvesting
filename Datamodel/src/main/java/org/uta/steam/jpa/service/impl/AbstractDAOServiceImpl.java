@@ -15,7 +15,7 @@ import org.uta.steam.jpa.model.AbstractEntity;
 
 abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
-	private static final String PERSISTENCE_UNIT_NAME = "steam-data-harvesting";
+	private static final String PERSISTENCE_UNIT_NAME = "steamDataHarvesting";
 
 	private static Logger LOG = LogManager
 			.getLogger(AbstractDAOServiceImpl.class);
