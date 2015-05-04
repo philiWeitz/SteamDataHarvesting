@@ -1,6 +1,10 @@
 ### kill running tomcat process
 ps -ef | grep tomcat | awk '{print $2}' | xargs sudo kill -9
 
+### remove old port forwarding in case it was already done
+sudo /sbin/iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
+### add new port forwarding (80 to 8080)
+sudo /sbin/iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 
 ### install tomcat server
 cd /opt/tomcat
