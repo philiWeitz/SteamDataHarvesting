@@ -28,3 +28,10 @@ Steam Data Harvesting
 ## Eclipse configuration
 - Import the whole project as an existing maven project
 - Right click on SteamDataHarvestingAngularJs -> Configure -> Convert to AngularJs Project
+
+## Switch from "in memory Database" to PostgreSQL
+- Create a new database (e.g. name = steamDataHarvesting)
+- Open Datamodel -> src -> main -> resources -> META-INF -> persistence.xml
+- Comment the database connection for hsqldb
+- Uncomment the database connection for postgresql
+- Change the database name, user and passwort
