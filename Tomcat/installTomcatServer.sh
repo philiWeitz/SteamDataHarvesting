@@ -1,19 +1,26 @@
+
+export TOMCAT=apache-tomcat-8.0.21
+export SERVER_HOME=/opt/tomcat
+
+
 ### kill running tomcat process
 ps -ef | grep tomcat | awk '{print $2}' | xargs sudo kill -9
 
+
 ### remove old port forwarding in case it was already done
 sudo /sbin/iptables -t nat -D PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
-### add new port forwarding (80 to 8080)
+### add new port forwarding
 sudo /sbin/iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 8080
 
-### install tomcat server
-cd /opt/tomcat
-sudo rm -rf apache-tomcat-*
-cp common/apache-tomcat-8.0.21.zip .
-unzip apache-tomcat-8.0.21.zip
 
-chmod +x apache-tomcat-8.0.21/bin/*.sh
-cp common/tomcat-users.xml apache-tomcat-8.0.21/conf/
+### install tomcat server
+cd $SERVER_HOME
+sudo rm -rf apache-tomcat-*
+cp common/$TOMCAT.zip .
+unzip $TOMCAT.zip
+
+### make all scripts executable
+chmod +x $TOMCAT/bin/*.sh
 
 
 ####### get the project
@@ -27,11 +34,15 @@ cd /opt/tomcat
 cp common/persistence.xml SteamDataHarvesting/Datamodel/src/main/resources/META-INF/
 
 
-#### start tomcat and deploy
-apache-tomcat-8.0.21/bin/startup.sh
+### start tomcat and deploy
+$TOMCAT/bin/startup.sh
 
 cd SteamDataHarvesting
 mvn clean install -DskipTests=true
 mvn tomcat:redeploy -DskipTests=true
 
 
+### make the project available as root
+cd ../$TOMCAT/webapps/
+rm -rf ROOT/*
+cp -rf SteamDataHarvestingAngularJS/*  ROOT/
