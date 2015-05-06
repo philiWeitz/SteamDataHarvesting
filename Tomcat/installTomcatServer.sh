@@ -21,6 +21,7 @@ unzip $TOMCAT.zip
 
 ### make all scripts executable
 chmod +x $TOMCAT/bin/*.sh
+cp common/tomcat-users.xml $TOMCAT/conf/
 
 
 ####### get the project
