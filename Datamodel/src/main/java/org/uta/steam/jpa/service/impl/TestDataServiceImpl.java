@@ -56,7 +56,7 @@ public class TestDataServiceImpl {
 		System.out.println(sb.toString());
 	}
 
-	private void cleanDatabase() {
+	public void cleanDatabase() {
 		for (SteamApp app : appDaoService.getAll()) {
 			appDaoService.delete(app.getId());
 		}
