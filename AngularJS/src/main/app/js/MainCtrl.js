@@ -2,7 +2,7 @@
  * Created by silvia on 06/05/15.
  */
 
-angular.module('steamApp').controller('TemplateCtrl', function ($scope, $http, ApiCommunication) {
+angular.module('steamApp').controller('TemplateCtrl', function ($scope) {
 
     $scope.searchText = '';
 
