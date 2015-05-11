@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.crawler.AppWebCrawler;
+import org.uta.steam.bl.csv.CsvExporter;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.AppData;
@@ -28,7 +29,9 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	private AppSteamApi appSteamApi = new AppSteamApi();
 	private AppWebCrawler appWebCrawler = new AppWebCrawler();
-
+	private CsvExporter csvExporter = new CsvExporter();
+	
+	
 	public List<SteamApp> getAllApps() {
 		List<SteamApp> result = appDaoService.getAll();
 
@@ -64,8 +67,8 @@ class SteamDataServiceImpl implements SteamDataService {
 		data.setPrice(appWebCrawler.getAppPrice(app.getAppId()));
 		data.setTags(new HashSet<String>(appWebCrawler.getAppTags(app
 				.getAppId())));
-		data.setReviews(new HashSet<Review>(appWebCrawler
-				.getHelpfulUserReviews(app.getAppId())));
+		data.setReviews(new HashSet<Review>(appSteamApi
+				.getHelpfulAppReviews(app.getAppId())));
 		app.getData().add(data);
 	}
 
@@ -119,8 +122,8 @@ class SteamDataServiceImpl implements SteamDataService {
 			data.setPrice(appWebCrawler.getAppPrice(dlc.getDlcId()));
 			data.setTags(new HashSet<String>(appWebCrawler.getAppTags(dlc
 					.getDlcId())));
-			data.setReviews(new HashSet<Review>(appWebCrawler
-					.getHelpfulUserReviews(dlc.getDlcId())));
+			data.setReviews(new HashSet<Review>(appSteamApi
+					.getHelpfulAppReviews(dlc.getDlcId())));
 			dlc.getData().add(data);
 		}
 	}
@@ -135,5 +138,14 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	public boolean removeAppFromUpdateList(Long appId) {
 		return appDaoService.removeAppFromUpdateList(appId);
+	}
+
+	public String createCsvFile(long appId) {
+		SteamApp app = appDaoService.getWholeAppByAppId(appId);
+		
+		if(null != app) {
+			return csvExporter.getCsvFileByApp(app);
+		}
+		return null;
 	}
 }

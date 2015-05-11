@@ -1,7 +1,12 @@
 package org.uta.steam.rest;
 
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.uta.steam.bl.service.SteamDataService;
+import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.SteamApp;
 
 @Component
@@ -121,5 +127,24 @@ public class AppController {
 		}
     	
     	return new ResponseEntity<String>("Wrong Number Format", HttpStatus.BAD_REQUEST);
+    }
+    
+    
+    @RequestMapping(value = "/getCSVFile/{appId}", method = RequestMethod.GET)
+    public void getFile(@PathVariable long appId, HttpServletResponse response) {
+    
+    	try {
+    		String path = steamDataService.createCsvFile(appId);
+    		InputStream is = new FileInputStream(path);
+
+    		response.setHeader("Content-Disposition","attachment; filename=csv-file.txt");
+    		response.setContentType("text/plain");
+    		response.setCharacterEncoding(SteamUtil.CSV_OUTPUT_FORMAT);
+
+    		IOUtils.copy(is, response.getOutputStream());
+    		response.flushBuffer();
+        } catch (IOException ex) {
+        	LOG.error("Error creating csv file");
+        }
     }
 }

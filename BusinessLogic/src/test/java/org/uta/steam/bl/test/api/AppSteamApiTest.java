@@ -12,7 +12,7 @@ import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 
-public class appSteamApiTest {
+public class AppSteamApiTest {
 
 	@Test
 	public void getAppInfosTest() {
@@ -36,7 +36,7 @@ public class appSteamApiTest {
 	public void getHelpfulAppReviewsTest() {
 		AppSteamApi appApi = new AppSteamApi();
 		
-		List<Review> reviews = appApi.getHelpfulAppReviews(SteamTestUtil.APP_ID, 2);
+		List<Review> reviews = appApi.getHelpfulAppReviews(SteamTestUtil.APP_ID, 1);
 		assertFalse(reviews.isEmpty());
 	}
 }

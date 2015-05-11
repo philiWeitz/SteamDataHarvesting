@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class AbstractSteamApi {
+class AbstractSteamApi {
 
 	private static Logger LOG = LogManager.getLogger(AbstractSteamApi.class);
 

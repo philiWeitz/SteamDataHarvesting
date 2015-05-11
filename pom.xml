@@ -18,8 +18,10 @@
 		<quartz.version>2.2.1</quartz.version>
 		<jackson.version>1.9.13</jackson.version>
 		<commons.lang.version>3.3.2</commons.lang.version>
+		<commons.io.version>1.3.2</commons.io.version>
 
 		<javax.annotation.version>1.2</javax.annotation.version>
+		<javax.servlet.version>2.5</javax.servlet.version>
 		<jpa.api.version>1.0.0.Final</jpa.api.version>
 		<hibernate.version>4.3.5.Final</hibernate.version>
 		<hsqldb.version>2.3.2</hsqldb.version>
@@ -111,6 +113,12 @@
 				<version>${javax.annotation.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>javax.servlet</groupId>
+				<artifactId>servlet-api</artifactId>
+				<version>${javax.servlet.version}</version>
+				<scope>provided</scope>
+			</dependency>
 
 			<!-- Database dependencies -->
 
@@ -177,6 +185,11 @@
 				<version>${jsoup.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-io</artifactId>
+				<version>${commons.io.version}</version>
+			</dependency>
 
 			<!-- Test Dependencies -->
 

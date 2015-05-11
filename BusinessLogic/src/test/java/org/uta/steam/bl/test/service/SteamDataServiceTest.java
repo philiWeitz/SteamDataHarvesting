@@ -1,6 +1,7 @@
 package org.uta.steam.bl.test.service;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertTrue;
 
@@ -73,5 +74,12 @@ public class SteamDataServiceTest {
 		assertNotSame(0, app.getData().size());
 		assertNotSame(0, app.getDlcs().size());
 		assertNotSame(0, app.getVersions().size());
+	}
+	
+	@Test
+	public void csvExportTest() {
+		String path = steamDataService.createCsvFile(testDataService.getAppWithData().getAppId());
+		assertNotNull(path);
+		assertFalse(path.isEmpty());
 	}
 }
