@@ -1,0 +1,24 @@
+<table class="table table-striped table-bordered table-condensed table-hover center-block" ng-show="games.length">
+
+    <thead>
+        <tr>
+            <th>Game ID</th>
+            <th>Name</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-if="!isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | limitTo: 20 | filter:searchText" ng-hide="game.getsUpdated">
+            <td>{{game.appId}}</td>
+            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus pull-right" ng-click="addToWatchlist(game.appId)"></i></td>
+        </tr>
+
+        <tr ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | limitTo: 20" ng-show="game.getsUpdated">
+            <td>{{game.appId}}</td>
+            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus pull-right" ng-click="removeFromWatchlist(game.appId)"></i></td>
+
+        </tr>
+
+    </tbody>
+
+</table>

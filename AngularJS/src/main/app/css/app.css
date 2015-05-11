@@ -1,7 +1,12 @@
 @CHARSET "UTF-8";
 
+.main-container{
+    margin-top: 5%;
+}
+
 .refresh-icon{
     display: block;
     font-size: 3em;
     padding: 5%;
 }
+

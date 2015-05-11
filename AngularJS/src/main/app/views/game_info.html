@@ -1,0 +1,23 @@
+<h1>{{game.name}}</h1>
+
+<table class="table table-striped table-condensed table-hover center-block center-block">
+
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Price</th>
+            <th>Tags</th>
+            <th>Reviews</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="dataSet in game.data" ng-click="showDetailedGameData(game.data.id)">
+            <td>{{dataSet.created | date: 'medium'}}</td>
+            <td>{{dataSet.price | currency}}</td>
+            <td>{{dataSet.tags.length + ' tags total'}}</td>
+            <td>{{dataSet.reviews.length + ' reviews total'}}</td>
+        </tr>
+    </tbody>
+
+</table>

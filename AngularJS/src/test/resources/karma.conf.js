@@ -15,13 +15,16 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'main/app/js/bower_components/angular/angular.js',
-      'main/app/js/bower_components/angular-route/angular-route.js',
-      'main/app/js/bower_components/angular-resource/angular-resource.js',
-      'main/app/js/bower_components/angular-animate/angular-animate.js',
-      'main/app/js/bower_components/angular-mocks/angular-mocks.js',
-      'main/app/js/controller/*.js',
-      'test/js/**/*.js'
+        'main/app/js/bower_components/angular/angular.js',
+        'main/app/js/bower_components/angular-route/angular-route.js',
+        'main/app/js/bower_components/angular-resource/angular-resource.js',
+        'main/app/js/bower_components/angular-animate/angular-animate.js',
+        'main/app/js/bower_components/angular-mocks/angular-mocks.js',
+        'main/app/js/bower_components/underscore/underscore.js',
+        'main/app/js/app.js',
+        'main/app/js/MainCtrl.js',
+        'main/app/js/SteamDataService.js',
+        'test/js/**/*.js'
     ],
 
 

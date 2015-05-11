@@ -1,0 +1,30 @@
+<section class="row game-tables-container">
+
+    <div class="row">
+        <div class="col col-md-6 text-center">Watchlist</div>
+        <div class="col col-md-6">
+            <input class="text-center" type="text" placeholder="Enter game name or ID" ng-model="searchText"/>
+        </div>
+    </div>
+
+    <div class="col col-md-6 unwatched-table-container">
+
+        <h3 class="text-center"> Unwatched </h3>
+
+        <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
+
+        <div game-table games="games" search-text="searchText" is-watchlist="false"></div>
+
+    </div>
+
+    <div class="col col-md-6 watchlist-table-container">
+
+        <h3 class="text-center">Watching</h3>
+
+        <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
+
+        <div game-table games="games" search-text="searchText" is-watchlist="true"></div>
+
+    </div>
+
+</section>
