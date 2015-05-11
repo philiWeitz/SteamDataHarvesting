@@ -1533,7 +1533,9 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
             });
     };
 
-    //$scope.getGames();
+    var init = function(){
+        $scope.getGames();
+    };
 
     var updateGetsUpdated = function(appId, value){
 
@@ -1543,6 +1545,8 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
         $scope.games[gameIndex].getsUpdated = value;
     };
+
+    init();
 
     //$scope.getGames = function(){
     //

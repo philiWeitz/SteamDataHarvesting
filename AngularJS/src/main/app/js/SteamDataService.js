@@ -15,7 +15,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', function ($
         };
 
         this.getDataSets = function () {
-            return $http.get(urlBase + 'getApp/appId' )
+            return $http.get(urlBase + 'getApp/'+ appId)
                 .then(function(response){
                     console.log(response.data);
                     return response.data;
