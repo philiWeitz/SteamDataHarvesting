@@ -11,7 +11,7 @@
         <tr ng-if="!isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | limitTo: 20 | filter:searchText" ng-hide="game.getsUpdated">
 
             <td>{{game.appId}}</td>
-            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus pull-right" ng-click="addToWatchlist(game.appId)"></i></td>
+            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus pull-right" ng-click="add(game.appId)"></i></td>
 
         </tr>
 

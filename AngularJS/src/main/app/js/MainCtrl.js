@@ -6,11 +6,9 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
     $scope.searchText = '';
 
-    //$scope.games = [
-    //    {appId: '1', name: 'Game 1', getsUpdated: true},
-    //    {appId: '2', name: 'Game 2', getsUpdated: false},
-    //    {appId: '3', name: 'Game 3', getsUpdated: false}
-    //];
+    var init = function(){
+        $scope.getGames();
+    };
 
     //$scope.game = {
     //    "id": 9165,
@@ -1531,10 +1529,6 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
             .then(function(games){
                 updateGetsUpdated(appId, false);
             });
-    };
-
-    var init = function(){
-        $scope.getGames();
     };
 
     var updateGetsUpdated = function(appId, value){
