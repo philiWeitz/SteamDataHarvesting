@@ -11,10 +11,6 @@ app.config(function($routeProvider){
             controller: 'MainCtrl',
             templateUrl: 'watchlist.html'
         })
-        .when('/watchlist', {
-            controller: 'MainCtrl',
-            templateUrl: 'watchlist.html'
-        })
 });
 
 app.constant('Config', {

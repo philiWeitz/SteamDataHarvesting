@@ -6,11 +6,11 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
     $scope.searchText = '';
 
-    $scope.games = [
-        {appId: '1', name: 'Game 1', getsUpdated: true},
-        {appId: '2', name: 'Game 2', getsUpdated: false},
-        {appId: '3', name: 'Game 3', getsUpdated: false}
-    ];
+    //$scope.games = [
+    //    {appId: '1', name: 'Game 1', getsUpdated: true},
+    //    {appId: '2', name: 'Game 2', getsUpdated: false},
+    //    {appId: '3', name: 'Game 3', getsUpdated: false}
+    //];
 
     //$scope.game = {
     //    "id": 9165,
@@ -1512,6 +1512,10 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
             .then(function(games){
                 $scope.games = _.first(games, 200);
         });
+
+    };
+
+    $scope.getDataSets = function(appId){
 
     };
 
