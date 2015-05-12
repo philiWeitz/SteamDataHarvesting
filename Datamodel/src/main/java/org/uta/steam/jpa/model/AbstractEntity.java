@@ -11,6 +11,8 @@ import javax.persistence.PrePersist;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 @MappedSuperclass
 @SuppressWarnings("serial")
 public abstract class AbstractEntity implements Serializable {
@@ -18,6 +20,7 @@ public abstract class AbstractEntity implements Serializable {
 	@Id
 	@GeneratedValue
 	@Column(nullable = false)
+	@JsonIgnore
 	private Long id;
 
 	@Temporal(TemporalType.TIMESTAMP)

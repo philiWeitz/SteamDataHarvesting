@@ -8,8 +8,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -19,20 +17,16 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
-import org.uta.steam.jpa.model.Review;
 
 public class AppWebCrawler extends AbstractWebCrawler {
-
-	private static final Pattern NUMBER_PATTERN = Pattern
-			.compile("[0-9][0-9]* ");
-
 	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
-
 	private static final String BASE_URL = "http://store.steampowered.com/app/";
 
+	
 	private long appId = -1;
 	private Document htmlDoc = null;
 
+	
 	public List<AppDLC> getDLCs(long appId) {
 		List<AppDLC> result = new LinkedList<AppDLC>();
 
@@ -133,53 +127,6 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		return result;
 	}
 
-	public List<Review> getHelpfulUserReviews(long appId) {
-		Document doc = getHtmlFromUrl(appId);
-		Element helpfulReviews = getElementById(doc, "Reviews_all");
-
-		return extractReviewData(helpfulReviews);
-	}
-
-	private List<Review> extractReviewData(Element element) {
-		List<Review> result = new LinkedList<Review>();
-
-		if (null != element) {
-			Elements reviews = getElementsByClass(element, "review_box");
-
-			Iterator<Element> iterator = reviews.iterator();
-			while (iterator.hasNext()) {
-				Element reviewElement = iterator.next();
-
-				Review review = new Review();
-				review.setAuthor(reviewElement.getElementsByClass(
-						"persona_name").text());
-				review.setContent(reviewElement.getElementsByClass("content")
-						.text());
-
-				String reviewHeader = reviewElement.getElementsByClass("header").text();
-				
-				if (!reviewHeader.isEmpty()) {
-					reviewHeader = reviewHeader.replaceAll(",", "");
-					Matcher matcher = NUMBER_PATTERN.matcher(reviewHeader.toLowerCase());
-
-					try {
-						matcher.find();
-						review.setPeopleHelpful(Long.parseLong(matcher.group()
-								.trim()));
-						matcher.find();
-						review.setPeopleSeen(Long.parseLong(matcher.group()
-								.trim()));
-					} catch (Exception e) {
-						LOG.error("Error review header: " + reviewHeader + "\n", e);
-					}
-				}
-
-				result.add(review);
-			}
-		}
-
-		return result;
-	}
 
 	private Document getHtmlFromUrl(long appId) {
 

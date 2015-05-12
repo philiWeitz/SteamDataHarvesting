@@ -56,7 +56,7 @@ public class TestDataServiceImpl {
 		System.out.println(sb.toString());
 	}
 
-	private void cleanDatabase() {
+	public void cleanDatabase() {
 		for (SteamApp app : appDaoService.getAll()) {
 			appDaoService.delete(app.getId());
 		}
@@ -88,7 +88,7 @@ public class TestDataServiceImpl {
 		data1.getTags().add("TAG3");
 
 		Review appReview1 = new Review();
-		appReview1.setAuthorId(1);
+		appReview1.setAuthorSteamId("1");
 		appReview1.setAuthor("author review game 1");
 		appReview1.setContent("content review game 1");
 		appReview1.setPeopleSeen(100);
@@ -110,7 +110,7 @@ public class TestDataServiceImpl {
 		dlcData.getTags().add("TAG5");
 
 		Review dlcReview = new Review();
-		dlcReview.setAuthorId(1);
+		dlcReview.setAuthorSteamId("1");
 		dlcReview.setAuthor("author review dlc 1");
 		dlcReview.setContent("content review dlc 1");
 		dlcReview.setPeopleSeen(22);

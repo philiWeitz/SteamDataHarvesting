@@ -9,9 +9,10 @@ import org.junit.Test;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.test.util.SteamTestUtil;
 import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 
-public class appSteamApiTest {
+public class AppSteamApiTest {
 
 	@Test
 	public void getAppInfosTest() {
@@ -29,5 +30,13 @@ public class appSteamApiTest {
 		List<AppVersion> versions =
 		gameApi.getVersions(SteamTestUtil.APP_ID);
 		assertFalse(versions.isEmpty());
+	}
+	
+	@Test
+	public void getHelpfulAppReviewsTest() {
+		AppSteamApi appApi = new AppSteamApi();
+		
+		List<Review> reviews = appApi.getHelpfulAppReviews(SteamTestUtil.APP_ID, 1);
+		assertFalse(reviews.isEmpty());
 	}
 }

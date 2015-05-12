@@ -8,7 +8,6 @@ import java.util.List;
 import org.junit.Test;
 import org.uta.steam.bl.crawler.AppWebCrawler;
 import org.uta.steam.jpa.model.AppDLC;
-import org.uta.steam.jpa.model.Review;
 
 public class WebCrawlerTest {
 
@@ -40,14 +39,5 @@ public class WebCrawlerTest {
 		List<String> tags = gameWebCrawler.getAppTags(APP_ID);
 		assertFalse(tags.isEmpty());
 		assertEquals(20, tags.size());
-	}
-
-	@Test
-	public void getHelpfulUserReviewsTest() {
-		AppWebCrawler gameWebCrawler = new AppWebCrawler();
-
-		// get reviews
-		List<Review> reviews = gameWebCrawler.getHelpfulUserReviews(APP_ID);
-		assertFalse(reviews.isEmpty());
 	}
 }

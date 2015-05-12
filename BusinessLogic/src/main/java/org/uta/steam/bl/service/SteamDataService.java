@@ -15,4 +15,6 @@ public interface SteamDataService {
 	void harvestDataFromSteam();
 
 	void updateAppListFromSteam();
+	
+	String createCsvFile(long appId);
 }

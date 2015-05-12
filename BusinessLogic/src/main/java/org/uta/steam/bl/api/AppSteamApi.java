@@ -12,6 +12,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 
 public class AppSteamApi extends AbstractSteamApi {
@@ -19,12 +20,14 @@ public class AppSteamApi extends AbstractSteamApi {
 	private static final Pattern VERSION_PATTERN = Pattern
 			.compile("(version ([0-9].)+[0-9]+)|(update)");
 
+	private ReviewSteamApi reviewApi = new ReviewSteamApi();
+	
 	
 	public List<SteamApp> getApps() {
-
 		List<SteamApp> result = new LinkedList<SteamApp>();
 
-		String jsonResponse = httpGet("http://api.steampowered.com/ISteamApps/GetAppList/v0001/?format=xml");
+		String jsonResponse = httpGet("http://api.steampowered.com/ISteamApps/"
+				+ "GetAppList/v0001/?format=xml");
 
 		Document doc = Jsoup.parse(jsonResponse);
 		Elements appItems = doc.getElementsByTag("app");
@@ -70,5 +73,14 @@ public class AppSteamApi extends AbstractSteamApi {
 		}
 
 		return result;
+	}
+	
+
+	public List<Review> getHelpfulAppReviews(long appId) {		
+		return reviewApi.getHelpfulAppReviews(appId, 1);
+	}
+	
+	public List<Review> getHelpfulAppReviews(long appId, int rounds) {		
+		return reviewApi.getHelpfulAppReviews(appId, rounds);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -207,6 +208,8 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 
 			em.getTransaction().commit();
 
+		} catch (NoResultException e) {
+			// just return null
 		} catch (Exception e) {
 			em.getTransaction().rollback();
 			LOG.error("Error while performing single result database query "
