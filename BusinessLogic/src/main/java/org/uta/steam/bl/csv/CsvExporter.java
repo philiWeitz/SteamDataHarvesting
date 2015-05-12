@@ -57,6 +57,7 @@ public class CsvExporter {
 		sb.append(app.getName()).append(" (");
 		sb.append(app.getAppId()).append(")").append(LINE_SEPARATOR);
 
+		sb.append("User Name").append(SEPARATOR);
 		sb.append("User Id").append(SEPARATOR);
 		sb.append("Play time all").append(SEPARATOR);
 		sb.append("Play time last 2 weeks").append(SEPARATOR);
@@ -70,6 +71,7 @@ public class CsvExporter {
 		for(AppData data : app.getData()) {
 			for(Review review : data.getReviews()) {
 				sb = new StringBuffer();
+				sb.append(review.getAuthor()).append(SEPARATOR);				
 				sb.append(review.getAuthorSteamId()).append(SEPARATOR);
 				sb.append(review.getPlayTimeAll()).append(SEPARATOR);
 				sb.append(review.getPlayTimeLast2Weeks()).append(SEPARATOR);				

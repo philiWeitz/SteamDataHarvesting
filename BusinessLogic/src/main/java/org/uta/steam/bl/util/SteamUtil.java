@@ -18,7 +18,7 @@ public class SteamUtil {
 			.compile("[0-9][0-9]*");
 
 	public static final Pattern NUMBER_PATTERN_DOUBLE = Pattern
-			.compile("[0-9](.)?[0-9]*");
+			.compile("[0-9]+(.)?[0-9]*");
 	
 	public static final String CSV_OUTPUT_FORMAT = "UTF-8";
 	
