@@ -6,7 +6,7 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
     $scope.searchText = '';
 
-    $scope.games = [{appId: 1, name: 'Game 1' , getsUpdated : false}, {appId: 2, name: 'Game 2' , getsUpdated : true}];
+    //$scope.games = [{appId: 1, name: 'Game 1' , getsUpdated : false}, {appId: 2, name: 'Game 2' , getsUpdated : true}];
 
     var init = function(){
         $scope.getGames();
@@ -1548,7 +1548,7 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
         $scope.games[gameIndex].getsUpdated = value;
     };
 
-    //init();
+    init();
 
     //$scope.getGames = function(){
     //
