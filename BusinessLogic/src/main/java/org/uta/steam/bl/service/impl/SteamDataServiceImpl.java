@@ -148,4 +148,8 @@ class SteamDataServiceImpl implements SteamDataService {
 		}
 		return null;
 	}
+
+	public List<SteamApp> getAllAppsAndUpdateList(String searchTerm, int max) {
+		return appDaoService.getAllAppsAndUpdateList(searchTerm, max);
+	}
 }

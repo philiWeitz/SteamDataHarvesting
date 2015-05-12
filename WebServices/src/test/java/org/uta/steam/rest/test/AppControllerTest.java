@@ -2,6 +2,7 @@ package org.uta.steam.rest.test;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Before;
@@ -100,5 +101,20 @@ public class AppControllerTest {
 		
 		response = appController.removeFromWatchList("1 or '1'='1'", null);
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());	
+	}
+
+	@Test
+	public void checkgetAllAppsAndUpdateListInput() {
+		ResponseEntity<String> response = 
+				appController.getAllAppsAndUpdateList("'1'='1'", null);
+		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+		
+		response = appController.getAllAppsAndUpdateList("Half-Life: 2.3, Test Version", null);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		
+		response = appController.getAllAppsAndUpdateList(null, null);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		assertNotNull(response.getBody());
+		assertFalse(response.getBody().isEmpty());		
 	}
 }

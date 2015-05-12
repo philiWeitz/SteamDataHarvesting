@@ -169,8 +169,9 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		}
 	}
 
+	
 	@SuppressWarnings("unchecked")
-	protected <A> List<A> issueQuery(String queryString) {
+	protected <A> List<A> issueQuery(String queryString, int maxResults) {
 		List<A> results = Collections.emptyList();
 
 		EntityManager em = getEntityManager();
@@ -178,7 +179,7 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 		try {
 			em.getTransaction().begin();
 
-			Query query = em.createQuery(queryString);
+			Query query = em.createQuery(queryString).setMaxResults(maxResults);
 			results = query.getResultList();
 
 			em.getTransaction().commit();
@@ -191,7 +192,11 @@ abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
 			em.close();
 		}
 
-		return results;
+		return results;		
+	}
+	
+	protected <A> List<A> issueQuery(String queryString) {
+		return issueQuery(queryString, Integer.MAX_VALUE);
 	}
 
 	@SuppressWarnings("unchecked")

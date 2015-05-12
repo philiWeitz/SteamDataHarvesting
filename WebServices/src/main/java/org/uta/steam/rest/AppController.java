@@ -65,6 +65,40 @@ public class AppController {
 		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
 	}
 	
+	
+	@RequestMapping(value = "/getAllAppsAndUpdateList", method = RequestMethod.GET)
+	public ResponseEntity<String> getAllAppsAndUpdateList(String searchTerm, Integer max) {
+		String jsonString = StringUtils.EMPTY;
+
+		// validate URL parameter
+		if(null == searchTerm) {
+			searchTerm = StringUtils.EMPTY;
+		}
+		if(null == max) {
+			max = Integer.MAX_VALUE;
+		}
+		
+		// test for invalid string input
+		if(!SteamUtil.STRING_INPUT.matcher(searchTerm).matches()) {
+			return new ResponseEntity<String>("Invalid search term", HttpStatus.BAD_REQUEST);
+		}
+		
+		try {
+			jsonString = mapper.writeValueAsString(
+					steamDataService.getAllAppsAndUpdateList(searchTerm, max));
+			
+			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
+			
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+
+		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
+	}
 
 	@RequestMapping(value = "/getApp/{appId}", method = RequestMethod.GET)
 	public ResponseEntity<String> getApp(@PathVariable long appId) {

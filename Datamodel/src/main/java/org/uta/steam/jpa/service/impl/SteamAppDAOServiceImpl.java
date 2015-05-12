@@ -1,5 +1,6 @@
 package org.uta.steam.jpa.service.impl;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -10,6 +11,9 @@ import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.uta.steam.jpa.model.AppDLC;
+import org.uta.steam.jpa.model.AppData;
+import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 
@@ -117,5 +121,32 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		}
 		
 		return false;
+	}
+
+	public List<SteamApp> getAllAppsAndUpdateList(String searchTerm, int max) {
+	
+		List<SteamApp> result = issueQuery("SELECT a FROM "
+				+ SteamApp.class.getSimpleName() + " a "
+				+ "WHERE a.getsUpdated=false "
+				+ "AND (UPPER(a.name) LIKE UPPER('%" + searchTerm + "%') "
+				+ "OR cast(a.appId as string) LIKE '%" + searchTerm + "%')", max);
+
+		List<SteamApp> updateApps = issueQuery("SELECT a FROM "
+				+ SteamApp.class.getSimpleName() + " a "
+				+ "where a.getsUpdated = true");
+
+		result.addAll(updateApps);
+
+		Set<AppData> emptyDataSet = Collections.emptySet();
+		Set<AppDLC> emptyDLCSet = Collections.emptySet();
+		Set<AppVersion> emptyVersionSet = Collections.emptySet();
+
+		for (SteamApp app : result) {
+			app.setData(emptyDataSet);
+			app.setDlcs(emptyDLCSet);
+			app.setVersions(emptyVersionSet);
+		}
+		
+		return result;
 	}
 }
