@@ -2,9 +2,11 @@
  * Created by silvia on 06/05/15.
  */
 
-angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _, SteamDataService) {
+angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _, $location, SteamDataService) {
 
     $scope.searchText = '';
+
+    $scope.games = [{appId: 1, name: 'Game 1' , getsUpdated : false}, {appId: 2, name: 'Game 2' , getsUpdated : true}];
 
     var init = function(){
         $scope.getGames();
@@ -1518,6 +1520,7 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
     };
 
     $scope.addToWatchlist = function(appId){
+        console.log('adding');
         SteamDataService.addToWatchlist(appId)
             .then(function(games){
                 updateGetsUpdated(appId, true);
@@ -1531,6 +1534,11 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
             });
     };
 
+    $scope.showGameData = function(appId){
+        console.log('redirecting '+ appId);
+        $location.path('#/datasets/' + appId);
+    };
+
     var updateGetsUpdated = function(appId, value){
 
         var gameIndex = _.findIndex($scope.games, function(game){
@@ -1540,7 +1548,7 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
         $scope.games[gameIndex].getsUpdated = value;
     };
 
-    init();
+    //init();
 
     //$scope.getGames = function(){
     //

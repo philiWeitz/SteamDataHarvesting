@@ -23,7 +23,7 @@
 
         <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
 
-        <div game-table games="games" search-text="searchText" is-watchlist="true"></div>
+        <div game-table games="games" search-text="searchText" is-watchlist="true" remove="removeFromWatchlist(game.appId)" show="showGameData(game.appId)"></div>
 
     </div>
 

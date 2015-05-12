@@ -7,12 +7,11 @@ angular.module('steamDataApp').directive('gameInfoTable', function () {
         restrict: 'A',
         scope: {
             //@ reads the attribute value, = provides two-way binding, & works with functions
-            game: '=',
-            add : '&',
-            remove : '&'
+            game: '='
         },
         templateUrl: '../views/game_info.html'
         //controller: controllerFunction, //Embed a custom controller in the directive
         //link: function ($scope, element, attrs) { } //DOM manipulation
+
     }
 });

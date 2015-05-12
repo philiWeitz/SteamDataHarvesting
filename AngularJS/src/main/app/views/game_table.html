@@ -12,13 +12,13 @@
 
             <td>{{game.appId}}</td>
             <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus pull-right" ng-click="add(game.appId)"></i></td>
-
         </tr>
 
-        <tr ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | limitTo: 20" ng-show="game.getsUpdated">
+        <tr ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | limitTo: 20" ng-show="game.getsUpdated" >
 
                 <td><a href="#/datasets/{{game.appId}}" ng-click="getDataSet(game.appId)">{{game.appId}}</a></td>
-                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus pull-right" ng-click="removeFromWatchlist(game.appId)"></i></td>
+                <!--<td>{{game.appId}}</td>-->
+                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus pull-right" ng-click="remove(game.appId)"></i></td>
 
         </tr>
 
