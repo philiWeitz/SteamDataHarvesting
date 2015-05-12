@@ -80,27 +80,12 @@ public class AppControllerTest {
 		ResponseEntity<String> response = 
 				appController.getApp(testDataService.getAppNoData().getAppId());
 		assertTrue(response.getBody().contains("\"getsUpdated\":false"));
-	
-		appController.addToWatchList(
-				String.valueOf(testDataService.getAppNoData().getAppId()), null);
-		
+			
 		response = appController.getApp(testDataService.getAppNoData().getAppId());
 		assertTrue(response.getBody().contains("\"getsUpdated\":true"));
-		
-		appController.removeFromWatchList(
-				String.valueOf(testDataService.getAppNoData().getAppId()), null);
-		
+				
 		response = appController.getApp(testDataService.getAppNoData().getAppId());
 		assertTrue(response.getBody().contains("\"getsUpdated\":false"));		
-	}
-	
-	@Test
-	public void checkNumberFormatTest() {
-		ResponseEntity<String> response = appController.addToWatchList("1 or '1'='1'", null);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-		
-		response = appController.removeFromWatchList("1 or '1'='1'", null);
-		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());	
 	}
 
 	@Test
@@ -110,6 +95,9 @@ public class AppControllerTest {
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 		
 		response = appController.getAllAppsAndUpdateList("Half-Life: 2.3, Test Version", null);
+		assertEquals(HttpStatus.OK, response.getStatusCode());
+		
+		response = appController.getAllAppsAndUpdateList("", null);
 		assertEquals(HttpStatus.OK, response.getStatusCode());
 		
 		response = appController.getAllAppsAndUpdateList(null, null);

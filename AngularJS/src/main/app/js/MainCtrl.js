@@ -14,9 +14,9 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
     $scope.getGames = function(){
 
-        SteamDataService.getAllApps()
+        SteamDataService.getApps(20, $scope.searchText)
             .then(function(games){
-                $scope.games = _.first(games, 200);
+                $scope.games = games;
         });
 
     };

@@ -133,7 +133,7 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 
 		List<SteamApp> updateApps = issueQuery("SELECT a FROM "
 				+ SteamApp.class.getSimpleName() + " a "
-				+ "where a.getsUpdated = true");
+				+ "where a.getsUpdated=true");
 
 		result.addAll(updateApps);
 

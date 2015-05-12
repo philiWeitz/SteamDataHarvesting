@@ -125,42 +125,24 @@ public class AppController {
 	
 	
     @RequestMapping(value = "/addToWatchList", method = RequestMethod.POST)
-    public ResponseEntity<String> addToWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
+    public ResponseEntity<String> addToWatchList(@RequestBody long appId, UriComponentsBuilder builder) {
     	
-    	try {
-			Long appId = Long.parseLong(appIdString);
-			
-			if(steamDataService.addAppToUpdateList(appId)) {
-				return new ResponseEntity<String>("OK", HttpStatus.OK);
-			} else {
-				return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
-			}
-			
-		} catch (NumberFormatException e) {
-			LOG.error(e);
+    	if(steamDataService.addAppToUpdateList(appId)) {
+    		return new ResponseEntity<String>("OK", HttpStatus.OK);
 		}
     	
-    	return new ResponseEntity<String>("Wrong Number Format", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
     }	
     
     
     @RequestMapping(value = "/removeFromWatchList", method = RequestMethod.POST)
-    public ResponseEntity<String> removeFromWatchList(@RequestBody String appIdString, UriComponentsBuilder builder) {
-    	
-    	try {
-			Long appId = Long.parseLong(appIdString);
-			
-			if(steamDataService.removeAppFromUpdateList(appId)) {
-				return new ResponseEntity<String>("OK", HttpStatus.OK);
-			} else {
-				return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
-			}
-	        
-		} catch (NumberFormatException e) {
-			LOG.error(e);
+    public ResponseEntity<String> removeFromWatchList(@RequestBody long appId, UriComponentsBuilder builder) {
+
+    	if(steamDataService.removeAppFromUpdateList(appId)) {
+    		return new ResponseEntity<String>("OK", HttpStatus.OK);
 		}
     	
-    	return new ResponseEntity<String>("Wrong Number Format", HttpStatus.BAD_REQUEST);
+		return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
     }
     
     
