@@ -84,6 +84,8 @@ class ReviewSteamApi extends AbstractSteamApi {
 				LOG.error(e);
 			} catch (IOException e) {
 				LOG.error(e);
+			} catch (NullPointerException e) {
+				LOG.error(e);
 			}
 		}
 		
