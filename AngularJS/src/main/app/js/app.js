@@ -11,6 +11,11 @@ app.config(function($routeProvider){
             controller: 'MainCtrl',
             templateUrl: 'watchlist.html'
         })
+
+        .when('/datasets/:appId', {
+            controller: 'MainCtrl',
+            templateUrl: 'game_info.html'
+        })
 });
 
 app.constant('Config', {

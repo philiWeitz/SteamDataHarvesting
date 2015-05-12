@@ -14,7 +14,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', function ($
                 });
         };
 
-        this.getDataSets = function () {
+        this.getAppData = function (appId) {
             return $http.get(urlBase + 'getApp/'+ appId)
                 .then(function(response){
                     console.log(response.data);
@@ -23,6 +23,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', function ($
         };
 
         this.addToWatchlist = function(appId){
+            console.log(appId);
             return $http.post(urlBase + 'addToWatchList' , appId)
                 .then(function(response){
                     console.log(response.data);
