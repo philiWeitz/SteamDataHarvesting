@@ -15,13 +15,13 @@ import org.apache.commons.lang3.StringUtils;
 public class Review extends AbstractEntity {
 
 	@Basic
-	private String author;
+	private String author = StringUtils.EMPTY;
 
 	private String authorSteamId = StringUtils.EMPTY;
 
 	@Basic
 	@Column(length = 5 * 1024 * 1024)
-	private String content;
+	private String content = StringUtils.EMPTY;
 
 	private double playTimeAll;	
 	

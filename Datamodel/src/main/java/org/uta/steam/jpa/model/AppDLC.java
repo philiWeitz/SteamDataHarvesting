@@ -14,6 +14,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @SuppressWarnings("serial")
 public class AppDLC extends AbstractEntity {
@@ -21,7 +23,7 @@ public class AppDLC extends AbstractEntity {
 	private long dlcId;
 
 	@Basic
-	private String name;
+	private String name = StringUtils.EMPTY;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "DLC_RELEASE_DATE")

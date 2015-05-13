@@ -10,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @SuppressWarnings("serial")
 public class SteamApp extends AbstractEntity {
@@ -19,7 +21,7 @@ public class SteamApp extends AbstractEntity {
 	private boolean getsUpdated = false;
 
 	@Basic
-	private String name;
+	private String name = StringUtils.EMPTY;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "APP_DATA", referencedColumnName = "id")

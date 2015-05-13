@@ -5,18 +5,20 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 
+import org.apache.commons.lang3.StringUtils;
+
 @Entity
 @SuppressWarnings("serial")
 public class AppVersion extends AbstractEntity {
 
 	@Basic
-	private String title;
+	private String title = StringUtils.EMPTY;
 
 	@Basic
 	private Date published;
 
 	@Basic
-	private String content;
+	private String content = StringUtils.EMPTY;
 
 	public String getTitle() {
 		return title;
