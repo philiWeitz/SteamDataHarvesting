@@ -10,13 +10,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 
 public class AppSteamApi extends AbstractSteamApi {
 
+	private static final String API_KEY = PropUtil.getProperty("steam.api.key");
+	
 	private static final Pattern VERSION_PATTERN = Pattern
 			.compile("(version ([0-9].)+[0-9]+)|(update)");
 
@@ -50,7 +52,7 @@ public class AppSteamApi extends AbstractSteamApi {
 		List<AppVersion> result = new LinkedList<AppVersion>();
 
 		String xmlResponse = httpGet("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?format=xml&maxlength=1&"
-				+ "key=" + SteamUtil.API_KEY + "&appid=" + appId);
+				+ "key=" + API_KEY + "&appid=" + appId);
 
 		Document doc = Jsoup.parse(xmlResponse);
 		Elements newsItems = doc.getElementsByTag("newsitem");

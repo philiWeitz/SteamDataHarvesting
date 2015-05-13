@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 import org.uta.steam.rest.AppController;
-import org.uta.steam.rest.test.common.TestUtil;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -32,7 +31,7 @@ public class AppControllerTest {
 	
 	@Before
 	public void beforeTests() {
-		TestUtil.setPrivateField(appController, "steamDataService", steamDataService);
+//		TestUtil.setPrivateField(appController, "steamDataService", steamDataService);
 		testDataService.createTestData();
 	}
 	

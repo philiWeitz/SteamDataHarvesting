@@ -10,8 +10,8 @@
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
         
-	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service, org.uta.steam.rest">
-		<context:include-filter type="annotation" expression="javax.annotation.Resource"/>
-	</context:component-scan>
+	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service, org.uta.steam.rest" />
+
+	<mvc:annotation-driven />
 
 </beans> 

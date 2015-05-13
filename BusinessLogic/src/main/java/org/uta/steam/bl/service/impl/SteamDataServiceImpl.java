@@ -7,9 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.uta.steam.bl.api.AppSteamApi;
 import org.uta.steam.bl.crawler.AppWebCrawler;
 import org.uta.steam.bl.csv.CsvExporter;
@@ -21,7 +20,7 @@ import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 
-@Resource
+@Service
 class SteamDataServiceImpl implements SteamDataService {
 
 	@Autowired

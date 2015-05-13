@@ -11,11 +11,15 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.uta.steam.bl.util.PropUtil;
 
 public class AbstractWebCrawler {
 
 	private static Logger LOG = LogManager.getLogger(AbstractWebCrawler.class);
-
+	private static final int SERVER_TIMEOUT = 
+			PropUtil.getPropertyAsInteger("web.crawler.timeout");
+	
+	
 	protected List<String> getInnerHtml(Elements elements) {
 		List<String> result = new LinkedList<String>();
 
@@ -47,7 +51,7 @@ public class AbstractWebCrawler {
 	protected Document getHtmlFromUrl(String url) {
 
 		try {
-			return Jsoup.connect(url).get();
+			return Jsoup.connect(url).timeout(SERVER_TIMEOUT).get();
 		} catch (IOException e) {
 			LOG.error("Error parsing Steam page");
 		}

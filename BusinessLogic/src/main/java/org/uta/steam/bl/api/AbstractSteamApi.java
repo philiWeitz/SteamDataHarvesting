@@ -11,14 +11,17 @@ import java.net.URL;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.uta.steam.bl.util.PropUtil;
 
 class AbstractSteamApi {
 
 	private static Logger LOG = LogManager.getLogger(AbstractSteamApi.class);
 
 	// HTTP request timeout
-	private static final int REQUEST_TIMEOUT = 1000;
+	private static final int REQUEST_TIMEOUT = 
+			PropUtil.getPropertyAsInteger("steam.api.timeout");
 
+	
 	protected String httpGet(String urlString) {
 		String result = StringUtils.EMPTY;
 		HttpURLConnection httpURLConnection = null;
