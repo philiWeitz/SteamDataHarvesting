@@ -13,7 +13,7 @@ app.config(function($routeProvider){
         })
 
         .when('/datasets/:appId', {
-            controller: 'MainCtrl',
+            controller: 'GameCtrl',
             templateUrl: 'game_info.html'
         })
 });

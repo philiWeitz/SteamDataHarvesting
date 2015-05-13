@@ -2,11 +2,10 @@
  * Created by silvia on 06/05/15.
  */
 
-angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _, $location, SteamDataService) {
+angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $location, SteamDataService) {
 
     $scope.searchText = '';
     $scope.games = [];
-    $scope.game = {};
 
     var init = function(){
         $scope.getGames();
@@ -19,13 +18,6 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
                 $scope.games = games;
         });
 
-    };
-
-    $scope.getAppData = function(appId){
-        SteamDataService.getAppData(appId)
-            .then(function(game){
-                $scope.game = game;
-            });
     };
 
     $scope.addToWatchlist = function(appId){
@@ -45,7 +37,7 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
     };
 
     $scope.showGameData = function(appId){
-        $scope.getAppData(appId);
+        //$scope.getAppData(appId);
         console.log('redirecting '+ appId);
         $location.path('datasets/' + appId);
     };
@@ -61,43 +53,19 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, $http, _
 
     init();
 
-    //$scope.getGames = function(){
-    //
-    //    $http.get('/SteamDataHarvestingWebServices/service/app/getAllApps').
-    //        success(function(data, status, headers, config) {
-    //            console.log('success');
-    //            console.log(data);
-    //            $scope.games = _.first(data, 200);
-    //
-    //        }).
-    //        error(function(data, status, headers, config) {
-    //            console.log('error');
-    //        });
-    //};
-    //
-    //$scope.addToWatchlist = function(appId){
-    //    $http.post('/SteamDataHarvestingWebServices/service/app/addToWatchList', appId).
-    //        success(function(data, status, headers, config) {
-    //            console.log('post success');
-    //
-    //            updateGetsUpdated(appId, true);
-    //        }).
-    //        error(function(data, status, headers, config) {
-    //            console.log('post error');
-    //        });
-    //};
-    //
-    //$scope.removeFromWatchlist = function(appId){
-    //    $http.post('/SteamDataHarvestingWebServices/service/app/removeFromWatchList', appId).
-    //        success(function(data, status, headers, config) {
-    //            console.log('post success');
-    //
-    //            updateGetsUpdated(appId, false);
-    //        }).
-    //        error(function(data, status, headers, config) {
-    //            console.log('post error');
-    //        });
-    //};
-    //
+});
 
+angular.module('steamDataApp').controller('GameCtrl', function ($scope, $location, $routeParams, _, SteamDataService) {
+	
+	$scope.game = {};
+	$scope.appId = $routeParams.appId;
+
+	$scope.getAppData = function(appId){
+        SteamDataService.getAppData(appId)
+            .then(function(game){
+                $scope.game = game;
+            });
+    }($scope.appId);
+	
+	
 });
