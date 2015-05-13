@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 
 @Entity
 @SuppressWarnings("serial")
-public class AppData extends AbstractEntity {
+public class AppData extends AbstractEntity implements Comparable<AppData> {
 
 	private double price;
 
@@ -51,5 +51,17 @@ public class AppData extends AbstractEntity {
 
 	public void setReviews(Set<Review> reviews) {
 		this.reviews = reviews;
+	}
+
+	// positive = this is larger then o, negative = this is smaller then o
+	public int compareTo(AppData o) {
+		if(null == getCreated()) {
+			return 1;
+		}
+		if(null == o || null == o.getCreated()) {
+			return -1;
+		}
+		
+		return getCreated().compareTo(o.getCreated());
 	}
 }
