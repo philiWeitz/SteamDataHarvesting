@@ -17,8 +17,6 @@ import org.uta.steam.jpa.model.SteamApp;
 
 public class AppSteamApi extends AbstractSteamApi {
 
-	private static final String API_KEY = PropUtil.getProperty("steam.api.key");
-	
 	private static final Pattern VERSION_PATTERN = Pattern
 			.compile("(version ([0-9].)+[0-9]+)|(update)");
 
@@ -28,8 +26,7 @@ public class AppSteamApi extends AbstractSteamApi {
 	public List<SteamApp> getApps() {
 		List<SteamApp> result = new LinkedList<SteamApp>();
 
-		String jsonResponse = httpGet("http://api.steampowered.com/ISteamApps/"
-				+ "GetAppList/v0001/?format=xml");
+		String jsonResponse = httpGet(PropUtil.getProperty("steam.get.all.apps.url"));
 
 		Document doc = Jsoup.parse(jsonResponse);
 		Elements appItems = doc.getElementsByTag("app");
@@ -51,8 +48,7 @@ public class AppSteamApi extends AbstractSteamApi {
 	public List<AppVersion> getVersions(long appId) {
 		List<AppVersion> result = new LinkedList<AppVersion>();
 
-		String xmlResponse = httpGet("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?format=xml&maxlength=1&"
-				+ "key=" + API_KEY + "&appid=" + appId);
+		String xmlResponse = httpGet(PropUtil.getProperty("steam.get.news.url", appId));
 
 		Document doc = Jsoup.parse(xmlResponse);
 		Elements newsItems = doc.getElementsByTag("newsitem");

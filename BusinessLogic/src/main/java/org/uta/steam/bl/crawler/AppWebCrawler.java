@@ -15,12 +15,13 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
 
 public class AppWebCrawler extends AbstractWebCrawler {
 	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
-	private static final String BASE_URL = "http://store.steampowered.com/app/";
+	private static final String BASE_URL = PropUtil.getProperty("steam.get.app.page.url");
 
 	
 	private long appId = -1;

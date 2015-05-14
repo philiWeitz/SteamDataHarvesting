@@ -16,6 +16,7 @@ import org.uta.steam.bl.util.PropUtil;
 public class AbstractWebCrawler {
 
 	private static Logger LOG = LogManager.getLogger(AbstractWebCrawler.class);
+	
 	private static final int SERVER_TIMEOUT = 
 			PropUtil.getPropertyAsInteger("web.crawler.timeout");
 	
@@ -53,7 +54,7 @@ public class AbstractWebCrawler {
 		try {
 			return Jsoup.connect(url).timeout(SERVER_TIMEOUT).get();
 		} catch (IOException e) {
-			LOG.error("Error parsing Steam page");
+			LOG.error("Error parsing Steam page (" + url + ")");
 		}
 
 		return null;
