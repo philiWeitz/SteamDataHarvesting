@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 @Entity
 @SuppressWarnings("serial")
-public class Review extends AbstractEntity {
+public class Review extends AbstractEntity  implements Comparable<Review> {
 
 	@Basic
 	private String author = StringUtils.EMPTY;
@@ -32,7 +32,7 @@ public class Review extends AbstractEntity {
 	private long peopleHelpful;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name = "POSTED_DATE")
+	@Column(name = "POSTED_DATE", nullable = false)
 	private Date posted;
 
 	@Temporal(TemporalType.TIMESTAMP)
@@ -110,5 +110,27 @@ public class Review extends AbstractEntity {
 
 	public void setUpdated(Date updated) {
 		this.updated = updated;
+	}
+	
+	public int compareTo(Review o) {
+		Date c1 = getPosted();
+		Date c2 = o.getPosted();
+		
+		if(null != updated) {
+			c1 = getUpdated();
+		}
+		if(null != o.getUpdated()) {
+			c2 = o.getUpdated();
+		}
+		
+		if(null == c1) {
+			return 1;
+		} else if(null == c2) {
+			return -1;
+		} else if(c1.compareTo(c2) == 0) {
+			return getCreated().compareTo(o.getCreated());
+		} else {
+			return c1.compareTo(c2);
+		}
 	}	
 }
