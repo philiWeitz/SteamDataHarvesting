@@ -7,8 +7,9 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,6 +57,7 @@ public class CsvExporter {
 	
 	private void exportAppData(BufferedWriter out, SteamApp app) throws IOException {
 
+		// write app header
 		StringBuffer sb = new StringBuffer();
 		sb.append(app.getName()).append(" (");
 		sb.append(app.getAppId()).append(")");
@@ -63,39 +65,58 @@ public class CsvExporter {
 		out.write(sb.toString());
 		out.newLine();
 		
-		exportReviewHeader(out);
-	
-		// sort app data
-		List<AppData> dataList = new ArrayList<AppData>(app.getData());
-		Collections.sort(dataList);
-		
-		// export reviews
-		for(AppData data : dataList) {
-			for(Review review : data.getReviews()) {
-				exportReview(out, review);
-			}
-			out.flush();
-		}
-		
+		// get list of versions starting with the last version!
+		List<AppVersion> versions = new LinkedList<AppVersion>(app.getVersions());
+		Collections.sort(versions);
+
 		// export versions
 		out.newLine();
 		exportVersionHeader(out);
 		
-		for(AppVersion version : app.getVersions()) {
+		for(AppVersion version : versions) {
 			exportVersion(out, version);
 		}
+		out.newLine();
+		
+		// reverse versions - easier to map them to the reviews
+		Collections.reverse(versions);
+		
+		// create review list
+		List<Review> reviews = new LinkedList<Review>();
+		for(AppData data : app.getData()) {
+			reviews.addAll(data.getReviews());
+		}
+		Collections.sort(reviews);
+		
+		exportReviewHeader(out);
+	
+		// export reviews
+		for(Review review : reviews) {
+			String versionTitle = getVersionTitle(versions, review);
+			exportReview(out, review, versionTitle);
+		}
+		out.flush();
 		
 		// export dlcs
 		out.newLine();
 		
 		for(AppDLC dlc : app.getDlcs()) {
 			exportDlc(out, dlc);
-		}		
+		}	
+		out.flush();
 	}
 	
 	
 	private void exportDlc(BufferedWriter out, AppDLC dlc) throws IOException {
 
+		// create review list
+		List<Review> reviews = new LinkedList<Review>();
+		for(AppData data : dlc.getData()) {
+			reviews.addAll(data.getReviews());
+		}
+		Collections.sort(reviews);
+
+		// write DLC header
 		StringBuffer sb = new StringBuffer();
 		sb.append(dlc.getName()).append(" (");
 		sb.append(dlc.getDlcId()).append(")");
@@ -105,16 +126,12 @@ public class CsvExporter {
 		
 		exportReviewHeader(out);
 		
-		// sort app data
-		List<AppData> dataList = new ArrayList<AppData>(dlc.getData());
-		Collections.sort(dataList);
-		
-		for(AppData data : dataList) {
-			for(Review review : data.getReviews()) {
-				exportReview(out, review);	
-			}
-			out.flush();
+		// export reviews
+		for(Review review : reviews) {
+			exportReview(out, review, "DLC");
 		}
+		out.newLine();
+		out.flush();
 	}
 	
 	
@@ -147,6 +164,7 @@ public class CsvExporter {
 		StringBuffer sb = new StringBuffer();	
 		
 		sb.append("Created").append(SEPARATOR);
+		sb.append("Version").append(SEPARATOR);		
 		sb.append("User Name").append(SEPARATOR);
 		sb.append("User Id").append(SEPARATOR);
 		sb.append("Play time all").append(SEPARATOR);
@@ -162,10 +180,11 @@ public class CsvExporter {
 	}
 	
 	
-	private void exportReview(BufferedWriter out, Review review) throws IOException {
+	private void exportReview(BufferedWriter out, Review review, String versionTitle) throws IOException {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(sdf.format(review.getCreated())).append(SEPARATOR);
+		sb.append(versionTitle).append(SEPARATOR);
 		sb.append(review.getAuthor()).append(SEPARATOR);				
 		sb.append(review.getAuthorSteamId()).append(SEPARATOR);
 		sb.append(review.getPlayTimeAll()).append(SEPARATOR);
@@ -184,5 +203,28 @@ public class CsvExporter {
 		
 		out.write(sb.toString());
 		out.newLine();
+	}
+	
+	
+	private String getVersionTitle(List<AppVersion> versions, Review review) {
+		String title = "No version";
+
+		for(AppVersion version : versions) {
+			Date date;
+			
+			if(null != review.getUpdated()) {
+				date = review.getUpdated();
+			}  else {
+				date = review.getPosted();
+			}
+			
+			// 0 or less means that the publish date is equal or earlier then the date
+			if(version.getPublished().compareTo(date) <= 0) {
+				title = version.getTitle();
+				break;
+			}
+		}
+		
+		return title;
 	}
 }
