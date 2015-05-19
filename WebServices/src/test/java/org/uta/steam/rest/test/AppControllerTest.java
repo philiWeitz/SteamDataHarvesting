@@ -35,23 +35,6 @@ public class AppControllerTest {
 		testDataService.createTestData();
 	}
 	
-
-	@Test
-	public void getAllAppsTest() {
-		
-		ResponseEntity<String> response = appController.getAllApps();
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertFalse(response.getBody().isEmpty());
-		assertTrue(response.getBody().contains(testDataService.getAppWithData().getName()));
-		assertTrue(response.getBody().contains(testDataService.getAppNoData().getName()));		
-		
-		testDataService.cleanDatabase();
-		
-		response = appController.getAllApps();
-		assertEquals(HttpStatus.OK, response.getStatusCode());
-		assertEquals("[]", response.getBody());
-	}
-
 	
 	@Test
 	public void getAppTest() {

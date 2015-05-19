@@ -94,7 +94,7 @@ public class TestDataServiceImpl {
 		appReview1.setPeopleSeen(100);
 		appReview1.setPeopleHelpful(50);
 		appReview1.setPosted(new Date());
-		data1.getReviews().add(appReview1);
+		app2.getReviews().add(appReview1);
 
 		app2.getData().add(data1);
 
@@ -116,7 +116,7 @@ public class TestDataServiceImpl {
 		dlcReview.setPeopleSeen(22);
 		dlcReview.setPeopleHelpful(16);
 		dlcReview.setPosted(new Date());
-		dlcData.getReviews().add(dlcReview);
+		app2.getReviews().add(dlcReview);
 		app2.getData().add(dlcData);
 
 		app2.getDlcs().add(dlc1);

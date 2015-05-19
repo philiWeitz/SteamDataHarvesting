@@ -75,12 +75,14 @@ public class AppWebCrawler extends AbstractWebCrawler {
 					price = normalPrice.text();
 				}
 	
-				try {
-					result = Double.parseDouble(price.replace(',', '.').replaceAll(
-							"€$", ""));
-	
-				} catch (Exception e) {
-					LOG.error("Error converting price string to double", e);
+				if(!StringUtils.isEmpty(price)) {
+					try {
+						result = Double.parseDouble(price.replace(',', '.').replaceAll(
+								"€$", ""));
+		
+					} catch (Exception e) {
+						LOG.error("Error converting price string to double (" + appId + ")", e);
+					}
 				}
 			}
 		}
@@ -110,7 +112,8 @@ public class AppWebCrawler extends AbstractWebCrawler {
 					try {
 						result = format.parse(date);
 					} catch (ParseException e) {
-						LOG.error(e);
+						LOG.error("Error converting release date string \"" + 
+								date + "\" (" + appId + ")", e);
 					}
 	
 					break;

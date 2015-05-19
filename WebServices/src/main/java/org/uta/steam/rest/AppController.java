@@ -44,27 +44,7 @@ public class AppController {
 	@Autowired
 	private SteamDataService steamDataService;
 
-	
-	@RequestMapping(value = "/getAllApps", method = RequestMethod.GET)
-	public ResponseEntity<String> getAllApps() {
-		String jsonString = StringUtils.EMPTY;
-
-		try {
-			jsonString = mapper.writeValueAsString(steamDataService.getAllApps());
-			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
-			
-		} catch (JsonGenerationException e) {
-			LOG.error(e);
-		} catch (JsonMappingException e) {
-			LOG.error(e);
-		} catch (IOException e) {
-			LOG.error(e);
-		}
-
-		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
-	}
-	
-	
+		
 	@RequestMapping(value = "/getAllAppsAndUpdateList", method = RequestMethod.GET)
 	public ResponseEntity<String> getAllAppsAndUpdateList(String searchTerm, Integer max) {
 		String jsonString = StringUtils.EMPTY;

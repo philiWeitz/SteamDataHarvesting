@@ -33,6 +33,10 @@ public class AppDLC extends AbstractEntity {
 	@JoinColumn(name = "DLC_DATA", referencedColumnName = "id")
 	private Set<AppData> data;
 
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "DLC_REVIEW", referencedColumnName = "id")
+	private Set<Review> reviews;
+	
 	public long getDlcId() {
 		return dlcId;
 	}
@@ -66,5 +70,16 @@ public class AppDLC extends AbstractEntity {
 
 	public void setData(Set<AppData> data) {
 		this.data = data;
+	}
+	
+	public Set<Review> getReviews() {
+		if (null == reviews) {
+			reviews = new HashSet<Review>();
+		}
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
 	}
 }

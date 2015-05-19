@@ -8,7 +8,6 @@ import java.io.OutputStreamWriter;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
@@ -18,7 +17,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
-import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
@@ -78,22 +76,14 @@ public class CsvExporter {
 		}
 		out.newLine();
 		
-		// reverse versions - easier to map them to the reviews
-		Collections.reverse(versions);
-		
-		// create review list
-		List<Review> reviews = new LinkedList<Review>();
-		for(AppData data : app.getData()) {
-			reviews.addAll(data.getReviews());
-		}
-		Collections.sort(reviews);
-		
 		exportReviewHeader(out);
 	
 		// export reviews
+		List<Review> reviews = new LinkedList<Review>(app.getReviews());
+		Collections.sort(reviews);
+
 		for(Review review : reviews) {
-			String versionTitle = getVersionTitle(versions, review);
-			exportReview(out, review, versionTitle);
+			exportReview(out, review);
 		}
 		out.flush();
 		
@@ -109,13 +99,6 @@ public class CsvExporter {
 	
 	private void exportDlc(BufferedWriter out, AppDLC dlc) throws IOException {
 
-		// create review list
-		List<Review> reviews = new LinkedList<Review>();
-		for(AppData data : dlc.getData()) {
-			reviews.addAll(data.getReviews());
-		}
-		Collections.sort(reviews);
-
 		// write DLC header
 		StringBuffer sb = new StringBuffer();
 		sb.append(dlc.getName()).append(" (");
@@ -127,8 +110,11 @@ public class CsvExporter {
 		exportReviewHeader(out);
 		
 		// export reviews
+		List<Review> reviews = new LinkedList<Review>(dlc.getReviews());
+		Collections.sort(reviews);
+
 		for(Review review : reviews) {
-			exportReview(out, review, "DLC");
+			exportReview(out, review);
 		}
 		out.newLine();
 		out.flush();
@@ -180,11 +166,17 @@ public class CsvExporter {
 	}
 	
 	
-	private void exportReview(BufferedWriter out, Review review, String versionTitle) throws IOException {
+	private void exportReview(BufferedWriter out, Review review) throws IOException {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(sdf.format(review.getCreated())).append(SEPARATOR);
-		sb.append(versionTitle).append(SEPARATOR);
+		
+		if(null != review.getVersion()) {
+			sb.append(review.getVersion().getTitle()).append(SEPARATOR);
+		} else {
+			sb.append("No Version").append(SEPARATOR);
+		}
+		
 		sb.append(review.getAuthor()).append(SEPARATOR);				
 		sb.append(review.getAuthorSteamId()).append(SEPARATOR);
 		sb.append(review.getPlayTimeAll()).append(SEPARATOR);
@@ -203,28 +195,5 @@ public class CsvExporter {
 		
 		out.write(sb.toString());
 		out.newLine();
-	}
-	
-	
-	private String getVersionTitle(List<AppVersion> versions, Review review) {
-		String title = "No version";
-
-		for(AppVersion version : versions) {
-			Date date;
-			
-			if(null != review.getUpdated()) {
-				date = review.getUpdated();
-			}  else {
-				date = review.getPosted();
-			}
-			
-			// 0 or less means that the publish date is equal or earlier then the date
-			if(version.getPublished().compareTo(date) <= 0) {
-				title = version.getTitle();
-				break;
-			}
-		}
-		
-		return title;
 	}
 }

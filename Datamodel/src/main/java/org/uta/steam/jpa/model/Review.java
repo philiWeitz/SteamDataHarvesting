@@ -5,6 +5,9 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -39,6 +42,10 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	@Column(name = "UPDATED_DATE")
 	private Date updated;
 
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="REVIEW_VERSION")
+	private AppVersion version;
+	
 	
 	public String getAuthor() {
 		return author;
@@ -112,6 +119,14 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 		this.updated = updated;
 	}
 	
+	public AppVersion getVersion() {
+		return version;
+	}
+
+	public void setVersion(AppVersion version) {
+		this.version = version;
+	}
+
 	public int compareTo(Review o) {
 		Date c1 = getPosted();
 		Date c2 = o.getPosted();

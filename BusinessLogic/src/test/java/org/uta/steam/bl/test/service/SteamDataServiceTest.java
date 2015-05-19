@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,18 +36,14 @@ public class SteamDataServiceTest {
 		testDataService.createTestData();
 	}
 
-	@Test
-	public void getAppsTest() {
-		List<SteamApp> apps = steamDataService.getAllApps();
-		assertNotSame(0, apps.size());
-	}
 
 	@Test
 	public void addAppToUpdateListTest() {
 		steamAppDaoService.addAppToUpdateList(testDataService.getAppNoData().getAppId());
 		steamAppDaoService.addAppToUpdateList(testDataService.getAppWithData().getAppId());
 		
-		List<SteamApp> apps = steamDataService.getAllApps();
+		List<SteamApp> apps = steamDataService.
+				getAllAppsAndUpdateList(StringUtils.EMPTY, 0);
 
 		assertFalse(apps.isEmpty());
 		for (SteamApp app : apps) {

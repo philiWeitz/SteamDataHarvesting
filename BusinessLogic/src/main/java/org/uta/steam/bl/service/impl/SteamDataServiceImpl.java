@@ -1,11 +1,12 @@
 package org.uta.steam.bl.service.impl;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,21 +31,6 @@ class SteamDataServiceImpl implements SteamDataService {
 	private AppWebCrawler appWebCrawler = new AppWebCrawler();
 	private CsvExporter csvExporter = new CsvExporter();
 	
-	
-	public List<SteamApp> getAllApps() {
-		List<SteamApp> result = appDaoService.getAll();
-
-		Set<AppData> emptyDataSet = Collections.emptySet();
-		Set<AppDLC> emptyDLCSet = Collections.emptySet();
-		Set<AppVersion> emptyVersionSet = Collections.emptySet();
-
-		for (SteamApp app : result) {
-			app.setData(emptyDataSet);
-			app.setDlcs(emptyDLCSet);
-			app.setVersions(emptyVersionSet);
-		}
-		return result;
-	}
 
 	public SteamApp getWholeApp(long appId) {
 		return appDaoService.getWholeAppByAppId(appId);
@@ -56,18 +42,29 @@ class SteamDataServiceImpl implements SteamDataService {
 			updateAppData(app);
 			updateAppVersions(app);
 			updateAppDlcs(app);
+			addReviews(app);
 
 			appDaoService.saveOrUpdate(app);
 		}
+	}
+	
+	private void addReviews(SteamApp app) {
+		List<AppVersion> versions = new LinkedList<AppVersion>(app.getVersions());
+		Collections.sort(versions);
+		Collections.reverse(versions);
+		
+		List<Review> newReviews = appSteamApi.getHelpfulAppReviews(app.getAppId());
+		for(Review review : newReviews) {
+			review.setVersion(getAppVersion(versions, review));
+		}
+		
+		app.getReviews().addAll(newReviews);
 	}
 
 	private void updateAppData(SteamApp app) {
 		AppData data = new AppData();
 		data.setPrice(appWebCrawler.getAppPrice(app.getAppId()));
-		data.setTags(new HashSet<String>(appWebCrawler.getAppTags(app
-				.getAppId())));
-		data.setReviews(new HashSet<Review>(appSteamApi
-				.getHelpfulAppReviews(app.getAppId())));
+		data.setTags(new HashSet<String>(appWebCrawler.getAppTags(app.getAppId())));
 		app.getData().add(data);
 	}
 
@@ -117,12 +114,13 @@ class SteamDataServiceImpl implements SteamDataService {
 
 		// update dlc content
 		for (AppDLC dlc : app.getDlcs()) {
+			// add new reviews (version is always null)
+			dlc.getReviews().addAll(appSteamApi.getHelpfulAppReviews(dlc.getDlcId()));
+			
+			// add app data
 			AppData data = new AppData();
 			data.setPrice(appWebCrawler.getAppPrice(dlc.getDlcId()));
-			data.setTags(new HashSet<String>(appWebCrawler.getAppTags(dlc
-					.getDlcId())));
-			data.setReviews(new HashSet<Review>(appSteamApi
-					.getHelpfulAppReviews(dlc.getDlcId())));
+			data.setTags(new HashSet<String>(appWebCrawler.getAppTags(dlc.getDlcId())));
 			dlc.getData().add(data);
 		}
 	}
@@ -150,5 +148,24 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	public List<SteamApp> getAllAppsAndUpdateList(String searchTerm, int max) {
 		return appDaoService.getAllAppsAndUpdateList(searchTerm, max);
+	}
+	
+	private AppVersion getAppVersion(List<AppVersion> versions, Review review) {
+		for(AppVersion version : versions) {
+			Date date;
+			
+			if(null != review.getUpdated()) {
+				date = review.getUpdated();
+			}  else {
+				date = review.getPosted();
+			}
+			
+			// 0 or less means that the publish date is equal or earlier then the date
+			if(version.getPublished().compareTo(date) <= 0) {
+				return version;
+			}
+		}
+		
+		return null;
 	}
 }

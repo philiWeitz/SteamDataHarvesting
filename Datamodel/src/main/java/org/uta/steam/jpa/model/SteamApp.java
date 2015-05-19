@@ -32,6 +32,10 @@ public class SteamApp extends AbstractEntity {
 	private Set<AppVersion> versions;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "APP_REVIEW", referencedColumnName = "id")
+	private Set<Review> reviews;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "APP_DLC", referencedColumnName = "id")
 	private Set<AppDLC> dlcs;
 
@@ -79,6 +83,17 @@ public class SteamApp extends AbstractEntity {
 
 	public void setVersions(Set<AppVersion> versions) {
 		this.versions = versions;
+	}
+	
+	public Set<Review> getReviews() {
+		if (null == reviews) {
+			reviews = new HashSet<Review>();
+		}
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 	public Set<AppDLC> getDlcs() {
