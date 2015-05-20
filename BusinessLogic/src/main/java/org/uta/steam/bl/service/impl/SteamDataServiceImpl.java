@@ -19,6 +19,8 @@ import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
+import org.uta.steam.jpa.model.service.AppVersionDAOService;
+import org.uta.steam.jpa.model.service.ReviewDAOService;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 
 @Service
@@ -26,7 +28,11 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	@Autowired
 	private SteamAppDAOService appDaoService;
-
+	@Autowired
+	private AppVersionDAOService versionDaoService;
+	@Autowired
+	private ReviewDAOService reviewDaoService;
+	
 	private AppSteamApi appSteamApi = new AppSteamApi();
 	private AppWebCrawler appWebCrawler = new AppWebCrawler();
 	private CsvExporter csvExporter = new CsvExporter();
@@ -167,5 +173,13 @@ class SteamDataServiceImpl implements SteamDataService {
 		}
 		
 		return null;
+	}
+
+	public List<AppVersion> getVersionsByAppId(long appId) {
+		return versionDaoService.getVersionsByAppId(appId);
+	}
+
+	public List<Review> getReviewByAppIdAndVersionId(long appId, Date published) {
+		return reviewDaoService.getReviewByAppIdAndVersionId(appId, published);
 	}
 }

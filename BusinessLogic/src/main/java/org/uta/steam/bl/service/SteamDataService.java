@@ -1,7 +1,10 @@
 package org.uta.steam.bl.service;
 
+import java.util.Date;
 import java.util.List;
 
+import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 
 public interface SteamDataService {
@@ -17,4 +20,8 @@ public interface SteamDataService {
 	void updateAppListFromSteam();
 	
 	String createCsvFile(long appId);
+	
+	List<AppVersion> getVersionsByAppId(long appId);
+	
+	List<Review> getReviewByAppIdAndVersionId(long appId, Date published);	
 }

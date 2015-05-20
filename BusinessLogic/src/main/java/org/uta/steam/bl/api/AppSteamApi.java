@@ -62,9 +62,11 @@ public class AppSteamApi extends AbstractSteamApi {
 					.toLowerCase());
 			if (matcher.find()) {
 				Element published = newsitem.getElementsByTag("date").first();
+				Element content = newsitem.getElementsByTag("contents").first();
 
 				AppVersion version = new AppVersion();
 				version.setTitle(title.text());
+				version.setContent(content.text());
 				version.setPublished(published.text());
 				result.add(version);
 			}

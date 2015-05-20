@@ -24,19 +24,19 @@ public class SteamApp extends AbstractEntity {
 	private String name = StringUtils.EMPTY;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_DATA", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppData> data;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_VERSION", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppVersion> versions;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_REVIEW", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<Review> reviews;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_DLC", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppDLC> dlcs;
 
 	public long getAppId() {
