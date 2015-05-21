@@ -26,17 +26,25 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 			.getLogger(SteamAppDAOServiceImpl.class);
 	
 	
+	public List<SteamApp> getAppsWhichHaveData() {	
+		List<SteamApp> result = issueQuery("SELECT a FROM "
+				+ SteamApp.class.getSimpleName() + " a " + "where a.hasData = true");
+		
+		for (SteamApp app : result) {
+			removeLazyLoadedSets(app);
+		}
+		
+		return result;
+	}
+	
+	
 	public SteamApp getAppByAppIdLazyLoading(long appId) {
 		
 		SteamApp result = issueQuerySingleResult("SELECT a FROM "
 				+ SteamApp.class.getSimpleName() + " a " + "where a.appId = "
 				+ appId);
 
-		result.setData(Collections.<AppData> emptySet());
-		result.setDlcs(Collections.<AppDLC> emptySet());
-		result.setVersions(Collections.<AppVersion> emptySet());
-		result.setReviews(Collections.<Review> emptySet());	
-		
+		removeLazyLoadedSets(result);		
 		return result;
 	}
 	
@@ -147,12 +155,17 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		result.addAll(updateApps);
 
 		for (SteamApp app : result) {
-			app.setData(Collections.<AppData> emptySet());
-			app.setDlcs(Collections.<AppDLC> emptySet());
-			app.setVersions(Collections.<AppVersion> emptySet());
-			app.setReviews(Collections.<Review> emptySet());
+			removeLazyLoadedSets(app);
 		}
 		
 		return result;
+	}
+	
+	
+	private void removeLazyLoadedSets(SteamApp app) {
+		app.setData(Collections.<AppData> emptySet());
+		app.setDlcs(Collections.<AppDLC> emptySet());
+		app.setVersions(Collections.<AppVersion> emptySet());
+		app.setReviews(Collections.<Review> emptySet());	
 	}
 }

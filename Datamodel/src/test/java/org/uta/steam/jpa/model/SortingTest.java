@@ -99,7 +99,7 @@ public class SortingTest {
 		version = createVersion("1", 
 				DateUtils.addDays(dateNow, -3));
 		versionList.add(version);
-		
+
 		Collections.sort(versionList);
 		assertTrue("1".equals(versionList.get(0).getTitle()));
 		assertTrue("2".equals(versionList.get(1).getTitle()));		

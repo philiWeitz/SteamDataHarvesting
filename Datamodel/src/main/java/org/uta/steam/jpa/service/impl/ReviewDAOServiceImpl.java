@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.ReviewDAOService;
@@ -13,6 +14,13 @@ import org.uta.steam.jpa.model.service.ReviewDAOService;
 class ReviewDAOServiceImpl extends AbstractDAOServiceImpl<Review> implements
 	ReviewDAOService {
 
+	
+	public List<Review> getReviewsByDlcId(long dlcId) {
+		return issueQuery("SELECT d.reviews FROM "
+				+ AppDLC.class.getSimpleName() + " d "
+				+ "where d.dlcId = " + dlcId);		
+	}	
+	
 
 	// TODO: select versions by database query
 	public List<Review> getReviewByAppIdAndVersionId(long appId, Date published) {

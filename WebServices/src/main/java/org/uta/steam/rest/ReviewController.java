@@ -28,8 +28,9 @@ public class ReviewController {
 
 	/*
 	 * example call: -
-	 * http://localhost:8080/SteamDataHarvestingWebServices/service/review/getReviewsByAppId/226840/1429022761000
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/review/getReviewsByAppIdAndVersion/226840/1429022761000
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/review/getReviewsWithoutVersionByAppId/226840
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/review/getReviewsByDlcId/329530
 	 */
 
 	private static Logger LOG = LogManager.getLogger(ReviewController.class);
@@ -39,9 +40,34 @@ public class ReviewController {
 	@Autowired
 	private SteamDataService steamDataService;
 
+
+	@RequestMapping(value = "/getReviewsByDlcId/{dlcId}", method = RequestMethod.GET)
+	public ResponseEntity<String> getReviewsByDlcId(@PathVariable long dlcId) {
+		String jsonString = StringUtils.EMPTY;
+
+		try {
+			List<Review> reviews = 
+					steamDataService.getReviewsByDlcId(dlcId);
 			
-	@RequestMapping(value = "/getReviewsByAppId/{appId}/{published}", method = RequestMethod.GET)
-	public ResponseEntity<String> getReviewsByAppId(@PathVariable long appId, @PathVariable long published) {
+			// sort the reviews based on the posted date
+			Collections.sort(reviews);
+
+			jsonString = mapper.writeValueAsString(reviews);		
+			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
+			
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+
+		return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+	}	
+			
+	@RequestMapping(value = "/getReviewsByAppIdAndVersion/{appId}/{published}", method = RequestMethod.GET)
+	public ResponseEntity<String> getReviewsByAppIdAndVersion(@PathVariable long appId, @PathVariable long published) {
 		return getReviews(appId, new Date(published));
 	}
 	

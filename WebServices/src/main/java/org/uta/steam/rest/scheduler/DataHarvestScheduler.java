@@ -6,7 +6,7 @@ import org.quartz.JobExecutionException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-import org.uta.steam.bl.service.SteamDataService;
+import org.uta.steam.bl.service.SteamDataHarvestingService;
 
 public class DataHarvestScheduler implements Job {
 
@@ -20,10 +20,11 @@ public class DataHarvestScheduler implements Job {
 			    );
 		
 		// gets the service
-		SteamDataService steamDataService = springContext.getBean(SteamDataService.class);
+		SteamDataHarvestingService steamDataHarvestingService = 
+				springContext.getBean(SteamDataHarvestingService.class);
 		
 		System.out.println("Harvesting Data..");	
-		steamDataService.harvestDataFromSteam();
+		steamDataHarvestingService.harvestDataFromSteam();
 		System.out.println("Harvesting Data Done");
 		
 		//steamDataService.updateAppListFromSteam();

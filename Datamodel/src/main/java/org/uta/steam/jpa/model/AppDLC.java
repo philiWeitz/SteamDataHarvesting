@@ -33,7 +33,7 @@ public class AppDLC extends AbstractEntity {
 	@JoinColumn(name = "DLC_DATA", referencedColumnName = "id")
 	private Set<AppData> data;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "DLC_REVIEW", referencedColumnName = "id")
 	private Set<Review> reviews;
 	

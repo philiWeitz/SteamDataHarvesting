@@ -18,6 +18,8 @@ public class SteamApp extends AbstractEntity {
 
 	private long appId;
 
+	private boolean hasData = false;	
+	
 	private boolean getsUpdated = false;
 
 	@Basic
@@ -39,12 +41,21 @@ public class SteamApp extends AbstractEntity {
 	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppDLC> dlcs;
 
+	
 	public long getAppId() {
 		return appId;
 	}
 
 	public void setAppId(long appid) {
 		this.appId = appid;
+	}
+
+	public boolean isHasData() {
+		return hasData;
+	}
+
+	public void setHasData(boolean hasData) {
+		this.hasData = hasData;
 	}
 
 	public boolean isGetsUpdated() {

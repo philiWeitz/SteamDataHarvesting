@@ -3,6 +3,7 @@ package org.uta.steam.jpa.model;
 import java.util.Date;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +19,7 @@ public class AppVersion extends AbstractEntity implements Comparable<AppVersion>
 	private Date published;
 
 	@Basic
+	@Column(length = 5 * 1024 * 1024)
 	private String content = StringUtils.EMPTY;
 
 	public String getTitle() {
