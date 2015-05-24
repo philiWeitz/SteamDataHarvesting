@@ -1,4 +1,4 @@
-package org.uta.steam.jpa.common;
+package org.uta.steam.jpa.test.common;
 
 import java.lang.reflect.Field;
 

@@ -1,4 +1,4 @@
-package org.uta.steam.jpa.model;
+package org.uta.steam.jpa.test.model;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -10,7 +10,10 @@ import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
 import org.junit.Test;
-import org.uta.steam.jpa.common.TestUtil;
+import org.uta.steam.jpa.model.AppData;
+import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.Review;
+import org.uta.steam.jpa.test.common.TestUtil;
 
 
 public class SortingTest {

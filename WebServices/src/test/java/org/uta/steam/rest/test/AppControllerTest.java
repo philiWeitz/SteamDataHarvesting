@@ -13,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataService;
-import org.uta.steam.jpa.common.TestUtil;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
+import org.uta.steam.jpa.test.common.TestUtil;
 import org.uta.steam.rest.AppController;
 
 
