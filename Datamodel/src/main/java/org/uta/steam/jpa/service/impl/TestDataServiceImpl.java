@@ -71,6 +71,7 @@ public class TestDataServiceImpl {
 
 		SteamApp app2 = new SteamApp();
 		app2.setAppId(226840);
+		app2.setHasData(true);
 		app2.setName("App With Data");
 
 		// set versions

@@ -12,15 +12,15 @@ public interface SteamDataService {
 	List<SteamApp> getAllAppsAndUpdateList(String searchTerm, int max);
 	
 	boolean addAppToUpdateList(Long appId);
-	boolean removeAppFromUpdateList(Long appId);
 	
-	SteamApp getWholeApp(long appId);
+	boolean removeAppFromUpdateList(Long appId);
 	
 	String createCsvFile(long appId);
 	
 	List<AppVersion> getVersionsByAppId(long appId);
 	
 	List<Review> getReviewByAppIdAndVersionId(long appId, Date published);	
+	
 	List<Review> getReviewsByDlcId(long dlcId);
 	
 	List<AppDLC> getDlcsByAppId(long appId);

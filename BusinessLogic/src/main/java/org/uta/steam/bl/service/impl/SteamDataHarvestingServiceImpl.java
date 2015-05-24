@@ -30,6 +30,11 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 	private AppWebCrawler appWebCrawler = new AppWebCrawler();
 
 
+	public SteamApp getWholeApp(long appId) {
+		return appDaoService.getWholeAppByAppId(appId);
+	}
+
+	
 	public void harvestDataFromSteam() {
 		for (SteamApp app : appDaoService.getWholeAppsToUpdate()) {
 

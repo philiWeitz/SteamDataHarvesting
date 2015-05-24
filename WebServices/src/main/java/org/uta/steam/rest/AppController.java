@@ -36,9 +36,9 @@ public class AppController {
 	/*
 	 * example call: -
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAllAppsAndUpdateList?searchTerm=test&max=20
-	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getApp/226840
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppDlcs/226840
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppsWhichHaveData
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getCSVFile/226840
 	 */
 
 	private static Logger LOG = LogManager.getLogger(AppController.class);
@@ -81,29 +81,6 @@ public class AppController {
 		}
 
 		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
-	}
-
-	@RequestMapping(value = "/getApp/{appId}", method = RequestMethod.GET)
-	public ResponseEntity<String> getApp(@PathVariable long appId) {
-
-		String jsonString = StringUtils.EMPTY;
-		SteamApp app = steamDataService.getWholeApp(appId);
-
-		if (null != app) {
-			try {
-				jsonString = mapper.writeValueAsString(app);
-				return new ResponseEntity<String>(jsonString, HttpStatus.OK);
-				
-			} catch (JsonGenerationException e) {
-				LOG.error(e);
-			} catch (JsonMappingException e) {
-				LOG.error(e);
-			} catch (IOException e) {
-				LOG.error(e);
-			}
-		}
-
-		return new ResponseEntity<String>("Can't find appid", HttpStatus.NOT_FOUND);
 	}
 
 	

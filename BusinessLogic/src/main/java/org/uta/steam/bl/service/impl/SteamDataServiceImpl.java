@@ -31,11 +31,6 @@ class SteamDataServiceImpl implements SteamDataService {
 	
 	private CsvExporter csvExporter = new CsvExporter();
 	
-
-	public SteamApp getWholeApp(long appId) {
-		return appDaoService.getWholeAppByAppId(appId);
-	}
-
 	
 	public boolean addAppToUpdateList(Long appId) {
 		return appDaoService.addAppToUpdateList(appId);

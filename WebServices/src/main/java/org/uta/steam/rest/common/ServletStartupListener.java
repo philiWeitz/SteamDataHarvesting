@@ -65,7 +65,7 @@ public class ServletStartupListener implements ServletContextListener {
 	
 	// only for debug purpose
 	private void createExampleApp() {
-		SteamApp app = steamDataService.getWholeApp(226840);
+		SteamApp app = steamDataHarvestingService.getWholeApp(226840);
 		
 		if(null != app && app.getData().isEmpty()) {
 			steamDataService.addAppToUpdateList(226840l);
