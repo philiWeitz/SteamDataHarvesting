@@ -3,6 +3,7 @@ package org.uta.steam.rest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -16,7 +17,6 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,17 +25,20 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.SteamApp;
 
-@Component
+
 @RestController
 @RequestMapping("/service/app")
 public class AppController {
 
 	/*
 	 * example call: -
-	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAllApps
-	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getApp/1223421
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAllAppsAndUpdateList?searchTerm=test&max=20
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppDlcs/226840
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppsWhichHaveData
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getCSVFile/226840
 	 */
 
 	private static Logger LOG = LogManager.getLogger(AppController.class);
@@ -45,27 +48,7 @@ public class AppController {
 	@Autowired
 	private SteamDataService steamDataService;
 
-	
-	@RequestMapping(value = "/getAllApps", method = RequestMethod.GET)
-	public ResponseEntity<String> getAllApps() {
-		String jsonString = StringUtils.EMPTY;
-
-		try {
-			jsonString = mapper.writeValueAsString(steamDataService.getAllApps());
-			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
-			
-		} catch (JsonGenerationException e) {
-			LOG.error(e);
-		} catch (JsonMappingException e) {
-			LOG.error(e);
-		} catch (IOException e) {
-			LOG.error(e);
-		}
-
-		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
-	}
-	
-	
+		
 	@RequestMapping(value = "/getAllAppsAndUpdateList", method = RequestMethod.GET)
 	public ResponseEntity<String> getAllAppsAndUpdateList(String searchTerm, Integer max) {
 		String jsonString = StringUtils.EMPTY;
@@ -100,27 +83,26 @@ public class AppController {
 		return new ResponseEntity<String>("Can't get steam apps", HttpStatus.BAD_REQUEST);
 	}
 
-	@RequestMapping(value = "/getApp/{appId}", method = RequestMethod.GET)
-	public ResponseEntity<String> getApp(@PathVariable long appId) {
+	
+	@RequestMapping(value = "/getAppDlcs/{dlcId}", method = RequestMethod.GET)
+	public ResponseEntity<String> getAppDlcs(@PathVariable long dlcId) {
 
-		String jsonString = StringUtils.EMPTY;
-		SteamApp app = steamDataService.getWholeApp(appId);
+		try {
+			String jsonString = StringUtils.EMPTY;
+			List<AppDLC> dlcs = steamDataService.getDlcsByAppId(dlcId);
 
-		if (null != app) {
-			try {
-				jsonString = mapper.writeValueAsString(app);
-				return new ResponseEntity<String>(jsonString, HttpStatus.OK);
+			jsonString = mapper.writeValueAsString(dlcs);
+			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
 				
-			} catch (JsonGenerationException e) {
-				LOG.error(e);
-			} catch (JsonMappingException e) {
-				LOG.error(e);
-			} catch (IOException e) {
-				LOG.error(e);
-			}
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
 		}
 
-		return new ResponseEntity<String>("Can't find appid", HttpStatus.NOT_FOUND);
+		return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
 	}
 	
 	
@@ -145,6 +127,28 @@ public class AppController {
 		return new ResponseEntity<String>("AppId not found", HttpStatus.OK);
     }
     
+    
+	@RequestMapping(value = "/getAppsWhichHaveData", method = RequestMethod.GET)
+	public ResponseEntity<String> getAppsWhichHaveData() {
+
+		try {
+			String jsonString = StringUtils.EMPTY;
+			List<SteamApp> apps = steamDataService.getAppsWhichHaveData();
+
+			jsonString = mapper.writeValueAsString(apps);
+			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
+				
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+
+		return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+	}
+	
     
     @RequestMapping(value = "/getCSVFile/{appId}", method = RequestMethod.GET)
     public void getFile(@PathVariable long appId, HttpServletResponse response) {

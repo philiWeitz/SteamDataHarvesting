@@ -15,12 +15,13 @@ import org.apache.logging.log4j.Logger;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
 
 public class AppWebCrawler extends AbstractWebCrawler {
 	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
-	private static final String BASE_URL = "http://store.steampowered.com/app/";
+	private static final String BASE_URL = PropUtil.getProperty("steam.get.app.page.url");
 
 	
 	private long appId = -1;
@@ -33,16 +34,18 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		Document doc = getHtmlFromUrl(appId);
 		Elements dlcs = getElementsByClass(doc, "game_area_dlc_row");
 
-		Iterator<Element> iterator = dlcs.iterator();
-		while (iterator.hasNext()) {
-			Element dlcItem = iterator.next();
-
-			AppDLC dlc = new AppDLC();
-			dlc.setName(dlcItem.getElementsByClass("game_area_dlc_name").text());
-			dlc.setDlcId(Long.parseLong(dlcItem.attr("data-ds-appid")));
-			dlc.setReleaseDate(getAppReleaseDate(appId));
-
-			result.add(dlc);
+		if(null != doc) {
+			Iterator<Element> iterator = dlcs.iterator();
+			while (iterator.hasNext()) {
+				Element dlcItem = iterator.next();
+	
+				AppDLC dlc = new AppDLC();
+				dlc.setName(dlcItem.getElementsByClass("game_area_dlc_name").text());
+				dlc.setDlcId(Long.parseLong(dlcItem.attr("data-ds-appid")));
+				dlc.setReleaseDate(getAppReleaseDate(appId));
+	
+				result.add(dlc);
+			}
 		}
 
 		return result;
@@ -52,34 +55,38 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		double result = 0;
 
 		Document doc = getHtmlFromUrl(appId);
-
-		// the game price is always the first element
-		Elements elements = getElementsByClass(doc,
-				"game_area_purchase_game_wrapper");
-
-		if (!elements.isEmpty()) {
-			String price = StringUtils.EMPTY;
-
-			Elements discountPrice = elements.first().getElementsByClass(
-					"discount_original_price");
-
-			if (!discountPrice.isEmpty()) {
-				price = discountPrice.text();
-			} else {
-				Elements normalPrice = elements.first().getElementsByClass(
-						"game_purchase_price");
-				price = normalPrice.text();
-			}
-
-			try {
-				result = Double.parseDouble(price.replace(',', '.').replaceAll(
-						"€$", ""));
-
-			} catch (Exception e) {
-				LOG.error("Error converting price string to double", e);
+		if(null != doc) {
+			
+			// the game price is always the first element
+			Elements elements = getElementsByClass(doc,
+					"game_area_purchase_game_wrapper");
+	
+			if (!elements.isEmpty()) {
+				String price = StringUtils.EMPTY;
+	
+				Elements discountPrice = elements.first().getElementsByClass(
+						"discount_original_price");
+	
+				if (!discountPrice.isEmpty()) {
+					price = discountPrice.text();
+				} else {
+					Elements normalPrice = elements.first().getElementsByClass(
+							"game_purchase_price");
+					price = normalPrice.text();
+				}
+	
+				if(!StringUtils.isEmpty(price)) {
+					try {
+						result = Double.parseDouble(price.replace(',', '.').replaceAll(
+								"€$", ""));
+		
+					} catch (Exception e) {
+						LOG.error("Error converting price string to double (" + appId + ")", e);
+					}
+				}
 			}
 		}
-
+		
 		return result;
 	}
 
@@ -87,43 +94,49 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		Date result = null;
 
 		Document doc = getHtmlFromUrl(appId);
-		Elements releaseElements = getElementsByClass(doc, "release_date");
+		if(null != doc) {
+			
+			Elements releaseElements = getElementsByClass(doc, "release_date");
 
-		Iterator<Element> iterator = releaseElements.iterator();
-		while (iterator.hasNext()) {
-			Element releaseElement = iterator.next();
-
-			if (!releaseElement.getElementsByClass("date").isEmpty()) {
-				String date = releaseElement.getElementsByClass("date").first()
-						.text();
-
-				DateFormat format = new SimpleDateFormat(
-						SteamUtil.RELEASE_DATE_FORMAT, Locale.ENGLISH);
-
-				try {
-					result = format.parse(date);
-				} catch (ParseException e) {
-					LOG.error(e);
+			Iterator<Element> iterator = releaseElements.iterator();
+			while (iterator.hasNext()) {
+				Element releaseElement = iterator.next();
+	
+				if (!releaseElement.getElementsByClass("date").isEmpty()) {
+					String date = releaseElement.getElementsByClass("date").first()
+							.text();
+	
+					DateFormat format = new SimpleDateFormat(
+							SteamUtil.RELEASE_DATE_FORMAT, Locale.ENGLISH);
+	
+					try {
+						result = format.parse(date);
+					} catch (ParseException e) {
+						LOG.error("Error converting release date string \"" + 
+								date + "\" (" + appId + ")", e);
+					}
+	
+					break;
 				}
-
-				break;
 			}
 		}
-
 		return result;
 	}
 
 	public List<String> getAppTags(long appId) {
+		List<String> result = new LinkedList<String>();
+		
 		Document doc = getHtmlFromUrl(appId);
-		Elements elements = getElementsByClass(doc, "app_tag");
 
-		List<String> result = getInnerHtml(elements);
-
-		if (!result.isEmpty()) {
-			// last element is the extention button (+)
-			result.remove(result.size() - 1);
+		if(null != doc) {
+			Elements elements = getElementsByClass(doc, "app_tag");
+			result = getInnerHtml(elements);
+	
+			if (!result.isEmpty()) {
+				// last element is the extention button (+)
+				result.remove(result.size() - 1);
+			}
 		}
-
 		return result;
 	}
 

@@ -6,32 +6,48 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.Resource;
 import javax.persistence.EntityManager;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.stereotype.Service;
 import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
+import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
 
-@Resource
+@Service
 class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		SteamAppDAOService {
 
 	private static Logger LOG = LogManager
 			.getLogger(SteamAppDAOServiceImpl.class);
-
+	
+	
+	public List<SteamApp> getAppsWhichHaveData() {	
+		List<SteamApp> result = issueQuery("SELECT a FROM "
+				+ SteamApp.class.getSimpleName() + " a " + "where a.hasData = true");
+		
+		for (SteamApp app : result) {
+			removeLazyLoadedSets(app);
+		}
+		
+		return result;
+	}
+	
+	
 	public SteamApp getAppByAppIdLazyLoading(long appId) {
+		
 		SteamApp result = issueQuerySingleResult("SELECT a FROM "
 				+ SteamApp.class.getSimpleName() + " a " + "where a.appId = "
 				+ appId);
 
+		removeLazyLoadedSets(result);		
 		return result;
 	}
-
+	
 	public SteamApp getWholeAppById(long id) {
 		SteamApp result = null;
 
@@ -43,6 +59,7 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 			result.getData();
 			result.getDlcs();
 			result.getVersions();
+			result.getReviews();
 
 		} catch (Exception e) {
 			em.getTransaction().rollback();
@@ -137,16 +154,18 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 
 		result.addAll(updateApps);
 
-		Set<AppData> emptyDataSet = Collections.emptySet();
-		Set<AppDLC> emptyDLCSet = Collections.emptySet();
-		Set<AppVersion> emptyVersionSet = Collections.emptySet();
-
 		for (SteamApp app : result) {
-			app.setData(emptyDataSet);
-			app.setDlcs(emptyDLCSet);
-			app.setVersions(emptyVersionSet);
+			removeLazyLoadedSets(app);
 		}
 		
 		return result;
+	}
+	
+	
+	private void removeLazyLoadedSets(SteamApp app) {
+		app.setData(Collections.<AppData> emptySet());
+		app.setDlcs(Collections.<AppDLC> emptySet());
+		app.setVersions(Collections.<AppVersion> emptySet());
+		app.setReviews(Collections.<Review> emptySet());	
 	}
 }

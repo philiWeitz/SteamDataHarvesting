@@ -9,40 +9,6 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service">
-		<context:include-filter type="annotation" expression="javax.annotation.Resource"/>
-	</context:component-scan>
-
-
-    <!-- data harvesting trigger definition -->
-	<bean id="DataHarvestScheduler" class="org.uta.steam.rest.scheduler.SteamTrigger"/>
-
-	<bean id="StartupDataHarvestingScheduler" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	  	<property name="targetObject"><ref local="DataHarvestScheduler" /></property>
-	    <property name="targetMethod"><value>initDataHarvesting</value></property>
-	    <property name="arguments">
-			<list>
-		    	<value>0/20 * * * * ?</value>
-		    </list>
-		</property>
-	</bean>
-	
-
-	<!-- Stuff which needs to be done while the server starts up the first time -->
-	<bean id="ServerStartup" class="org.uta.steam.rest.common.ServerStartup"/>
-
-	<bean id="InvokeServerStartup"  class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
-	      <property name="targetObject"><ref local="ServerStartup" /></property>
-	      <property name="targetMethod"><value>onServerStartup</value></property>
-	 </bean>
-
-
-	<!-- Remove this for production -->
-	<!-- <bean id="TestDataService" class="org.uta.steam.jpa.service.impl.TestDataServiceImpl"/> -->
-
-	<!-- <bean id="InvokeTestData" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean"> -->
-	<!-- 	<property name="targetObject"><ref local="TestDataService" /></property> -->
-	<!--    <property name="targetMethod"><value>createTestData</value></property> -->
-	<!-- </bean> -->
+	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service, org.uta.steam.rest"/>
 
 </beans>

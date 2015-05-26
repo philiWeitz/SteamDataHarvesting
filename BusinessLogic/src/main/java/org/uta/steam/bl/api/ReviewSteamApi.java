@@ -23,6 +23,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.Review;
 
@@ -44,8 +45,7 @@ class ReviewSteamApi extends AbstractSteamApi {
 		for(int offset = -1; offset < rounds-1; ++offset) {
 					
 			String jsonResponse = httpGet(
-					"http://store.steampowered.com//appreviews/" + appId + "?" + 
-					"start_offset=" + offset + "&filter=all&language=english");
+					PropUtil.getProperty("steam.get.app.review.url", appId, offset));
 		
 			// if the string has the same has -> API returned again the first one
 			if(firstItemHash == 0) {
@@ -85,7 +85,8 @@ class ReviewSteamApi extends AbstractSteamApi {
 			} catch (IOException e) {
 				LOG.error(e);
 			} catch (NullPointerException e) {
-				LOG.error(e);
+				LOG.error("Getting all reviews page is not a valid HTML page! (" 
+					+ PropUtil.getProperty("steam.get.app.review.url", appId, offset) + ")");
 			}
 		}
 		

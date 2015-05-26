@@ -20,4 +20,6 @@ public interface SteamAppDAOService extends AbstractDAOService<SteamApp> {
 	boolean removeAppFromUpdateList(Long appId);
 	
 	void updateAppList(List<SteamApp> apps);
+	
+	List<SteamApp> getAppsWhichHaveData();
 }

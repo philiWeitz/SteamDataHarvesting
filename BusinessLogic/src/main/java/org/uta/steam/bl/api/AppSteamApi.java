@@ -10,7 +10,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
-import org.uta.steam.bl.util.SteamUtil;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
@@ -26,8 +26,7 @@ public class AppSteamApi extends AbstractSteamApi {
 	public List<SteamApp> getApps() {
 		List<SteamApp> result = new LinkedList<SteamApp>();
 
-		String jsonResponse = httpGet("http://api.steampowered.com/ISteamApps/"
-				+ "GetAppList/v0001/?format=xml");
+		String jsonResponse = httpGet(PropUtil.getProperty("steam.get.all.apps.url"));
 
 		Document doc = Jsoup.parse(jsonResponse);
 		Elements appItems = doc.getElementsByTag("app");
@@ -49,8 +48,7 @@ public class AppSteamApi extends AbstractSteamApi {
 	public List<AppVersion> getVersions(long appId) {
 		List<AppVersion> result = new LinkedList<AppVersion>();
 
-		String xmlResponse = httpGet("https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/?format=xml&maxlength=1&"
-				+ "key=" + SteamUtil.API_KEY + "&appid=" + appId);
+		String xmlResponse = httpGet(PropUtil.getProperty("steam.get.news.url", appId));
 
 		Document doc = Jsoup.parse(xmlResponse);
 		Elements newsItems = doc.getElementsByTag("newsitem");
@@ -64,9 +62,11 @@ public class AppSteamApi extends AbstractSteamApi {
 					.toLowerCase());
 			if (matcher.find()) {
 				Element published = newsitem.getElementsByTag("date").first();
+				Element content = newsitem.getElementsByTag("contents").first();
 
 				AppVersion version = new AppVersion();
 				version.setTitle(title.text());
+				version.setContent(content.text());
 				version.setPublished(published.text());
 				result.add(version);
 			}

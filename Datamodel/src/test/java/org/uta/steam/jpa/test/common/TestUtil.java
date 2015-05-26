@@ -1,4 +1,4 @@
-package org.uta.steam.rest.test.common;
+package org.uta.steam.jpa.test.common;
 
 import java.lang.reflect.Field;
 
@@ -15,9 +15,14 @@ public class TestUtil {
 	}
 		
 	public static void setPrivateField(Object obj, String fieldName, Object value) {
+		setPrivateField(obj, fieldName, value, obj.getClass());
+	}
+
+	@SuppressWarnings("rawtypes")
+	public static void setPrivateField(Object obj, String fieldName, Object value, Class clazz) {
 
 		try {
-			Field field = obj.getClass().getDeclaredField(fieldName);
+			Field field = clazz.getDeclaredField(fieldName);
 			field.setAccessible(true);		
 			field.set(obj, value);
 			field.setAccessible(false);
@@ -32,5 +37,4 @@ public class TestUtil {
 			LOG.error(e);
 		}
 	}
-	
 }

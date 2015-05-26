@@ -18,29 +18,44 @@ public class SteamApp extends AbstractEntity {
 
 	private long appId;
 
+	private boolean hasData = false;	
+	
 	private boolean getsUpdated = false;
 
 	@Basic
 	private String name = StringUtils.EMPTY;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_DATA", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppData> data;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_VERSION", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppVersion> versions;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "APP_DLC", referencedColumnName = "id")
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
+	private Set<Review> reviews;
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppDLC> dlcs;
 
+	
 	public long getAppId() {
 		return appId;
 	}
 
 	public void setAppId(long appid) {
 		this.appId = appid;
+	}
+
+	public boolean isHasData() {
+		return hasData;
+	}
+
+	public void setHasData(boolean hasData) {
+		this.hasData = hasData;
 	}
 
 	public boolean isGetsUpdated() {
@@ -79,6 +94,17 @@ public class SteamApp extends AbstractEntity {
 
 	public void setVersions(Set<AppVersion> versions) {
 		this.versions = versions;
+	}
+	
+	public Set<Review> getReviews() {
+		if (null == reviews) {
+			reviews = new HashSet<Review>();
+		}
+		return reviews;
+	}
+
+	public void setReviews(Set<Review> reviews) {
+		this.reviews = reviews;
 	}
 
 	public Set<AppDLC> getDlcs() {

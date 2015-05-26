@@ -1,4 +1,4 @@
-package org.uta.steam.jpa.service.test;
+package org.uta.steam.jpa.test.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
