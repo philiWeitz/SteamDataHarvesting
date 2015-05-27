@@ -17,7 +17,6 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $loca
             .then(function(games){
                 $scope.games = games;
         });
-
     };
 
     $scope.addToWatchlist = function(appId){
@@ -56,16 +55,138 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $loca
 });
 
 angular.module('steamDataApp').controller('GameCtrl', function ($scope, $location, $routeParams, _, SteamDataService) {
-	
-	$scope.game = {};
-	$scope.appId = $routeParams.appId;
 
-	$scope.getAppData = function(appId){
-        SteamDataService.getAppData(appId)
-            .then(function(game){
-                $scope.game = game;
+    $scope.gamesWithData = [];
+    $scope.searchText= '';
+	
+	$scope.gameVersions = [];
+    $scope.gameDlcs = [];
+	$scope.appId = $routeParams.appId;
+    $scope.appName = $routeParams.appName;
+
+    var init = function(){
+
+        if(!$scope.appId)
+            $scope.getAppsWhichHaveData();
+        else{
+            $scope.getAppVersions($scope.appId);
+            $scope.getAppDlcs($scope.appId);
+        }
+
+    };
+
+    $scope.getAppsWhichHaveData = function(){
+
+        SteamDataService.getAppsWhichHaveData()
+            .then(function(games){
+                $scope.gamesWithData = games;
+                console.log($scope.gamesWithData);
             });
-    }($scope.appId);
-	
-	
+    };
+
+    $scope.showAppVersions = function(appId, appName){
+        //$scope.getAppData(appId);
+        console.log('redirecting '+ appId);
+        $location.path('app/' + appId + '/'+ appName);
+    };
+
+    $scope.getAppDlcs = function(appId){
+
+        SteamDataService.getAppDlcs(appId)
+            .then(function(gameDlcs){
+                $scope.gameDlcs = _.map(gameDlcs, function(dlc){
+                    return {dlcInfo: dlc, reviews : []};
+                });
+
+                console.log($scope.gameDlcs);
+        });
+    };
+
+    $scope.getAppVersions = function(appId){
+
+        SteamDataService.getAppVersions(appId)
+            .then(function(gameVersions){
+                $scope.gameVersions = _.map(gameVersions, function(version){
+                    return {versionInfo: version, reviews : []};
+                });
+            });
+    };
+
+    $scope.getVersionReviews = function(versionId){
+
+        if(!hasReviews(true, versionId)){
+            SteamDataService.getReviewsByAppIdAndVersion($scope.appId, versionId)
+                .then(function(reviews){
+
+                    console.log($scope.gameVersions);
+                    console.log(reviews);
+
+                    $scope.gameVersions = _.each($scope.gameVersions, function(version){
+                        if(version.versionInfo.published === versionId)
+                            version.reviews = reviews;
+                        return version;
+                    });
+
+            });
+        }
+    };
+
+    $scope.getDlcReviews = function(dlcId){
+
+        if(!hasReviews(false, dlcId)){
+            SteamDataService.getReviewsByDlcId(dlcId)
+                .then(function(reviews){
+
+                    $scope.gameDlcs = _.each($scope.gameDlcs, function(dlc){
+                        if(dlc.dlcInfo.dlcId === dlcId)
+                            dlc.reviews = reviews;
+                        return dlc;
+                    });
+
+                });
+        }
+    };
+
+    $scope.getCsvFile = function(appId){
+        SteamDataService.getCsvFile(appId);
+    };
+
+    init();
+
+    var hasReviews = function(isVersion, id){
+
+        if(isVersion){
+            var version = _.find($scope.gameVersions, function(version){
+                return version.versionInfo.published == id;
+            });
+
+            console.log(version);
+
+            if(version.reviews.length)
+                return true;
+
+            return false;
+        }
+
+        else{
+            var dlc = _.find($scope.gameDlcs, function(dlc){
+                return dlc.dlcInfo.dlcId == id;
+            });
+
+            if(dlc.reviews.length)
+                return true;
+
+            return false;
+        }
+
+
+    };
+
+    //$scope.getAppData = function(appId){
+    //    SteamDataService.getAppData(appId)
+    //        .then(function(game){
+    //            $scope.game = game;
+    //        });
+    //}($scope.appId);
+
 });

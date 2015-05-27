@@ -7,11 +7,13 @@ angular.module('steamDataApp').directive('gameTable', function () {
         restrict: 'A',
         scope: {
             games: '=',
+            other: '=',
             searchText: '=',
             isWatchlist: '=',
             add : '&',
             remove : '&',
-            show : '&'
+            show : '&',
+            getCsv : '&'
         },
         templateUrl: '../views/game_table.html'
         //restrict: 'A',

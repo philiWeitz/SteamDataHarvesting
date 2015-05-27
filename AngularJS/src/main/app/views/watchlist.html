@@ -1,29 +1,33 @@
 <section class="row game-tables-container">
 
     <div class="row">
-        <div class="col col-md-6 text-center">Watchlist</div>
-        <div class="col col-md-6">
-            <input class="text-center" type="text" placeholder="Enter game name or ID" ng-model="searchText" ng-change="getGames()"/>
+        <div class="input-group center-block search-panel">
+            <label for="search-field">Search in Games</label>
+            <input class="form-control" type="text" placeholder="Enter game name or ID" id="search-field" ng-model="searchText" ng-change="getGames()"/>
         </div>
     </div>
 
-    <div class="col col-md-6 unwatched-table-container">
+    <div class="row watch-tables-container">
 
-        <h3 class="text-center"> Unwatched </h3>
+        <div class="col col-md-6 unwatched-table-container">
 
-        <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
+            <h3 class="text-center"> Unwatched </h3>
 
-        <div game-table games="games" search-text="searchText" is-watchlist="false" add="addToWatchlist(appId)"></div>
+            <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
 
-    </div>
+            <div game-table games="games" search-text="searchText" is-watchlist="false" add="addToWatchlist(appId)"></div>
 
-    <div class="col col-md-6 watchlist-table-container">
+        </div>
 
-        <h3 class="text-center">Watching</h3>
+        <div class="col col-md-6 watchlist-table-container">
 
-        <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
+            <h3 class="text-center">Watching</h3>
 
-        <div game-table games="games" search-text="searchText" is-watchlist="true" remove="removeFromWatchlist(appId)" show="showGameData(appId)"></div>
+            <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
+
+            <div game-table games="games" search-text="searchText" is-watchlist="true" remove="removeFromWatchlist(appId)" show="showGameData(appId)"></div>
+
+        </div>
 
     </div>
 

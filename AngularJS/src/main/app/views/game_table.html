@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered table-condensed table-hover center-block" ng-show="games.length">
+<table class="table table-bordered table-condensed center-block game-table" ng-show="games.length">
 
     <thead>
         <tr>
@@ -8,17 +8,24 @@
     </thead>
 
     <tbody>
+
         <tr ng-if="!isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-hide="game.getsUpdated">
 
             <td>{{game.appId}}</td>
-            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus pull-right" ng-click="add({appId : game.appId})"></i></td>
+            <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus-circle pull-right" ng-click="add({appId : game.appId})"></i></td>
         </tr>
 
         <tr ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-show="game.getsUpdated" >
 
                 <td ng-click="show({appId : game.appId})">{{game.appId}}</td>
-                <!--<td>{{game.appId}}</td>-->
-                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus pull-right" ng-click="remove({appId : game.appId})"></i></td>
+                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus-circle pull-right" ng-click="remove({appId : game.appId})"></i></td>
+
+        </tr>
+
+        <tr class="clickable" ng-if="other" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | filter:searchText">
+
+            <td ng-click="show({appId : game.appId, appName : game.name})">{{game.appId}}</td>
+            <td>{{game.name}}<button class="btn btn-info pull-right" ng-click="getCsv({appId : game.appId})">Get CSV file</button></td>
 
         </tr>
 

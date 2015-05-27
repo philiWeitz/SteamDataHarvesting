@@ -10,3 +10,69 @@
     padding: 5%;
 }
 
+/*Reviews styles*/
+.reviews-header{
+    margin: 2%;
+    padding: 1%;
+    background-color: #87D37C;
+
+    color: white;
+    font-weight: 700;
+}
+
+.reviews-panel{
+    margin: 2% 4%;
+    max-height: 400px;
+    overflow-y: scroll;
+}
+
+.review{
+    margin: 1% !important;
+    background-color: white !important;
+}
+
+.review-content{
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.title-row-green{
+    color: white;
+    background-color: #F4D03F !important;
+}
+
+.title-row-pumpkin{
+    color: white;
+    background-color: #F4D03F !important;
+}
+
+.content-text{
+    margin: 2%;
+    text-align: justify;
+}
+
+.game-table{
+    width: 90%;
+}
+
+
+.link-text{
+    color: #019875;
+    font-weight: 700;
+}
+
+.white-text{
+    color: white;
+}
+
+.search-panel{
+    width: 20%;
+}
+
+.datagames-container{
+    margin-top: 4%;
+}
+
+.watch-tables-container{
+    margin-top: 2%;
+}
