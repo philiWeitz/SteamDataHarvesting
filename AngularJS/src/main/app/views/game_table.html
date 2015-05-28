@@ -15,17 +15,17 @@
             <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus-circle pull-right" ng-click="add({appId : game.appId})"></i></td>
         </tr>
 
-        <tr class="clickable" ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-show="game.getsUpdated" >
+        <tr class="clickable" ng-click="show({appId : game.appId, appName : game.name})" ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-show="game.getsUpdated" >
 
-                <td ng-click="show({appId : game.appId, appName : game.name})">{{game.appId}}</td>
-                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus-circle pull-right" ng-click="remove({appId : game.appId})"></i></td>
+                <td>{{game.appId}}</td>
+                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus-circle pull-right" ng-click="remove({appId : game.appId}); $event.stopPropagation()"></i></td>
 
         </tr>
 
-        <tr class="clickable" ng-if="other" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | filter:searchText">
+        <tr class="clickable"  ng-click="show({appId : game.appId, appName : game.name})" ng-if="other" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games | filter:searchText">
 
-            <td ng-click="show({appId : game.appId, appName : game.name})">{{game.appId}}</td>
-            <td>{{game.name}}<button class="btn btn-info pull-right" ng-click="getCsv({appId : game.appId})">Get CSV file</button></td>
+            <td>{{game.appId}}</td>
+            <td>{{game.name}}<button class="btn btn-info pull-right" ng-click="getCsv({appId : game.appId}); $event.stopPropagation()">Get CSV file</button></td>
 
         </tr>
 
