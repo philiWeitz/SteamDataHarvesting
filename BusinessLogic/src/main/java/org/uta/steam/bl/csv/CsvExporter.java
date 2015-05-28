@@ -36,6 +36,7 @@ public class CsvExporter {
 		
 		try {
 			File temp = File.createTempFile("tmp",null);
+			temp.deleteOnExit();
 			
 			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(
 				    new FileOutputStream(temp), SteamUtil.CSV_OUTPUT_FORMAT));
