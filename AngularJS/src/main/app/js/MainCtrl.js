@@ -41,6 +41,12 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $loca
         $location.path('datasets/' + appId);
     };
 
+    $scope.showAppVersions = function(appId, appName){
+        //$scope.getAppData(appId);
+        console.log('redirecting '+ appId);
+        $location.path('app/' + appId + '/'+ appName);
+    };
+
     var updateGetsUpdated = function(appId, value){
 
         var gameIndex = _.findIndex($scope.games, function(game){
@@ -61,6 +67,7 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
 	
 	$scope.gameVersions = [];
     $scope.gameDlcs = [];
+    $scope.unversionedReviews = [];
 	$scope.appId = $routeParams.appId;
     $scope.appName = $routeParams.appName;
 
@@ -80,7 +87,6 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
         SteamDataService.getAppsWhichHaveData()
             .then(function(games){
                 $scope.gamesWithData = games;
-                console.log($scope.gamesWithData);
             });
     };
 
@@ -98,7 +104,6 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
                     return {dlcInfo: dlc, reviews : []};
                 });
 
-                console.log($scope.gameDlcs);
         });
     };
 
@@ -118,8 +123,6 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             SteamDataService.getReviewsByAppIdAndVersion($scope.appId, versionId)
                 .then(function(reviews){
 
-                    console.log($scope.gameVersions);
-                    console.log(reviews);
 
                     $scope.gameVersions = _.each($scope.gameVersions, function(version){
                         if(version.versionInfo.published === versionId)
@@ -147,6 +150,16 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
         }
     };
 
+    $scope.getUnversionedReviews = function(){
+
+        if(!$scope.unversionedReviews.length){
+            SteamDataService.getReviewsWithoutVersionByAppId($scope.appId)
+                .then(function(reviews){
+                    $scope.unversionedReviews = reviews;
+                });
+        }
+    };
+
     $scope.getCsvFile = function(appId){
         SteamDataService.getCsvFile(appId);
     };
@@ -159,8 +172,6 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             var version = _.find($scope.gameVersions, function(version){
                 return version.versionInfo.published == id;
             });
-
-            console.log(version);
 
             if(version.reviews.length)
                 return true;

@@ -2,17 +2,63 @@
 
 <div class="col col-md-offset-1 col-md-10">
 
-    <table class="table table-bordered table-condensed center-block">
+    <table class="table table-bordered table-condensed">
 
         <tbody>
-            <tr class="title-row-green">
-                <td>
-                    <i class="fa fa-chevron-down pull-right"></i>
-                    <h2 class="content-text">Versions</h2>
+
+            <tr class="title-row">
+                <td ng-init="openNoVersion = false">
+                    <i class="fa fa-chevron-down pull-right" ng-hide="openNoVersion" ng-click="openNoVersion = true"></i>
+                    <i class="fa fa-chevron-up pull-right" ng-show="openNoVersion" ng-click="openNoVersion = false"></i>
+                    <h3 class="title">No version</h3>
                 </td>
             </tr>
 
-            <tr ng-repeat="version in gameVersions" >
+            <tr ng-if="openNoVersion">
+                <td>
+
+                    <h3 class="title">Unversioned reviews</h3>
+
+                    <div class="reviews-header">
+                        <span class="clickable" ng-hide= "showReview" ng-click="showReview = true; getUnversionedReviews();"><i class="fa fa-chevron-down"></i>Show reviews</span>
+                        <span class="clickable" ng-show= "showReview" ng-click="showReview = false"><i class="fa fa-chevron-up"></i>Hide reviews</span>
+                    </div>
+
+                    <!--<div class="well review" ng-hide="version.reviews.length">No reviews found for this version</div>-->
+
+                    <div class="reviews-panel" ng-show= "showReview">
+
+                        <span ng-if="!unversionedReviews.length">
+                            No reviews found
+                        </span>
+
+                        <div class="well review" ng-repeat="review in unversionedReviews" ng-if="unversionedReviews.length">
+                            <span class="bold-text">{{'Author: '+ review.author}}</span>
+                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
+                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+
+                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+
+                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
+                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                        </div>
+
+                    </div>
+
+                </td>
+            </tr>
+
+            <tr class="title-row">
+                <td ng-init="openVersions = false">
+                    <i class="fa fa-chevron-down pull-right" ng-hide="openVersions" ng-click="openVersions = true"></i>
+                    <i class="fa fa-chevron-up pull-right" ng-show="openVersions" ng-click="openVersions = false"></i>
+                    <h3 class="title">Versions</h3>
+                </td>
+            </tr>
+
+            <tr ng-if= "openVersions && !gameVersions.length" class="text-center"><td>No versions found</td></tr>
+
+            <tr ng-repeat="version in gameVersions" ng-if="openVersions && gameVersions.length">
                 <td>
                     <div class="content-text" ng-init="showAllText = false" >
                         <h3>{{version.versionInfo.title}}</h3>
@@ -38,11 +84,11 @@
                             <span class="bold-text">{{'Author: '+ review.author}}</span>
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
-                           
+
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
-                           
+
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span>{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
 
                     </div>
@@ -52,14 +98,17 @@
 
             </tr>
 
-            <tr class="title-row-pumpkin">
-                <td>
-                    <i class="fa fa-chevron-down pull-right"></i>
-                    <h2 class="content-text">DlCs</h2>
+            <tr class="title-row">
+                <td ng-init="openDlcs = false">
+                    <i class="fa fa-chevron-down pull-right" ng-hide="openDlcs" ng-click="openDlcs = true"></i>
+                    <i class="fa fa-chevron-up pull-right" ng-show="openDlcs" ng-click="openDlcs = false"></i>
+                    <h3 class="title">Versions</h3>
                 </td>
             </tr>
 
-            <tr ng-repeat="dlc in gameDlcs">
+            <tr ng-if= "openDlcs && !gameDlcs.length" ><td class="text-center">No DLCs found</td></tr>
+
+            <tr ng-repeat="dlc in gameDlcs" ng-if="openDlcs && gameDlcs.length">
                 <td>
                     <div class="content-text" ng-init="showAllText = false">
                         <h3>{{dlc.dlcInfo.name}}</h3>
@@ -87,7 +136,7 @@
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span>{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
                     </div>
 
