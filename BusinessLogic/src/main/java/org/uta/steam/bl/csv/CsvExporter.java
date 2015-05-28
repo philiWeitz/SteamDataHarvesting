@@ -25,7 +25,8 @@ import org.uta.steam.jpa.model.SteamApp;
 public class CsvExporter {
 	
 	private static Logger LOG = LogManager.getLogger(CsvExporter.class);
-	private static final String SEPARATOR = ";";
+	private static final String SEPARATOR = ",";
+	private static final String TEXT_MARKER = "\"";
 	
 	private static final DateFormat sdf = 
 			new SimpleDateFormat(SteamUtil.DATE_FORMAT, Locale.ENGLISH);
@@ -137,9 +138,11 @@ public class CsvExporter {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(sdf.format(version.getPublished())).append(SEPARATOR);	
-		sb.append("'").append(version.getTitle().replace("'", "\"")).append("'");
+		sb.append(TEXT_MARKER).append(
+				version.getTitle().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);
 		sb.append(SEPARATOR);
-		sb.append("'").append(version.getContent().replace("'", "\"")).append("'");	
+		sb.append(TEXT_MARKER).append(
+				version.getContent().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);	
 		
 		out.write(sb.toString());
 		out.newLine();
@@ -190,8 +193,8 @@ public class CsvExporter {
 		sb.append(SEPARATOR);
 		sb.append(review.getPeopleSeen()).append(SEPARATOR);
 		sb.append(review.getPeopleHelpful()).append(SEPARATOR);				
-		sb.append("'");
-		sb.append(review.getContent().replace("'", "\"")).append("'");
+		sb.append(TEXT_MARKER).append(
+				review.getContent().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);
 		
 		out.write(sb.toString());
 		out.newLine();

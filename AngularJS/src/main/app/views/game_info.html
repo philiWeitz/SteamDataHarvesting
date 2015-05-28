@@ -36,8 +36,11 @@
 
                         <div class="well review" ng-repeat="review in version.reviews" ng-if="version.reviews.length">
                             <span class="bold-text">{{'Author: '+ review.author}}</span>
-                            <span class="bold-text">{{review.created | date: 'mediumDate'}}</span>
+                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
+                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+                           
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+                           
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
                             <span>{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
@@ -78,8 +81,11 @@
 
                         <div class="well review" ng-repeat="review in dlc.reviews" ng-if="dlc.reviews.length">
                             <span class="bold-text">{{'Author: '+ review.author}}</span>
-                            <span class="bold-text">{{review.created | date: 'mediumDate'}}</span>
+                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
+                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
                             <span>{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>

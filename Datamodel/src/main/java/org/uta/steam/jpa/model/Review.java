@@ -125,7 +125,26 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	public void setVersion(AppVersion version) {
 		this.version = version;
 	}
+	
+	@Override
+	public int hashCode() {
+		try {
+			String hashString = author + content + peopleSeen + 
+					peopleHelpful + playTimeLast2Weeks + playTimeAll;
+			
+			if(null != posted) {
+				hashString += posted.getTime();
+			} 
+			if(null != updated) {
+				hashString += updated.getTime();
+			}
 
+			return hashString.hashCode();
+		} catch(Exception e) {
+			return 0;
+		}
+	}
+	
 	public int compareTo(Review o) {
 		Date c1 = getPosted();
 		Date c2 = o.getPosted();

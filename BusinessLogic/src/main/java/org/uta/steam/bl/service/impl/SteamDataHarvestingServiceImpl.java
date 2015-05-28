@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -55,11 +56,15 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 
 	
 	private void addReviews(SteamApp app) {
+
 		List<AppVersion> versions = new LinkedList<AppVersion>(app.getVersions());
 		Collections.sort(versions);
 		Collections.reverse(versions);
 		
+		// remove duplicated reviews
 		List<Review> newReviews = appSteamApi.getHelpfulAppReviews(app.getAppId());
+		newReviews = removeDuplicatedReviews(app.getReviews(), newReviews);
+
 		for(Review review : newReviews) {
 			review.setVersion(getAppVersion(versions, review));
 		}
@@ -120,8 +125,13 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 
 		// update dlc content
 		for (AppDLC dlc : app.getDlcs()) {
+			
+			// remove duplicated reviews
+			List<Review> newReviews = appSteamApi.getHelpfulAppReviews(dlc.getDlcId());
+			newReviews = removeDuplicatedReviews(dlc.getReviews(), newReviews);
+
 			// add new reviews (version is always null)
-			dlc.getReviews().addAll(appSteamApi.getHelpfulAppReviews(dlc.getDlcId()));
+			dlc.getReviews().addAll(newReviews);
 			
 			// add app data
 			AppData data = new AppData();
@@ -149,5 +159,24 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 		}
 		
 		return null;
+	}
+	
+	
+	private List<Review> removeDuplicatedReviews(Set<Review> dbSet, List<Review> newReviews) {
+		List<Review> result = new LinkedList<Review>();
+
+		// create a hash set to improve performance 
+		Set<Integer> reviewHash = new HashSet<Integer>();
+		for(Review review : dbSet) {
+			reviewHash.add(review.hashCode());
+		}
+				
+		// remove duplicated reviews
+		for(Review review : newReviews) {
+			if(!reviewHash.contains(review.hashCode())) {
+				result.add(review);
+			}
+		}
+		return result;
 	}
 }

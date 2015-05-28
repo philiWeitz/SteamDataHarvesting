@@ -157,7 +157,9 @@ public class AppController {
     		String path = steamDataService.createCsvFile(appId);
     		InputStream is = new FileInputStream(path);
 
-    		response.setHeader("Content-Disposition","attachment; filename=csv-file.txt");
+    		response.setHeader("Content-Disposition","attachment; "
+    				+ "filename=csv-file-" + appId + ".csv");
+    		
     		response.setContentType("text/plain");
     		response.setCharacterEncoding(SteamUtil.CSV_OUTPUT_FORMAT);
 
