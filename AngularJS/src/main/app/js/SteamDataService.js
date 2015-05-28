@@ -13,7 +13,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getAllApps = function () {
         return $http.get(appUrlBase + 'getAllApps')
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -23,7 +23,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
         '?max=' + max +
         '&searchTerm=' + searchTerm)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -31,7 +31,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getAppsWhichHaveData = function () {
         return $http.get(appUrlBase + 'getAppsWhichHaveData')
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -39,7 +39,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getAppDlcs = function (appId) {
         return $http.get(appUrlBase + 'getAppDlcs/' + appId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -48,7 +48,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
         console.log(appId);
         return $http.post(appUrlBase + 'addToWatchList' , appId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -56,7 +56,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.removeFromWatchlist = function(appId){
         return $http.post(appUrlBase + 'removeFromWatchList', appId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -70,7 +70,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getAppVersions = function(appId){
         return $http.get(versionUrlBase + 'getVersionsByAppId/' + appId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -80,7 +80,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getReviewsByAppIdAndVersion = function(appId, versionId){
         return $http.get(reviewUrlBase + 'getReviewsByAppIdAndVersion/' + appId + '/' + versionId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
@@ -88,11 +88,18 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     this.getReviewsByDlcId = function(dlcId){
         return $http.get(reviewUrlBase + 'getReviewsByDlcId/' + dlcId)
             .then(function(response){
-                console.log(response.data);
+                
                 return response.data;
             });
     };
 
+    this.getReviewsWithoutVersionByAppId = function(appId){
+        return $http.get(reviewUrlBase + 'getReviewsWithoutVersionByAppId/' + appId)
+            .then(function(response){
+                console.log(response.data);
+                return response.data;
+            });
+    };
 
 
 

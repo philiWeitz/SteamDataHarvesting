@@ -45,6 +45,10 @@ table{
     font-weight: 700;
 }
 
+.orange-text{
+    color: #F2784B;
+}
+
 .navbar{
     background-color: #26C281 !important;
 
