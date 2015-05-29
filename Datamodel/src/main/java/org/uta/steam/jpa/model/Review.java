@@ -33,6 +33,8 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	
 	private long peopleHelpful;
 
+	private boolean recommended = false;
+	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "POSTED_DATE", nullable = false)
 	private Date posted;
@@ -100,6 +102,14 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 
 	public void setPeopleHelpful(long peopleHelpful) {
 		this.peopleHelpful = peopleHelpful;
+	}
+
+	public boolean isRecommended() {
+		return recommended;
+	}
+
+	public void setRecommended(boolean recommended) {
+		this.recommended = recommended;
 	}
 
 	public Date getPosted() {

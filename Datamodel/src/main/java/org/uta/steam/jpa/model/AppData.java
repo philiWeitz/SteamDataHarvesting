@@ -13,6 +13,10 @@ public class AppData extends AbstractEntity implements Comparable<AppData> {
 
 	private double price;
 
+	private double positiveReviews;
+	
+	private double negativeReviews;
+	
 	@ElementCollection(fetch = FetchType.EAGER)
 	private Set<String> tags;
 
@@ -23,6 +27,22 @@ public class AppData extends AbstractEntity implements Comparable<AppData> {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public double getPositiveReviews() {
+		return positiveReviews;
+	}
+
+	public void setPositiveReviews(double positiveReviews) {
+		this.positiveReviews = positiveReviews;
+	}
+
+	public double getNegativeReviews() {
+		return negativeReviews;
+	}
+
+	public void setNegativeReviews(double negativeReviews) {
+		this.negativeReviews = negativeReviews;
 	}
 
 	public Set<String> getTags() {

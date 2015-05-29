@@ -31,6 +31,8 @@ class ReviewSteamApi extends AbstractSteamApi {
 		
 	private static Logger LOG = LogManager.getLogger(ReviewSteamApi.class);
 
+	private static final String RECOMMENDED_KEY = "recommended";
+	
 	private DateFormat formatWithYear = new SimpleDateFormat(
 			SteamUtil.POSTED_DATE_FORMAT_WITH_YEAR, Locale.ENGLISH);
 	private DateFormat formatNoYear = new SimpleDateFormat(
@@ -76,6 +78,7 @@ class ReviewSteamApi extends AbstractSteamApi {
 					review = setPostedAndUpdatedDate(reviewDoc, review);
 					review = setHoursPlayed(reviewDoc, review);
 					review = setUsersSeenVsHelpful(reviewDoc, review);
+					review = setIsRecommended(reviewDoc, review);
 					
 					result.add(review);
 				}
@@ -166,6 +169,19 @@ class ReviewSteamApi extends AbstractSteamApi {
 			} catch(NumberFormatException e) {
 				LOG.error("Error: Couldn't parse rating bar string (" + ratingBar + ")");
 			}
+		}
+		
+		return review;
+	}
+	
+	
+	private Review setIsRecommended(Document doc, Review review) {
+		String recommended = doc.getElementsByClass("title").text().toLowerCase();
+		
+		if(RECOMMENDED_KEY.equals(recommended)) {
+			review.setRecommended(true);
+		} else {
+			review.setRecommended(false);
 		}
 		
 		return review;

@@ -37,7 +37,22 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 
 	
 	public void harvestDataFromSteam() {
-		for (SteamApp app : appDaoService.getWholeAppsToUpdate()) {
+		List<SteamApp> updateList = appDaoService.getWholeAppsToUpdate();
+		harvestDataFromSteam(updateList);
+	}
+	
+	
+	public void harvestDataFromSteam(long appId) {
+		SteamApp app =  getWholeApp(appId);
+		
+		if(null != app && app.isGetsUpdated()) {
+			harvestDataFromSteam(Collections.singletonList(app));
+		}
+	}
+	
+	
+	private void harvestDataFromSteam(List<SteamApp> apps) {
+		for (SteamApp app : apps) {
 
 			updateAppData(app);
 			updateAppVersions(app);
@@ -76,6 +91,9 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 		AppData data = new AppData();
 		data.setPrice(appWebCrawler.getAppPrice(app.getAppId()));
 		data.setTags(new HashSet<String>(appWebCrawler.getAppTags(app.getAppId())));
+		
+		data = appWebCrawler.setPositiveNegativeReviews(app.getAppId(), data);
+		
 		app.getData().add(data);
 	}
 

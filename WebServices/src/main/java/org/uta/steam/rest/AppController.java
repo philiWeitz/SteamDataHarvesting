@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
+import org.uta.steam.bl.service.SteamDataHarvestingService;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
@@ -37,6 +38,7 @@ public class AppController {
 	 * example call: -
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAllAppsAndUpdateList?searchTerm=test&max=20
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppDlcs/226840
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/harvestDataForApp/226840
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppsWhichHaveData
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getCSVFile/226840
 	 */
@@ -47,7 +49,8 @@ public class AppController {
 
 	@Autowired
 	private SteamDataService steamDataService;
-
+	@Autowired
+	private SteamDataHarvestingService dataHarvestingService;
 		
 	@RequestMapping(value = "/getAllAppsAndUpdateList", method = RequestMethod.GET)
 	public ResponseEntity<String> getAllAppsAndUpdateList(String searchTerm, Integer max) {
@@ -103,6 +106,13 @@ public class AppController {
 		}
 
 		return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
+	}
+	
+	
+	@RequestMapping(value = "/harvestDataForApp/{appId}", method = RequestMethod.GET)
+	public ResponseEntity<String> harvestDataForApp(@PathVariable long appId) {
+		dataHarvestingService.harvestDataFromSteam(appId);
+		return new ResponseEntity<String>("Done", HttpStatus.OK);
 	}
 	
 	

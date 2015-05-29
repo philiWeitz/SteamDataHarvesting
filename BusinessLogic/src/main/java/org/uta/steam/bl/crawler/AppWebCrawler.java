@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -18,6 +19,7 @@ import org.jsoup.select.Elements;
 import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
+import org.uta.steam.jpa.model.AppData;
 
 public class AppWebCrawler extends AbstractWebCrawler {
 	private static Logger LOG = LogManager.getLogger(AppWebCrawler.class);
@@ -141,6 +143,39 @@ public class AppWebCrawler extends AbstractWebCrawler {
 	}
 
 
+	public AppData setPositiveNegativeReviews(long appId, AppData data) {
+		Document doc = getHtmlFromUrl(appId);
+
+		if(null != doc) {
+			data.setPositiveReviews(getReviewCount(doc, "ReviewsTab_positive"));
+			data.setNegativeReviews(getReviewCount(doc, "ReviewsTab_negative"));
+		}
+	
+		return data;
+	}
+	
+	
+	private long getReviewCount(Document doc, String parentId) {
+		Elements reviewHeader = doc.getElementById(parentId)
+				.getElementsByClass("user_reviews_count");
+
+		if(!reviewHeader.isEmpty()) {
+			String number = reviewHeader.first().text().replace(",", "");				
+			Matcher matcher = SteamUtil.NUMBER_PATTERN_INT.matcher(number);
+				
+			if(matcher.find()) {
+				try {
+					return Long.parseLong(matcher.group());
+				} catch(NumberFormatException e) {
+					LOG.error("Error: Couldn't parse review count (" + reviewHeader.text() + ")");
+				}
+			}
+		}
+		
+		return 0;
+	}
+	
+	
 	private Document getHtmlFromUrl(long appId) {
 
 		if (this.appId != appId) {

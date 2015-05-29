@@ -6,6 +6,8 @@ import org.uta.steam.jpa.model.SteamApp;
 public interface SteamDataHarvestingService {
 	
 	void harvestDataFromSteam();
+	
+	void harvestDataFromSteam(long appId);
 
 	void updateAppListFromSteam();
 	
