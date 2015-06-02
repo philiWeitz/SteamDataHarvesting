@@ -176,7 +176,7 @@ class ReviewSteamApi extends AbstractSteamApi {
 	
 	
 	private Review setIsRecommended(Document doc, Review review) {
-		String recommended = doc.getElementsByClass("title").text().toLowerCase();
+		String recommended = doc.getElementsByClass("ratingSummary").text().toLowerCase();
 		
 		if(RECOMMENDED_KEY.equals(recommended)) {
 			review.setRecommended(true);

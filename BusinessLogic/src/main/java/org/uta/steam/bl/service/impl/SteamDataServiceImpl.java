@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.uta.steam.bl.csv.CsvExporter;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.jpa.model.AppDLC;
+import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
@@ -79,5 +80,10 @@ class SteamDataServiceImpl implements SteamDataService {
 
 	public List<SteamApp> getAppsWhichHaveData() {
 		return appDaoService.getAppsWhichHaveData();
+	}
+
+
+	public List<AppData> getAppDataById(long appId) {
+		return appDaoService.getAppDataById(appId);
 	}
 }

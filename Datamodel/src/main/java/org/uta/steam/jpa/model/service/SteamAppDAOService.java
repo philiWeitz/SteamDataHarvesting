@@ -2,6 +2,7 @@ package org.uta.steam.jpa.model.service;
 
 import java.util.List;
 
+import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.SteamApp;
 
 public interface SteamAppDAOService extends AbstractDAOService<SteamApp> {
@@ -22,4 +23,6 @@ public interface SteamAppDAOService extends AbstractDAOService<SteamApp> {
 	void updateAppList(List<SteamApp> apps);
 	
 	List<SteamApp> getAppsWhichHaveData();
+	
+	List<AppData> getAppDataById(long appId);
 }

@@ -17,6 +17,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
+import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
@@ -78,9 +79,10 @@ public class CsvExporter {
 		}
 		out.newLine();
 		
+
+		/********* export reviews *********/
 		exportReviewHeader(out);
-	
-		// export reviews
+		
 		List<Review> reviews = new LinkedList<Review>(app.getReviews());
 		Collections.sort(reviews);
 
@@ -88,8 +90,22 @@ public class CsvExporter {
 			exportReview(out, review);
 		}
 		out.flush();
+
 		
-		// export dlcs
+		/********* export data set *********/
+		out.newLine();
+		exportAppDataHeader(out);
+		
+		List<AppData> dataList = new LinkedList<AppData>(app.getData());
+		Collections.sort(dataList);
+
+		for(AppData data : dataList) {
+			exportAppData(out, data);
+		}
+		out.flush();
+		
+		
+		/********* export dlcs *********/
 		out.newLine();
 		
 		for(AppDLC dlc : app.getDlcs()) {
@@ -196,6 +212,38 @@ public class CsvExporter {
 		sb.append(review.getPeopleHelpful()).append(SEPARATOR);				
 		sb.append(TEXT_MARKER).append(
 				review.getContent().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);
+		
+		out.write(sb.toString());
+		out.newLine();
+	}
+	
+	
+	private void exportAppDataHeader(BufferedWriter out) throws IOException {
+		StringBuffer sb = new StringBuffer();	
+		
+		sb.append("App Data:");
+		out.write(sb.toString());
+		out.newLine();
+		
+		sb.append("Created").append(SEPARATOR);		
+		sb.append("Price").append(SEPARATOR);
+		sb.append("Positive reviews").append(SEPARATOR);		
+		sb.append("Negative reviews").append(SEPARATOR);
+		sb.append("Tags").append(SEPARATOR);
+		
+		out.write(sb.toString());
+		out.newLine();
+	}
+	
+	
+	private void exportAppData(BufferedWriter out, AppData data) throws IOException {
+		StringBuffer sb = new StringBuffer();
+
+		sb.append(sdf.format(data.getCreated())).append(SEPARATOR);
+		sb.append(data.getPrice()).append(SEPARATOR);	
+		sb.append(data.getPositiveReviews()).append(SEPARATOR);	
+		sb.append(data.getNegativeReviews()).append(SEPARATOR);			
+		sb.append(TEXT_MARKER).append(data.getTags().toString()).append(TEXT_MARKER);
 		
 		out.write(sb.toString());
 		out.newLine();

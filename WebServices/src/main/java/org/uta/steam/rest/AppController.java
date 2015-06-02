@@ -3,6 +3,7 @@ package org.uta.steam.rest;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -27,6 +28,7 @@ import org.uta.steam.bl.service.SteamDataHarvestingService;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
+import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.SteamApp;
 
 
@@ -41,6 +43,7 @@ public class AppController {
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/harvestDataForApp/226840
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppsWhichHaveData
 	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getCSVFile/226840
+	 * http://localhost:8080/SteamDataHarvestingWebServices/service/app/getAppData/226840	
 	 */
 
 	private static Logger LOG = LogManager.getLogger(AppController.class);
@@ -113,6 +116,30 @@ public class AppController {
 	public ResponseEntity<String> harvestDataForApp(@PathVariable long appId) {
 		dataHarvestingService.harvestDataFromSteam(appId);
 		return new ResponseEntity<String>("Done", HttpStatus.OK);
+	}
+
+	
+	
+	@RequestMapping(value = "/getAppData/{appId}", method = RequestMethod.GET)
+	public ResponseEntity<String> getAppData(@PathVariable long appId) {
+		
+		try {
+			String jsonString = StringUtils.EMPTY;
+			List<AppData> data = steamDataService.getAppDataById(appId);
+			Collections.sort(data);
+			
+			jsonString = mapper.writeValueAsString(data);
+			return new ResponseEntity<String>(jsonString, HttpStatus.OK);
+				
+		} catch (JsonGenerationException e) {
+			LOG.error(e);
+		} catch (JsonMappingException e) {
+			LOG.error(e);
+		} catch (IOException e) {
+			LOG.error(e);
+		}
+
+		return new ResponseEntity<String>("Bad Request", HttpStatus.BAD_REQUEST);
 	}
 	
 	

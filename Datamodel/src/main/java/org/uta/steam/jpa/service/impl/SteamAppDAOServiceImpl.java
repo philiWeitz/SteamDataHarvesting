@@ -161,6 +161,13 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		return result;
 	}
 	
+	public List<AppData> getAppDataById(long appId) {
+		List<AppData> result = issueQuery("SELECT a.data FROM "
+				+ SteamApp.class.getSimpleName() + " a "
+				+ "where a.appId = " + appId);
+
+		return result;
+	}
 	
 	private void removeLazyLoadedSets(SteamApp app) {
 		app.setData(Collections.<AppData> emptySet());
