@@ -9,7 +9,7 @@
 
     <tbody>
 
-        <tr ng-if="!isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-hide="game.getsUpdated">
+        <tr ng-if="!isWatchlist && !other" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-hide="game.getsUpdated">
 
             <td>{{game.appId}}</td>
             <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-plus-circle pull-right" ng-click="add({appId : game.appId})"></i></td>
@@ -18,7 +18,11 @@
         <tr class="clickable" ng-click="show({appId : game.appId, appName : game.name})" ng-if="isWatchlist" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-repeat= "game in games" ng-show="game.getsUpdated" >
 
                 <td>{{game.appId}}</td>
-                <td>{{game.name}}<i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus-circle pull-right" ng-click="remove({appId : game.appId}); $event.stopPropagation()"></i></td>
+                <td ng-init="clicked = false">{{game.name}}
+                    <button class="btn btn-info pull-right" ng-click="harvest({appId : game.appId, appName : game.name}); clicked = true; $event.stopPropagation()" ng-hide="clicked">Harvest data</button>
+                    <i class="fa fa-spin fa-refresh pull-right" ng-show="clicked"></i>
+                    <i ng-class="{visible: hover, invisible: !hover}" class="fa fa-minus-circle pull-right" ng-click="remove({appId : game.appId}); $event.stopPropagation()"></i>
+                </td>
 
         </tr>
 

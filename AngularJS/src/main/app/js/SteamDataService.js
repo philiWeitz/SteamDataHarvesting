@@ -44,6 +44,14 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
             });
     };
 
+    this.harvestDataForApp = function (appId) {
+
+        return $http.get(appUrlBase + 'harvestDataForApp/' + appId)
+            .then(function(response){
+                return response.data;
+            });
+    };
+
     this.addToWatchlist = function(appId){
         console.log(appId);
         return $http.post(appUrlBase + 'addToWatchList' , appId)

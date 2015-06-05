@@ -25,7 +25,7 @@
 
             <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="games.length"></i>
 
-            <div game-table games="games" search-text="searchText" is-watchlist="true" remove="removeFromWatchlist(appId)" show="showAppVersions(appId, appName)"></div>
+            <div game-table games="games" search-text="searchText" is-watchlist="true" remove="removeFromWatchlist(appId)" show="showAppVersions(appId, appName)" harvest="harvestDataForApp(appId, appName)"></div>
 
         </div>
 

@@ -35,14 +35,19 @@
                         </span>
 
                         <div class="well review" ng-repeat="review in unversionedReviews" ng-if="unversionedReviews.length">
-                            <span class="bold-text">{{'Author: '+ review.author}}</span>
+                            <span class="bold-text">
+                                <i class="fa fa-thumbs-up recommendation-icon" ng-if="review.recommended"></i>
+                                <i class="fa fa-thumbs-down recommendation-icon" ng-if="!review.recommended"></i>
+                                {{'Author: '+ review.author}}
+                            </span>
+
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
 
                     </div>
@@ -87,14 +92,20 @@
                         </span>
 
                         <div class="well review" ng-repeat="review in version.reviews" ng-if="version.reviews.length">
-                            <span class="bold-text">{{'Author: '+ review.author}}</span>
+
+                            <span class="bold-text">
+                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
+                                {{'Author: '+ review.author}}
+                            </span>
+
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
 
                     </div>
@@ -141,13 +152,17 @@
 
                         <div class="well review" ng-repeat="review in dlc.reviews" ng-if="dlc.reviews.length">
                             <span class="bold-text">{{'Author: '+ review.author}}</span>
+
+                            <span ng-if="review.recommended" class="pull-right"><i class="fa fa-thumbs-up recommendation-icon"></i></span>
+                            <span ng-if="!review.recommended" class="pull-right"><i class="fa fa-thumbs-down recommendation-icon"></i></span>
+
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text orange-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
                     </div>
 

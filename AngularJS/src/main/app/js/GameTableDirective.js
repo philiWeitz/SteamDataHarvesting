@@ -13,6 +13,7 @@ angular.module('steamDataApp').directive('gameTable', function () {
             add : '&',
             remove : '&',
             show : '&',
+            harvest : '&',
             getCsv : '&'
         },
         templateUrl: '../views/game_table.html'

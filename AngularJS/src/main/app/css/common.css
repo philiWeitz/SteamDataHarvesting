@@ -49,6 +49,18 @@ table{
     color: #F2784B;
 }
 
+.green-text{
+    color: #26C281;
+}
+
+.blue-text{
+    color: #19B5FE;
+}
+
+.red-text{
+    color: #F22613;
+}
+
 .navbar{
     background-color: #26C281 !important;
 

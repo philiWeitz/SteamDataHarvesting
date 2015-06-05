@@ -35,6 +35,16 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $loca
             });
     };
 
+    $scope.harvestDataForApp = function(appId, appName){
+
+        SteamDataService.harvestDataForApp(appId)
+            .then(function(data){
+                console.log('show data');
+                $scope.showAppVersions(appId, appName);
+            });
+
+    };
+
     $scope.showGameData = function(appId){
         //$scope.getAppData(appId);
         console.log('redirecting '+ appId);
