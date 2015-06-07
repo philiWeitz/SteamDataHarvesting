@@ -202,9 +202,6 @@
                                 {{'Author: '+ review.author}}
                             </span>
 
-                            <span ng-if="review.recommended" class="pull-right"><i class="fa fa-thumbs-up recommendation-icon"></i></span>
-                            <span ng-if="!review.recommended" class="pull-right"><i class="fa fa-thumbs-down recommendation-icon"></i></span>
-
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
 
