@@ -27,6 +27,7 @@ public class CsvExporter {
 	
 	private static Logger LOG = LogManager.getLogger(CsvExporter.class);
 	private static final String SEPARATOR = ";";
+	private static final String TEXT_MARKER = "\"";
 	
 	private static final DateFormat sdf = 
 			new SimpleDateFormat(SteamUtil.DATE_FORMAT, Locale.ENGLISH);
@@ -154,9 +155,10 @@ public class CsvExporter {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(sdf.format(version.getPublished())).append(SEPARATOR);	
-		sb.append(version.getTitle().replace(SEPARATOR, ","));
+		sb.append(addContext(version.getTitle()));
+		
 		sb.append(SEPARATOR);
-		sb.append(version.getContent().replace(SEPARATOR, ","));	
+		sb.append(addContext(version.getContent()));	
 		
 		out.write(sb.toString());
 		out.newLine();
@@ -209,7 +211,7 @@ public class CsvExporter {
 		sb.append(SEPARATOR);
 		sb.append(review.getPeopleSeen()).append(SEPARATOR);
 		sb.append(review.getPeopleHelpful()).append(SEPARATOR);				
-		sb.append(review.getContent().replace(SEPARATOR, ","));
+		sb.append(addContext(review.getContent()));
 		
 		out.write(sb.toString());
 		out.newLine();
@@ -240,9 +242,15 @@ public class CsvExporter {
 		sb.append(data.getPrice()).append(SEPARATOR);	
 		sb.append(data.getPositiveReviews()).append(SEPARATOR);	
 		sb.append(data.getNegativeReviews()).append(SEPARATOR);			
-		sb.append(data.getTags().toString().replace(SEPARATOR, ","));
+		sb.append(addContext(data.getTags().toString()));
 		
 		out.write(sb.toString());
 		out.newLine();
+	}
+	
+	
+	private String addContext(String context) {
+		return TEXT_MARKER + context.replace(TEXT_MARKER, "'")
+				.replace(SEPARATOR, ",").replace('\n', ' ') + TEXT_MARKER;
 	}
 }
