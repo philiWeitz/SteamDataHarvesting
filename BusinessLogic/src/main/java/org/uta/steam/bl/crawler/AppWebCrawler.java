@@ -156,18 +156,22 @@ public class AppWebCrawler extends AbstractWebCrawler {
 	
 	
 	private long getReviewCount(Document doc, String parentId) {
-		Elements reviewHeader = doc.getElementById(parentId)
-				.getElementsByClass("user_reviews_count");
-
-		if(!reviewHeader.isEmpty()) {
-			String number = reviewHeader.first().text().replace(",", "");				
-			Matcher matcher = SteamUtil.NUMBER_PATTERN_INT.matcher(number);
-				
-			if(matcher.find()) {
-				try {
-					return Long.parseLong(matcher.group());
-				} catch(NumberFormatException e) {
-					LOG.error("Error: Couldn't parse review count (" + reviewHeader.text() + ")");
+		Element reviewCountParent = doc.getElementById(parentId);
+		
+		if(null != reviewCountParent) {
+			Elements reviewHeader = reviewCountParent
+					.getElementsByClass("user_reviews_count");
+	
+			if(!reviewHeader.isEmpty()) {
+				String number = reviewHeader.first().text().replace(",", "");				
+				Matcher matcher = SteamUtil.NUMBER_PATTERN_INT.matcher(number);
+					
+				if(matcher.find()) {
+					try {
+						return Long.parseLong(matcher.group());
+					} catch(NumberFormatException e) {
+						LOG.error("Error: Couldn't parse review count (" + reviewHeader.text() + ")");
+					}
 				}
 			}
 		}

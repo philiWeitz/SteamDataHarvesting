@@ -21,9 +21,18 @@ public class PropUtil {
 		if(null == prop) {
 			try {
 				prop = new Properties();		
+
+				InputStream input;
+
+				// try to load the resource from current context first
+				input = Thread.currentThread().getContextClassLoader()
+						.getResourceAsStream("config.properties");
 				
-				InputStream input = PropUtil.class.
-						getClassLoader().getResourceAsStream("config.properties");
+				// if not available try to load it from the business logic context
+				if(null == input) {
+					input = PropUtil.class.
+							getClassLoader().getResourceAsStream("config.properties");
+				}
 				
 				prop.load(input);
 				

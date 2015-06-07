@@ -27,6 +27,6 @@ public class DataHarvestScheduler implements Job {
 		steamDataHarvestingService.harvestDataFromSteam();
 		System.out.println("Harvesting Data Done");
 		
-		//steamDataService.updateAppListFromSteam();
+		steamDataHarvestingService.updateAppListFromSteam();
 	}
 }

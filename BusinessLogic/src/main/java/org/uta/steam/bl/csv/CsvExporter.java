@@ -26,8 +26,7 @@ import org.uta.steam.jpa.model.SteamApp;
 public class CsvExporter {
 	
 	private static Logger LOG = LogManager.getLogger(CsvExporter.class);
-	private static final String SEPARATOR = ",";
-	private static final String TEXT_MARKER = "\"";
+	private static final String SEPARATOR = ";";
 	
 	private static final DateFormat sdf = 
 			new SimpleDateFormat(SteamUtil.DATE_FORMAT, Locale.ENGLISH);
@@ -155,11 +154,9 @@ public class CsvExporter {
 		StringBuffer sb = new StringBuffer();
 
 		sb.append(sdf.format(version.getPublished())).append(SEPARATOR);	
-		sb.append(TEXT_MARKER).append(
-				version.getTitle().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);
+		sb.append(version.getTitle().replace(SEPARATOR, ","));
 		sb.append(SEPARATOR);
-		sb.append(TEXT_MARKER).append(
-				version.getContent().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);	
+		sb.append(version.getContent().replace(SEPARATOR, ","));	
 		
 		out.write(sb.toString());
 		out.newLine();
@@ -170,7 +167,8 @@ public class CsvExporter {
 		StringBuffer sb = new StringBuffer();	
 		
 		sb.append("Created").append(SEPARATOR);
-		sb.append("Version").append(SEPARATOR);		
+		sb.append("Version").append(SEPARATOR);	
+		sb.append("Recommended").append(SEPARATOR);			
 		sb.append("User Name").append(SEPARATOR);
 		sb.append("User Id").append(SEPARATOR);
 		sb.append("Play time all").append(SEPARATOR);
@@ -196,7 +194,8 @@ public class CsvExporter {
 		} else {
 			sb.append("No Version").append(SEPARATOR);
 		}
-		
+
+		sb.append(review.isRecommended()).append(SEPARATOR);
 		sb.append(review.getAuthor()).append(SEPARATOR);				
 		sb.append(review.getAuthorSteamId()).append(SEPARATOR);
 		sb.append(review.getPlayTimeAll()).append(SEPARATOR);
@@ -210,8 +209,7 @@ public class CsvExporter {
 		sb.append(SEPARATOR);
 		sb.append(review.getPeopleSeen()).append(SEPARATOR);
 		sb.append(review.getPeopleHelpful()).append(SEPARATOR);				
-		sb.append(TEXT_MARKER).append(
-				review.getContent().replace(TEXT_MARKER, "'")).append(TEXT_MARKER);
+		sb.append(review.getContent().replace(SEPARATOR, ","));
 		
 		out.write(sb.toString());
 		out.newLine();
@@ -221,8 +219,7 @@ public class CsvExporter {
 	private void exportAppDataHeader(BufferedWriter out) throws IOException {
 		StringBuffer sb = new StringBuffer();	
 		
-		sb.append("App Data:");
-		out.write(sb.toString());
+		out.write("App Data:");
 		out.newLine();
 		
 		sb.append("Created").append(SEPARATOR);		
@@ -243,7 +240,7 @@ public class CsvExporter {
 		sb.append(data.getPrice()).append(SEPARATOR);	
 		sb.append(data.getPositiveReviews()).append(SEPARATOR);	
 		sb.append(data.getNegativeReviews()).append(SEPARATOR);			
-		sb.append(TEXT_MARKER).append(data.getTags().toString()).append(TEXT_MARKER);
+		sb.append(data.getTags().toString().replace(SEPARATOR, ","));
 		
 		out.write(sb.toString());
 		out.newLine();
