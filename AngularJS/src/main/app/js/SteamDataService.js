@@ -44,6 +44,13 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
             });
     };
 
+    this.getAppData = function (appId) {
+        return $http.get(appUrlBase + 'getAppData/' + appId)
+            .then(function(response){
+                return response.data;
+            });
+    };
+
     this.harvestDataForApp = function (appId) {
 
         return $http.get(appUrlBase + 'harvestDataForApp/' + appId)

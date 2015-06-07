@@ -1,10 +1,43 @@
 <h1 class="text-center">{{appName}}</h1>
 
-<div class="col col-md-offset-1 col-md-10">
+<div class="col col-md-offset-1 col-md-10 ">
 
-    <table class="table table-bordered table-condensed">
+    <table class="table table-bordered table-condensed game-info-table">
 
         <tbody>
+
+            <!--App data header-->
+
+            <tr class="title-row clickable" >
+                <td ng-init="openData = false" ng-click="openData = !openData">
+                    <i class="fa fa-chevron-down pull-right" ng-hide="openData" ng-click="openData = true"></i>
+                    <i class="fa fa-chevron-up pull-right" ng-show="openData" ng-click="openData = false"></i>
+                    <h3 class="title">App Data</h3>
+                </td>
+            </tr>
+
+            <tr ng-if= "openData && !gameData.length" class="text-center"><td>No data found</td></tr>
+
+            <tr ng-repeat="data in gameData" ng-if="openData && gameData.length">
+
+                <td>
+                    <div class="content-text">
+                        <h3>{{data.created | date: 'medium'}}</h3>
+                        <div><span class="bold-text">Price:</span> {{data.price}}</div>
+                        <div><span class="bold-text">Reviews:</span>
+                            <i class="fa fa-thumbs-up recommendation-icon green-text">{{data.positiveReviews}}</i>
+                            <i class="fa fa-thumbs-down recommendation-icon red-text">{{data.negativeReviews}}</i>
+                        </div>
+
+                        <div><span class="bold-text">Tags:</span></div>
+                        <span class="label tag-label" ng-class-odd="'purple-background'" ng-class-even="'light-purple-background'" ng-repeat="tag in data.tags">{{tag}}</span>
+                    </div>
+                </td>
+
+            </tr>
+
+
+            <!--No version header-->
 
             <tr class="title-row clickable" ng-click="openNoVersion = !openNoVersion">
                 <td ng-init="openNoVersion = false">
@@ -13,6 +46,8 @@
                     <h3 class="title">No version</h3>
                 </td>
             </tr>
+
+            <!--No version content-->
 
             <tr ng-if="openNoVersion">
                 <td>
@@ -35,9 +70,10 @@
                         </span>
 
                         <div class="well review" ng-repeat="review in unversionedReviews" ng-if="unversionedReviews.length">
+
                             <span class="bold-text">
-                                <i class="fa fa-thumbs-up recommendation-icon" ng-if="review.recommended"></i>
-                                <i class="fa fa-thumbs-down recommendation-icon" ng-if="!review.recommended"></i>
+                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
                                 {{'Author: '+ review.author}}
                             </span>
 
@@ -55,6 +91,8 @@
                 </td>
             </tr>
 
+            <!--Versions header-->
+
             <tr class="title-row clickable" ng-click="openVersions = !openVersions">
                 <td ng-init="openVersions = false">
                     <i class="fa fa-chevron-down pull-right" ng-hide="openVersions" ng-click="openVersions = true"></i>
@@ -62,6 +100,8 @@
                     <h3 class="title">Versions</h3>
                 </td>
             </tr>
+
+            <!--Versions content-->
 
             <tr ng-if= "openVersions && !gameVersions.length" class="text-center"><td>No versions found</td></tr>
 
@@ -115,6 +155,8 @@
 
             </tr>
 
+            <!--Dlcs heading-->
+
             <tr class="title-row clickable" >
                 <td ng-init="openDlcs = false" ng-click="openDlcs = !openDlcs">
                     <i class="fa fa-chevron-down pull-right" ng-hide="openDlcs" ng-click="openDlcs = true"></i>
@@ -122,6 +164,8 @@
                     <h3 class="title">DLCs</h3>
                 </td>
             </tr>
+
+            <!--Dlcs content-->
 
             <tr ng-if= "openDlcs && !gameDlcs.length" ><td class="text-center">No DLCs found</td></tr>
 
@@ -151,7 +195,12 @@
                         </span>
 
                         <div class="well review" ng-repeat="review in dlc.reviews" ng-if="dlc.reviews.length">
-                            <span class="bold-text">{{'Author: '+ review.author}}</span>
+
+                            <span class="bold-text">
+                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
+                                {{'Author: '+ review.author}}
+                            </span>
 
                             <span ng-if="review.recommended" class="pull-right"><i class="fa fa-thumbs-up recommendation-icon"></i></span>
                             <span ng-if="!review.recommended" class="pull-right"><i class="fa fa-thumbs-down recommendation-icon"></i></span>
@@ -170,6 +219,8 @@
 
 
             </tr>
+
+
 
         </tbody>
 

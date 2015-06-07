@@ -4,6 +4,10 @@
     margin-top: 5%;
 }
 
+.game-info-table{
+    margin-top: 2.5%;
+}
+
 .refresh-icon{
     display: block;
     font-size: 3em;
@@ -12,6 +16,26 @@
 
 .recommendation-icon{
     font-size: 1.25em;
+}
+
+.tag-label{
+
+    display: block;
+    float: left;
+
+    margin-top: .75%;
+    margin-bottom: .75%;
+    margin-left: .75%;
+    color: white;
+    font-size: .75em;
+}
+
+.purple-background{
+    background-color: #674172;
+}
+
+.light-purple-background{
+    background-color: #913D88;
 }
 
 /*Reviews styles*/

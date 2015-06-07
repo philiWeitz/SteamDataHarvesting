@@ -78,6 +78,7 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
 	$scope.gameVersions = [];
     $scope.gameDlcs = [];
     $scope.unversionedReviews = [];
+    $scope.gameData = [];
 	$scope.appId = $routeParams.appId;
     $scope.appName = $routeParams.appName;
 
@@ -88,6 +89,7 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
         else{
             $scope.getAppVersions($scope.appId);
             $scope.getAppDlcs($scope.appId);
+            $scope.getAppData($scope.appId);
         }
 
     };
@@ -127,12 +129,18 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             });
     };
 
+    $scope.getAppData = function(appId){
+        SteamDataService.getAppData(appId)
+            .then(function(gameData){
+                $scope.gameData = gameData;
+            });
+    };
+
     $scope.getVersionReviews = function(versionId){
 
         if(!hasReviews(true, versionId)){
             SteamDataService.getReviewsByAppIdAndVersion($scope.appId, versionId)
                 .then(function(reviews){
-
 
                     $scope.gameVersions = _.each($scope.gameVersions, function(version){
                         if(version.versionInfo.published === versionId)
@@ -202,12 +210,4 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
 
 
     };
-
-    //$scope.getAppData = function(appId){
-    //    SteamDataService.getAppData(appId)
-    //        .then(function(game){
-    //            $scope.game = game;
-    //        });
-    //}($scope.appId);
-
 });
