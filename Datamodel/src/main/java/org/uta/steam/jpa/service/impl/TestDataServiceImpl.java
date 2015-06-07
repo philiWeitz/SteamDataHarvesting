@@ -11,14 +11,16 @@ import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.model.service.SteamAppDAOService;
+import org.uta.steam.util.SpringContextProvider;
 
 public class TestDataServiceImpl {
 
 	private SteamApp appNoData = null;
 	private SteamApp appWithData = null;
 
-	private SteamAppDAOService appDaoService = new SteamAppDAOServiceImpl();
+	private SteamAppDAOService appDaoService;
 
+	
 	public void createTestData() {
 		cleanDatabase();
 		createAppTestData();
@@ -57,8 +59,8 @@ public class TestDataServiceImpl {
 	}
 
 	public void cleanDatabase() {
-		for (SteamApp app : appDaoService.getAll()) {
-			appDaoService.delete(app.getId());
+		for (SteamApp app : getAppDaoService().getAll()) {
+			getAppDaoService().delete(app.getId());
 		}
 	}
 
@@ -67,7 +69,7 @@ public class TestDataServiceImpl {
 		SteamApp app1 = new SteamApp();
 		app1.setAppId(1);
 		app1.setName("App No Data");
-		appNoData = appDaoService.saveOrUpdate(app1);
+		appNoData = getAppDaoService().saveOrUpdate(app1);
 
 		SteamApp app2 = new SteamApp();
 		app2.setAppId(226840);
@@ -121,14 +123,25 @@ public class TestDataServiceImpl {
 		app2.getData().add(dlcData);
 
 		app2.getDlcs().add(dlc1);
-		appWithData = appDaoService.saveOrUpdate(app2);
+		appWithData = getAppDaoService().saveOrUpdate(app2);
 	}
 
+	
 	public SteamApp getAppNoData() {
 		return appNoData;
 	}
 
+	
 	public SteamApp getAppWithData() {
 		return appWithData;
+	}
+	
+	
+	private SteamAppDAOService getAppDaoService() {
+		if(null == appDaoService) {
+			appDaoService = SpringContextProvider
+					.getContext().getBean(SteamAppDAOService.class);
+		}
+		return appDaoService;
 	}
 }

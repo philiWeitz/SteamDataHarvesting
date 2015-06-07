@@ -7,24 +7,25 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.NoResultException;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.uta.steam.jpa.model.AbstractEntity;
+import org.uta.steam.util.SpringContextProvider;
+
 
 abstract class AbstractDAOServiceImpl<T extends AbstractEntity> {
-
-	private static final String PERSISTENCE_UNIT_NAME = "steamDataHarvesting";
 
 	private static Logger LOG = LogManager
 			.getLogger(AbstractDAOServiceImpl.class);
 
 	private EntityManagerFactory factory;
 
+	
 	public AbstractDAOServiceImpl() {
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		factory = (EntityManagerFactory) SpringContextProvider
+				.getContext().getBean("emf");
 	}
 
 	protected EntityManager getEntityManager() {

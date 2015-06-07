@@ -24,13 +24,14 @@ import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 @ContextConfiguration(locations = { "/spring-test-context.xml" })
 public class SteamAppServiceTest {
 
-	private TestDataServiceImpl testDataService = new TestDataServiceImpl();
-
 	@Autowired
 	SteamAppDAOService steamAppService;
 
+	private TestDataServiceImpl testDataService;
+	
 	@Before
 	public void init() {
+		testDataService = new TestDataServiceImpl();
 		testDataService.createTestData();
 	}
 

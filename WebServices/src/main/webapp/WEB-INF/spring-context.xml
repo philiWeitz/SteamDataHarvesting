@@ -9,6 +9,12 @@
            http://www.springframework.org/schema/context
            http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<bean id="springContextProvider" class="org.uta.steam.util.SpringContextProvider" />
+
+	<bean id="emf" class="org.springframework.orm.jpa.LocalEntityManagerFactoryBean">
+		<property name="persistenceUnitName" value="steamDataHarvesting" />
+	</bean>
+	
 	<context:component-scan base-package="org.uta.steam.jpa.service, org.uta.steam.bl.service, org.uta.steam.rest"/>
 
 </beans>
