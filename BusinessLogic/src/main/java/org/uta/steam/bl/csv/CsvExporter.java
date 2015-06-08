@@ -12,7 +12,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.uta.steam.bl.util.SteamUtil;
@@ -33,7 +32,7 @@ public class CsvExporter {
 			new SimpleDateFormat(SteamUtil.DATE_FORMAT, Locale.ENGLISH);
 	
 	
-	public String getCsvFileByApp(SteamApp app) {
+	public File getCsvFileByApp(SteamApp app) {
 		
 		try {
 			File temp = File.createTempFile("tmp",null);
@@ -47,12 +46,12 @@ public class CsvExporter {
 			out.flush();
             out.close();
             
-			return temp.getAbsolutePath();
+			return temp;
 		} catch (IOException e) {
 			LOG.error("Error creating temporay file for csv export");
 		}
 		
-		return StringUtils.EMPTY;
+		return null;
 	}
 	
 	

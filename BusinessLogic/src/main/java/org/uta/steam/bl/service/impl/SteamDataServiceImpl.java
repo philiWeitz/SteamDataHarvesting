@@ -1,5 +1,6 @@
 package org.uta.steam.bl.service.impl;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -43,7 +44,7 @@ class SteamDataServiceImpl implements SteamDataService {
 	}
 	
 
-	public String createCsvFile(long appId) {
+	public File createCsvFile(long appId) {
 		SteamApp app = appDaoService.getWholeAppByAppId(appId);
 		
 		if(null != app) {

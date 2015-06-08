@@ -1,5 +1,6 @@
 package org.uta.steam.bl.service;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public interface SteamDataService {
 	
 	boolean removeAppFromUpdateList(Long appId);
 	
-	String createCsvFile(long appId);
+	File createCsvFile(long appId);
 	
 	List<AppVersion> getVersionsByAppId(long appId);
 	

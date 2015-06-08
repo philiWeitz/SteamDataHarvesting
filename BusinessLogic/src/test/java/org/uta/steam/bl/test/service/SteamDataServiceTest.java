@@ -4,6 +4,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.File;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -53,8 +54,8 @@ public class SteamDataServiceTest {
 	
 	@Test
 	public void csvExportTest() {
-		String path = steamDataService.createCsvFile(testDataService.getAppWithData().getAppId());
-		assertNotNull(path);
-		assertFalse(path.isEmpty());
+		File file = steamDataService.createCsvFile(testDataService.getAppWithData().getAppId());
+		assertNotNull(file);
+		assertFalse(file.exists());
 	}
 }

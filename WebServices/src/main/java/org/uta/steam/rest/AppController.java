@@ -1,5 +1,6 @@
 package org.uta.steam.rest;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -191,17 +192,26 @@ public class AppController {
     public void getFile(@PathVariable long appId, HttpServletResponse response) {
     
     	try {
-    		String path = steamDataService.createCsvFile(appId);
-    		InputStream is = new FileInputStream(path);
-
-    		response.setHeader("Content-Disposition","attachment; "
-    				+ "filename=csv-file-" + appId + ".csv");
+    		File file = steamDataService.createCsvFile(appId);
     		
-    		response.setContentType("text/plain");
-    		response.setCharacterEncoding(SteamUtil.CSV_OUTPUT_FORMAT);
-
-    		IOUtils.copy(is, response.getOutputStream());
-    		response.flushBuffer();
+    		if(null != file && file.exists()) {
+	    		InputStream is = new FileInputStream(file);
+	
+	    		response.setHeader("Content-Disposition","attachment; "
+	    				+ "filename=csv-file-" + appId + ".csv");
+	    		
+	    		response.setContentType("text/plain");
+	    		response.setCharacterEncoding(SteamUtil.CSV_OUTPUT_FORMAT);
+	
+	    		IOUtils.copy(is, response.getOutputStream());
+	    		response.flushBuffer();
+	    		
+	    		is.close();
+	    		file.delete();
+	    		
+    		} else {
+    			LOG.error("Error: unable to create temporary csv file!");
+    		}
         } catch (IOException ex) {
         	LOG.error("Error creating csv file");
         }
