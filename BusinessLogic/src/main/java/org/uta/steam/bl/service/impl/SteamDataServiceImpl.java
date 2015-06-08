@@ -12,10 +12,10 @@ import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
-import org.uta.steam.jpa.model.service.AppDlcDAOService;
-import org.uta.steam.jpa.model.service.AppVersionDAOService;
-import org.uta.steam.jpa.model.service.ReviewDAOService;
-import org.uta.steam.jpa.model.service.SteamAppDAOService;
+import org.uta.steam.jpa.service.AppDlcDAOService;
+import org.uta.steam.jpa.service.AppVersionDAOService;
+import org.uta.steam.jpa.service.ReviewDAOService;
+import org.uta.steam.jpa.service.SteamAppDAOService;
 
 @Service
 class SteamDataServiceImpl implements SteamDataService {

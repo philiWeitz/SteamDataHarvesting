@@ -1,5 +1,7 @@
 package org.uta.steam.rest.scheduler;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -9,6 +11,8 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import org.uta.steam.bl.service.SteamDataHarvestingService;
 
 public class DataHarvestScheduler implements Job {
+
+	private static Logger LOG = LogManager.getLogger(DataHarvestScheduler.class);
 
 	
 	public void execute(JobExecutionContext arg0) throws JobExecutionException {
@@ -23,9 +27,9 @@ public class DataHarvestScheduler implements Job {
 		SteamDataHarvestingService steamDataHarvestingService = 
 				springContext.getBean(SteamDataHarvestingService.class);
 		
-		System.out.println("Harvesting Data..");	
+		LOG.info("Harvesting Data..");	
 		steamDataHarvestingService.harvestDataFromSteam();
-		System.out.println("Harvesting Data Done");
+		LOG.info("Harvesting Data Done");
 		
 		steamDataHarvestingService.updateAppListFromSteam();
 	}

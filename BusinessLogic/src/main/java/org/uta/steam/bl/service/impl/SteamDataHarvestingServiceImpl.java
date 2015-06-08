@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.uta.steam.bl.api.AppSteamApi;
@@ -19,7 +20,7 @@ import org.uta.steam.jpa.model.AppData;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
-import org.uta.steam.jpa.model.service.SteamAppDAOService;
+import org.uta.steam.jpa.service.SteamAppDAOService;
 
 @Service
 class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
@@ -53,7 +54,7 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 	
 	private void harvestDataFromSteam(List<SteamApp> apps) {
 		for (SteamApp app : apps) {
-
+			
 			updateAppData(app);
 			updateAppVersions(app);
 			updateAppDlcs(app);
@@ -77,7 +78,7 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 		Collections.reverse(versions);
 		
 		// remove duplicated reviews
-		List<Review> newReviews = appSteamApi.getHelpfulAppReviews(app.getAppId());
+		List<Review> newReviews = appSteamApi.getAppReviews(app.getAppId());
 		newReviews = removeDuplicatedReviews(app.getReviews(), newReviews);
 
 		for(Review review : newReviews) {
@@ -88,6 +89,13 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 	}
 
 	private void updateAppData(SteamApp app) {
+		
+		// get app description if not available
+		if(StringUtils.isEmpty(app.getDescription())) {
+			app.setDescription(appWebCrawler.getAppDescription(app.getAppId()));
+		}
+		
+		// create new app data element
 		AppData data = new AppData();
 		data.setPrice(appWebCrawler.getAppPrice(app.getAppId()));
 		data.setTags(new HashSet<String>(appWebCrawler.getAppTags(app.getAppId())));
@@ -145,7 +153,7 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 		for (AppDLC dlc : app.getDlcs()) {
 			
 			// remove duplicated reviews
-			List<Review> newReviews = appSteamApi.getHelpfulAppReviews(dlc.getDlcId());
+			List<Review> newReviews = appSteamApi.getAppReviews(dlc.getDlcId());
 			newReviews = removeDuplicatedReviews(dlc.getReviews(), newReviews);
 
 			// add new reviews (version is always null)
@@ -193,6 +201,7 @@ class SteamDataHarvestingServiceImpl implements SteamDataHarvestingService {
 		for(Review review : newReviews) {
 			if(!reviewHash.contains(review.hashCode())) {
 				result.add(review);
+				reviewHash.add(review.hashCode());
 			}
 		}
 		return result;

@@ -142,6 +142,23 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		return result;
 	}
 
+	
+	public String getAppDescription(long appId) {
+		String result = StringUtils.EMPTY;
+		
+		Document doc = getHtmlFromUrl(appId);
+
+		if(null != doc) {
+			Element desElement = doc.getElementById("game_area_description");
+			
+			if(null != desElement) {
+				result = desElement.text();
+			}
+		}
+		
+		return result;
+	}
+	
 
 	public AppData setPositiveNegativeReviews(long appId, AppData data) {
 		Document doc = getHtmlFromUrl(appId);
@@ -179,7 +196,7 @@ public class AppWebCrawler extends AbstractWebCrawler {
 		return 0;
 	}
 	
-	
+		
 	private Document getHtmlFromUrl(long appId) {
 
 		if (this.appId != appId) {

@@ -37,14 +37,15 @@ public class AppSteamApi extends AbstractSteamApi {
 
 			SteamApp app = new SteamApp();
 			app.setName(appItem.getElementsByTag("name").text());
-			app.setAppId(Long.parseLong(appItem.getElementsByTag("appid")
-					.text()));
+			app.setAppId(Long.parseLong(appItem.getElementsByTag("appid").text()));
+			
 			result.add(app);
 		}
 
 		return result;
 	}
 
+	
 	public List<AppVersion> getVersions(long appId) {
 		List<AppVersion> result = new LinkedList<AppVersion>();
 
@@ -58,8 +59,8 @@ public class AppSteamApi extends AbstractSteamApi {
 			Element newsitem = iter.next();
 			Element title = newsitem.getElementsByTag("title").first();
 
-			Matcher matcher = VERSION_PATTERN.matcher(title.text()
-					.toLowerCase());
+			Matcher matcher = VERSION_PATTERN.matcher(title.text().toLowerCase());
+			
 			if (matcher.find()) {
 				Element published = newsitem.getElementsByTag("date").first();
 				Element content = newsitem.getElementsByTag("contents").first();
@@ -76,11 +77,13 @@ public class AppSteamApi extends AbstractSteamApi {
 	}
 	
 
-	public List<Review> getHelpfulAppReviews(long appId) {		
-		return reviewApi.getHelpfulAppReviews(appId, 1);
-	}
-	
-	public List<Review> getHelpfulAppReviews(long appId, int rounds) {		
-		return reviewApi.getHelpfulAppReviews(appId, rounds);
+	public List<Review> getAppReviews(long appId) {		
+		List<Review> result = new LinkedList<Review>();
+		
+		result.addAll(reviewApi.getHelpfulPositiveAppReviews(appId));
+		result.addAll(reviewApi.getHelpfulNegativeAppReviews(appId));
+		result.addAll(reviewApi.getRecentAppReviews(appId));
+
+		return result;
 	}
 }

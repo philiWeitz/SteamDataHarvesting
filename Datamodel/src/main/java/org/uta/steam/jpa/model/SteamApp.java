@@ -5,6 +5,7 @@ import java.util.Set;
 
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
@@ -25,6 +26,10 @@ public class SteamApp extends AbstractEntity {
 	@Basic
 	private String name = StringUtils.EMPTY;
 
+	@Basic
+	@Column(length = 5 * 1024 * 1024)
+	private String description = StringUtils.EMPTY;	
+	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "APP_ID", referencedColumnName = "id")
 	private Set<AppData> data;
@@ -72,6 +77,14 @@ public class SteamApp extends AbstractEntity {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 
 	public Set<AppData> getData() {

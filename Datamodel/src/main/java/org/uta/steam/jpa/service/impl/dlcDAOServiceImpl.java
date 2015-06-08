@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.Review;
 import org.uta.steam.jpa.model.SteamApp;
-import org.uta.steam.jpa.model.service.AppDlcDAOService;
+import org.uta.steam.jpa.service.AppDlcDAOService;
 
 @Service
 class dlcDAOServiceImpl extends AbstractDAOServiceImpl<AppDLC> implements

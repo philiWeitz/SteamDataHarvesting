@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.uta.steam.jpa.model.AppVersion;
 import org.uta.steam.jpa.model.SteamApp;
-import org.uta.steam.jpa.model.service.AppVersionDAOService;
+import org.uta.steam.jpa.service.AppVersionDAOService;
 
 @Service
 class AppVersionDAOServiceImpl extends AbstractDAOServiceImpl<AppVersion> implements

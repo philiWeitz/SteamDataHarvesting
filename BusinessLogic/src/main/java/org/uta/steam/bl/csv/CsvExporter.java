@@ -170,7 +170,8 @@ public class CsvExporter {
 		
 		sb.append("Created").append(SEPARATOR);
 		sb.append("Version").append(SEPARATOR);	
-		sb.append("Recommended").append(SEPARATOR);			
+		sb.append("Recommended").append(SEPARATOR);
+		sb.append("List Name").append(SEPARATOR);		
 		sb.append("User Name").append(SEPARATOR);
 		sb.append("User Id").append(SEPARATOR);
 		sb.append("Play time all").append(SEPARATOR);
@@ -198,6 +199,7 @@ public class CsvExporter {
 		}
 
 		sb.append(review.isRecommended()).append(SEPARATOR);
+		sb.append(review.getListName()).append(SEPARATOR);		
 		sb.append(review.getAuthor()).append(SEPARATOR);				
 		sb.append(review.getAuthorSteamId()).append(SEPARATOR);
 		sb.append(review.getPlayTimeAll()).append(SEPARATOR);

@@ -39,22 +39,41 @@ class ReviewSteamApi extends AbstractSteamApi {
 			SteamUtil.POSTED_DATE_FORMAT_NO_YEAR, Locale.ENGLISH);
 	
 	
-	public List<Review> getHelpfulAppReviews(long appId, int rounds) {		
-		List<Review> result = new LinkedList<Review>();
+	
+	public List<Review> getHelpfulPositiveAppReviews(long appId) {		
+		return getAppREviews(appId, "steam.get.app.review.positive.url", "positive");
+	}
+
+	
+	public List<Review> getHelpfulNegativeAppReviews(long appId) {		
+		return getAppREviews(appId, "steam.get.app.review.negative.url", "negative");
+	}
+
+	
+	public List<Review> getRecentAppReviews(long appId) {		
+		return getAppREviews(appId, "steam.get.app.review.recent.url", "recent");
+	}
+	
+	
+	private List<Review> getAppREviews(long appId, String urlKey, String listName) {
+
+		// we can only retrieve reviews in chunks of 20
+		int lastResponseHash = 0;
+		int amount = PropUtil.getPropertyAsInteger("app.reviews.to.collect");
 		
-		int firstItemHash = 0;
-		
-		for(int offset = -1; offset < rounds-1; ++offset) {
+		List<Review> result = new LinkedList<Review>();				
+		for(int offset = 0; offset < amount; offset += 20) {
 					
-			String jsonResponse = httpGet(
-					PropUtil.getProperty("steam.get.app.review.url", appId, offset));
-		
-			// if the string has the same has -> API returned again the first one
-			if(firstItemHash == 0) {
-				firstItemHash = jsonResponse.hashCode();
-			} else if(jsonResponse.hashCode() == firstItemHash) {
+			String jsonResponse = httpGet(PropUtil.getProperty(urlKey, appId, offset));
+			
+			// check if the response is the same as the last one
+			int newHash = jsonResponse.hashCode();
+			// is equal -> no more reviews available
+			if(newHash == lastResponseHash) {
 				break;
-			} 
+			} else {
+				lastResponseHash = newHash;
+			}
 			
 			try {
 
@@ -74,6 +93,7 @@ class ReviewSteamApi extends AbstractSteamApi {
 					String url = link.getElementsByTag("a").first().attr("href");
 					Document reviewDoc = Jsoup.connect(url).get();
 					
+					review.setListName(listName);
 					review = setGeneralInformation(reviewDoc, review);
 					review = setPostedAndUpdatedDate(reviewDoc, review);
 					review = setHoursPlayed(reviewDoc, review);
@@ -89,7 +109,7 @@ class ReviewSteamApi extends AbstractSteamApi {
 				LOG.error(e);
 			} catch (NullPointerException e) {
 				LOG.error("Getting all reviews page is not a valid HTML page! (" 
-					+ PropUtil.getProperty("steam.get.app.review.url", appId, offset) + ")");
+					+ PropUtil.getProperty(urlKey, appId, offset) + ")");
 			}
 		}
 		

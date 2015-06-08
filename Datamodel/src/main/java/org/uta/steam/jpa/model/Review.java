@@ -34,6 +34,9 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	private long peopleHelpful;
 
 	private boolean recommended = false;
+
+	@Basic
+	private String listName = StringUtils.EMPTY;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "POSTED_DATE", nullable = false)
@@ -111,6 +114,14 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	public void setRecommended(boolean recommended) {
 		this.recommended = recommended;
 	}
+	
+	public String getListName() {
+		return listName;
+	}
+
+	public void setListName(String listName) {
+		this.listName = listName;
+	}
 
 	public Date getPosted() {
 		return posted;
@@ -140,7 +151,7 @@ public class Review extends AbstractEntity  implements Comparable<Review> {
 	public int hashCode() {
 		try {
 			String hashString = author + content + peopleSeen + 
-					peopleHelpful + playTimeLast2Weeks + playTimeAll;
+					peopleHelpful + playTimeLast2Weeks + playTimeAll + listName;
 			
 			if(null != posted) {
 				hashString += posted.getTime();

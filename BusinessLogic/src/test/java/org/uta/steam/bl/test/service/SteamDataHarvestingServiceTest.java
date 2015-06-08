@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataHarvestingService;
 import org.uta.steam.jpa.model.SteamApp;
-import org.uta.steam.jpa.model.service.SteamAppDAOService;
+import org.uta.steam.jpa.service.SteamAppDAOService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
 
 @RunWith(SpringJUnit4ClassRunner.class)

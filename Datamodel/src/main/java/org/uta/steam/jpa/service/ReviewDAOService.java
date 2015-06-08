@@ -1,4 +1,4 @@
-package org.uta.steam.jpa.model.service;
+package org.uta.steam.jpa.service;
 
 import java.util.Date;
 import java.util.List;
