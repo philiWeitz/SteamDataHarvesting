@@ -65,6 +65,9 @@ public class CsvExporter {
 		out.write(sb.toString());
 		out.newLine();
 		
+		out.write(addContext(app.getDescription()));
+		out.newLine();
+		
 		// get list of versions starting with the last version!
 		List<AppVersion> versions = new LinkedList<AppVersion>(app.getVersions());
 		Collections.sort(versions);

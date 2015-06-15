@@ -1,3 +1,3 @@
-cd %~dp0
+cd /D %~dp0
 cd ..
 npm install
