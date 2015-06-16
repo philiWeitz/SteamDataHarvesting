@@ -38,10 +38,5 @@ Steam Data Harvesting
 - files can be found under: "\webapps\SteamDataHarvestingWebServices\WEB-INF\classes\"
 - config.properties - contains general properties such as the cron expression, timeouts, number of reviews collected, urls, ...
 - log4j2.xml - contains the configuration for the logger (it is possible to change the log level and logging style)
-- after changing the configuration the server needs to be restarted!
-
-## Configure database after deployment
-- open file "\webapps\SteamDataHarvestingWebServices\WEB-INF\spring-context.xml"
-- change properties of the "dataSource" bean (e.g. user name + password + url)
-- change the "hibernate.dialect" to switch between database types 
+- database.properties - contains all information about database type, name, user and password
 - after changing the configuration the server needs to be restarted!

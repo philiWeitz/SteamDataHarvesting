@@ -32,9 +32,9 @@ cd SteamDataHarvesting/AngularJS
 scripts/installRequirements.sh
 
 
-####### the production spring-context.xml should be different from the in the repository
+####### the production database configuration
 cd /opt/tomcat
-cp common/spring-context.xml SteamDataHarvesting/WebServices/src/main/webapp/WEB-INF/
+cp -rf common/database.properties SteamDataHarvesting/WebServices/src/main/resources/
 
 
 ### start tomcat and deploy
