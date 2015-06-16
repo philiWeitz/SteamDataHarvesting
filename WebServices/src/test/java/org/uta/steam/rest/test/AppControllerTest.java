@@ -8,14 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.uta.steam.bl.service.SteamDataService;
 import org.uta.steam.jpa.service.impl.TestDataServiceImpl;
-import org.uta.steam.jpa.test.common.TestUtil;
 import org.uta.steam.rest.AppController;
+import org.uta.steam.util.SpringContextProvider;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +32,12 @@ public class AppControllerTest {
 	
 	@Before
 	public void beforeTests() {
-		TestUtil.setPrivateField(appController, "steamDataService", steamDataService);
+		ApplicationContext ctx = SpringContextProvider.getContext();
+		
+		// this needs to be done for all controller because they are not
+		// instantiated by Spring
+		ctx.getAutowireCapableBeanFactory().autowireBean(appController);
+		
 		testDataService.createTestData();
 	}
 	
