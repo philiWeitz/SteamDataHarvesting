@@ -56,6 +56,6 @@ public class SteamDataServiceTest {
 	public void csvExportTest() {
 		File file = steamDataService.createCsvFile(testDataService.getAppWithData().getAppId());
 		assertNotNull(file);
-		assertFalse(file.exists());
+		assertTrue(file.exists());
 	}
 }

@@ -26,12 +26,20 @@ Steam Data Harvesting
 - AngularJS Eclipse
 
 ## Eclipse configuration
-- Import the whole project as an existing maven project
-- Right click on SteamDataHarvestingAngularJs -> Configure -> Convert to AngularJs Project
+- import the whole project as an existing maven project
+- right click on SteamDataHarvestingAngularJs -> Configure -> Convert to AngularJs Project
 
-## Switch from "in memory Database" to PostgreSQL
-- Create a new database (e.g. name = steamDataHarvesting)
-- Open Datamodel -> src -> main -> resources -> META-INF -> persistence.xml
-- Comment the database connection for hsqldb
-- Uncomment the database connection for postgresql
-- Change the database name, user and passwort
+## Configure PostgreSQL database
+- create a new database (e.g. name = steamDataHarvesting)
+- open Datamodel -> src -> main -> resources -> META-INF -> persistence.xml
+- change the database name, user and passwort
+
+## Configure properties after deployment
+- files can be found under: "\webapps\SteamDataHarvestingWebServices\WEB-INF\classes\"
+- config.properties - contains general properties such as the cron expression, timeouts, number of reviews collected, urls, ...
+- log4j2.xml - contains the configuration for the logger (it is possible to change the log level and logging style)
+
+## Configure database after deployment
+- open file "\webapps\SteamDataHarvestingWebServices\WEB-INF\spring-context.xml"
+- change properties of the "dataSource" bean (e.g. user name + password + url)
+- change the "hibernate.dialect" to switch between database types 
