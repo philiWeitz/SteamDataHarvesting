@@ -31,8 +31,10 @@ git clone https://github.com/philiWeitz/SteamDataHarvesting.git
 cd SteamDataHarvesting/AngularJS
 scripts/installRequirements.sh
 
+
+####### the production spring-context.xml should be different from the in the repository
 cd /opt/tomcat
-cp common/persistence.xml SteamDataHarvesting/Datamodel/src/main/resources/META-INF/
+cp common/spring-context.xml SteamDataHarvesting/WebServices/src/main/webapp/WEB-INF/
 
 
 ### start tomcat and deploy
