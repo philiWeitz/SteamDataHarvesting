@@ -14,6 +14,7 @@ import java.util.Locale;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.uta.steam.bl.util.PropUtil;
 import org.uta.steam.bl.util.SteamUtil;
 import org.uta.steam.jpa.model.AppDLC;
 import org.uta.steam.jpa.model.AppData;
@@ -29,7 +30,7 @@ public class CsvExporter {
 	private static final String TEXT_MARKER = "\"";
 	
 	private static final DateFormat sdf = 
-			new SimpleDateFormat(SteamUtil.DATE_FORMAT, Locale.ENGLISH);
+			new SimpleDateFormat(PropUtil.getProperty("date.format"), Locale.ENGLISH);
 	
 	
 	public File getCsvFileByApp(SteamApp app) {

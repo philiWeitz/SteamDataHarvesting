@@ -109,7 +109,7 @@ public class AppWebCrawler extends AbstractWebCrawler {
 							.text();
 	
 					DateFormat format = new SimpleDateFormat(
-							SteamUtil.RELEASE_DATE_FORMAT, Locale.ENGLISH);
+							PropUtil.getProperty("release.date.format"), Locale.ENGLISH);
 	
 					try {
 						result = format.parse(date);

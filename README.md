@@ -4,7 +4,7 @@ Steam Data Harvesting
 
 ## Requirements server side
 - maven - https://maven.apache.org/download.cgi
-- tomcat server 7+ configured to run on port 8080 - http://tomcat.apache.org/download-80.cgi
+- tomcat server 7 or higher configured to run on port 8080 - http://tomcat.apache.org/download-80.cgi
 
 ## Requirements client side
 - nodejs - https://nodejs.org/
@@ -31,8 +31,8 @@ Steam Data Harvesting
 
 ## Configure PostgreSQL database
 - create a new database (e.g. name = steamDataHarvesting)
-- open Datamodel -> src -> main -> resources -> META-INF -> persistence.xml
-- change the database name, user and passwort
+- open "\WebServices\src\main\resources\database.properties"
+- change the database url (name), user and password
 
 ## Configure properties after deployment
 - files can be found under: "\webapps\SteamDataHarvestingWebServices\WEB-INF\classes\"

@@ -8,11 +8,6 @@ public class SteamUtil {
 
 	}
 
-	public static final String DATE_FORMAT = "dd.MM.yyyy HH:mm";	
-	public static final String RELEASE_DATE_FORMAT = "dd MMM, yyyy";
-	
-	public static final String POSTED_DATE_FORMAT_NO_YEAR = "d MMM hh:mma";
-	public static final String POSTED_DATE_FORMAT_WITH_YEAR = "d MMM, yyyy hh:mma";	
 	
 	public static final Pattern NUMBER_PATTERN_INT = Pattern
 			.compile("[0-9][0-9]*");
@@ -24,6 +19,4 @@ public class SteamUtil {
 			.compile("[a-zA-Z0-9.,-: ]*");
 	
 	public static final String CSV_OUTPUT_FORMAT = "UTF-8";
-	
-	public static boolean DEBUG = true;
 }

@@ -34,9 +34,9 @@ class ReviewSteamApi extends AbstractSteamApi {
 	private static final String RECOMMENDED_KEY = "recommended";
 	
 	private DateFormat formatWithYear = new SimpleDateFormat(
-			SteamUtil.POSTED_DATE_FORMAT_WITH_YEAR, Locale.ENGLISH);
+			PropUtil.getProperty("posted.date.format.with.year"), Locale.ENGLISH);
 	private DateFormat formatNoYear = new SimpleDateFormat(
-			SteamUtil.POSTED_DATE_FORMAT_NO_YEAR, Locale.ENGLISH);
+			PropUtil.getProperty("posted.date.format.no.year"), Locale.ENGLISH);
 	
 	
 	
