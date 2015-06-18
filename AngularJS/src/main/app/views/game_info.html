@@ -69,22 +69,37 @@
                             No reviews found
                         </span>
 
-                        <div class="well review" ng-repeat="review in unversionedReviews" ng-if="unversionedReviews.length">
+                        <ul class="nav nav-tabs" ng-if="unversionedReviews.length">
+                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+                        </ul>
 
+                        <div class="well review" ng-repeat="review in filteredUnversionedReviews = (unversionedReviews | filter : {listName: filterCriteria})" ng-if="unversionedReviews.length">
+						
                             <span class="bold-text">
                                 <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
                                 <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
-                                {{'Author: '+ review.author}}
+                                {{'Author: '+ review.author}}                    
                             </span>
 
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+                            
+                            <div class="pull-right text-right bold-text">
+                            	
+                            	<div>Played: {{review.playTimeAll}} h</div>
+                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+                    
+                            </div>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
                             <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
+                        
+                        <div class="well review" ng-hide="filteredUnversionedReviews.length">No {{filterCriteria}} reviews found</div>
 
                     </div>
 
@@ -122,7 +137,6 @@
                         <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
                    </div>
 
-
                     <!--<div class="well review" ng-hide="version.reviews.length">No reviews found for this version</div>-->
 
                     <div class="reviews-panel" ng-show= "showReview">
@@ -130,23 +144,38 @@
                         <span ng-if="!version.reviews.length">
                             No reviews found
                         </span>
+                        
+                        <ul class="nav nav-tabs" ng-if="version.reviews.length">
+                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+                        </ul>
 
-                        <div class="well review" ng-repeat="review in version.reviews" ng-if="version.reviews.length">
+                        <div class="well review" ng-repeat="review in filteredVersionReviews = (version.reviews | filter : {listName: filterCriteria})" ng-if="version.reviews.length">
 
                             <span class="bold-text">
                                 <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
                                 <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
                                 {{'Author: '+ review.author}}
                             </span>
-
-                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
-                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+                            
+                            <span ng-if="!review.updated" class="bold-text">Published: {{review.posted | date: 'mediumDate'}}</span>
+                            <span ng-if="review.updated" class="bold-text"> Updated: {{review.updated | date: 'mediumDate'}}</span>
+                            
+                            <div class="pull-right text-right bold-text">
+                            	
+                            	<div>Played: {{review.playTimeAll}} h</div>
+                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+                    
+                            </div>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
                             <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
+                        
+                        <div class="well review" ng-hide="filteredVersionReviews.length">No {{filterCriteria}} reviews found</div>
 
                     </div>
 
@@ -193,23 +222,38 @@
                         <span ng-if="!dlc.reviews.length">
                             No reviews found
                         </span>
+                        
+                        <ul class="nav nav-tabs" ng-if="dlc.reviews.length">
+                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+                        </ul>
 
-                        <div class="well review" ng-repeat="review in dlc.reviews" ng-if="dlc.reviews.length">
+                        <div class="well review" ng-repeat="review in filteredDlcReviews = (dlc.reviews | filter : {listName: filterCriteria})" ng-if="dlc.reviews.length">
 
                             <span class="bold-text">
                                 <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
                                 <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
                                 {{'Author: '+ review.author}}
                             </span>
-
+                           
                             <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
                             <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+                            
+                            <div class="pull-right text-right bold-text">
+                            	
+                            	<div>Played: {{review.playTimeAll}} h</div>
+                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+                    
+                            </div>
 
                             <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
 
                             <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
                             <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
                         </div>
+                        
+                        <div class="well review" ng-hide="filteredDlcReviews.length">No {{filterCriteria}} reviews found</div>
                     </div>
 
                 </td>

@@ -71,7 +71,8 @@ angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $loca
 });
 
 angular.module('steamDataApp').controller('GameCtrl', function ($scope, $location, $routeParams, _, SteamDataService) {
-
+	
+	$scope.filterCriteria = 'recent';
     $scope.gamesWithData = [];
     $scope.searchText= '';
 	
@@ -92,6 +93,10 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             $scope.getAppData($scope.appId);
         }
 
+    };
+    
+    $scope.setFilterCriteria = function(criteria){
+    	$scope.filterCriteria = criteria;
     };
 
     $scope.getAppsWhichHaveData = function(){
@@ -174,6 +179,8 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             SteamDataService.getReviewsWithoutVersionByAppId($scope.appId)
                 .then(function(reviews){
                     $scope.unversionedReviews = reviews;
+
+                    console.log($scope.unversionedReviews);
                 });
         }
     };
