@@ -30,9 +30,9 @@ public class SteamTrigger {
 	public void stopDataHarvesting() {
 		if(null != dataHarvestingSched) {
 			try {
-				dataHarvestingSched.shutdown();				
+				dataHarvestingSched.shutdown(true);				
 				dataHarvestingSched = null;
-				LOG.info("Data harvesting scheduler stoped");
+				LOG.info("Data harvesting scheduler stopped");
 				
 			} catch (SchedulerException e) {
 				LOG.error("Error stopping data harvesing scheduler", e);

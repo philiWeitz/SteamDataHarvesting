@@ -10,7 +10,7 @@ import org.uta.steam.jpa.model.SteamApp;
 import org.uta.steam.jpa.service.AppDlcDAOService;
 
 @Service
-class dlcDAOServiceImpl extends AbstractDAOServiceImpl<AppDLC> implements
+class AppDlcDAOServiceImpl extends AbstractDAOServiceImpl<AppDLC> implements
 	AppDlcDAOService {
 
 	public List<AppDLC> getDlcsByAppId(long appId) {

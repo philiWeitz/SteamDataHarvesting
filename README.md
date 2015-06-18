@@ -8,20 +8,21 @@ Steam Data Harvesting
 
 ## Requirements client side
 - nodejs - https://nodejs.org/
-- restart IDE after nodejs was installed (adds a path variable)
+- IMPORTANT! restart IDE after nodejs was installed (adds a path variable)
 
 ## Build commands
-- building maven projects + deployment - mv clean install tomcat:redeploy 
-- install nodejs dependencies - npm install
-- install bower dependencies - bower install
+- SteamDataHarvestingAngularJS -> scripts -> installRequirements
+- SteamDataHarvestingAngularJS -> scripts -> installBowerDependencies
+- right click on SteamDataHarvesting project -> run as -> maven build
+- goals: "clean install tomcat:redeploy" or "clean install tomcat:redeploy -DskipTests=true"
  
 ## Tomcat configuration
-- tomcat-users.xml
+- insert the following two lines into the tomcat-users.xml file
   - \<role rolename="manager-gui"/\>
   - \<user username="admin" password="admin" roles="manager-gui,manager-script"/\>
 
 ## Eclipse plugins (luna)
-- Eclipse JST Server Adapters
+- Eclipse JST Server Adapters (Tomcat integration for Eclipse)
 - Maven Integration for Eclipse (Luna)
 - AngularJS Eclipse
 
