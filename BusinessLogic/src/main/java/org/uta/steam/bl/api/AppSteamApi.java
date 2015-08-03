@@ -18,7 +18,7 @@ import org.uta.steam.jpa.model.SteamApp;
 public class AppSteamApi extends AbstractSteamApi {
 
 	private static final Pattern VERSION_PATTERN = Pattern
-			.compile("(version ([0-9].)+[0-9]+)|(update)");
+			.compile("(version ([0-9].)+[0-9]+)|(update)|(patch)");
 
 	private ReviewSteamApi reviewApi = new ReviewSteamApi();
 	

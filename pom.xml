@@ -12,7 +12,8 @@
 	<properties>
 		<proj.version>0.0.1-SNAPSHOT</proj.version>
 
-		<spring.version>4.0.9.RELEASE</spring.version>
+		<spring.version>4.1.7.RELEASE</spring.version>
+		<spring.securtiy.version>4.0.1.RELEASE</spring.securtiy.version>
 		<jsoup.version>1.7.2</jsoup.version>
 		<log4j.version>2.0-rc1</log4j.version>
 		<quartz.version>2.2.1</quartz.version>
@@ -127,6 +128,18 @@
 				<version>${spring.version}</version>
 			</dependency>
 
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-web</artifactId>
+				<version>${spring.securtiy.version}</version>
+			</dependency> 
+			
+			<dependency>
+				<groupId>org.springframework.security</groupId>
+				<artifactId>spring-security-config</artifactId>
+				<version>${spring.securtiy.version}</version>
+			</dependency>
+			
 			<dependency>
 				<groupId>javax.annotation</groupId>
 				<artifactId>javax.annotation-api</artifactId>

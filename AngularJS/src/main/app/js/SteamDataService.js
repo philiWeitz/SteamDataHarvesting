@@ -4,7 +4,8 @@
 
 angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', function ($http, $window) {
 
-    var urlBase = '/SteamDataHarvestingWebServices/service/';
+    var pureAppBase = '/SteamDataHarvestingWebServices/'
+    	urlBase = pureAppBase + 'service/';
         appUrlBase = urlBase + 'app/';
         versionUrlBase = urlBase + 'version/';
         reviewUrlBase = urlBase + 'review/'
@@ -116,8 +117,17 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
             });
     };
 
-
-
-
+    this.login = function(username, password, csrf, callback) {
+        $http({
+            method: "post",
+            url: pureAppBase + 'login',
+            data: $.param({'username': username, 'password': password, '_csrf': csrf}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        }).success(function(data, status, headers, config) {
+        
+        }).error(function(data, status, headers, config) {
+        	callback();
+        });
+    };
 
 }]);

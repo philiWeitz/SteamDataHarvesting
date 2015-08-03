@@ -3,7 +3,7 @@
  */
 
 angular.module('steamDataApp').controller('MainCtrl', function ($scope, _, $location, SteamDataService) {
-
+	
     $scope.searchText = '';
     $scope.games = [];
 
@@ -217,4 +217,15 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
 
 
     };
+});
+
+
+angular.module('steamDataApp').controller('LoginCtrl', function ($scope, _, $location, $cookies, SteamDataService) {
+
+    $scope.login = function() {
+    	SteamDataService.login($scope.username, $scope.password, $cookies['XSRF-TOKEN'], function() {
+    		$location.path('');
+    	});
+    };
+    
 });

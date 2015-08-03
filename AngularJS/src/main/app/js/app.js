@@ -2,7 +2,7 @@
  * Created by silvia on 06/05/15.
  */
 
-var app = angular.module('steamDataApp', ['ngResource', 'ngRoute']);
+var app = angular.module('steamDataApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
 app.config(function($routeProvider){
     $routeProvider
@@ -25,6 +25,11 @@ app.config(function($routeProvider){
         .when('/datagames', {
             controller: 'GameCtrl',
             templateUrl: 'datagames.html'
+        })
+        
+        .when('/login', {
+            controller: 'LoginCtrl',
+            templateUrl: 'login.html'
         })
 });
 
