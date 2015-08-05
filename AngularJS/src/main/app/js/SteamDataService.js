@@ -2,13 +2,14 @@
  * Created by silvia on 06/05/15.
  */
 
-angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', function ($http, $window) {
+angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', '$cookies', function ($http, $window, $cookies) {
 
     var pureAppBase = '/SteamDataHarvestingWebServices/'
-    	urlBase = pureAppBase + 'service/';
-        appUrlBase = urlBase + 'app/';
-        versionUrlBase = urlBase + 'version/';
-        reviewUrlBase = urlBase + 'review/'
+      , urlBase = pureAppBase + 'service/'
+      , appUrlBase = urlBase + 'app/'
+      , versionUrlBase = urlBase + 'version/'
+      , reviewUrlBase = urlBase + 'review/'
+      , userUrlBase = urlBase + 'user/';
 
     //App services
     this.getAllApps = function () {
@@ -117,17 +118,44 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
             });
     };
 
-    this.login = function(username, password, csrf, callback) {
+    this.login = function(username, password, succ, err) {
+    	
+    	var csrf = $cookies['XSRF-TOKEN'];
+    	
         $http({
             method: "post",
             url: pureAppBase + 'login',
             data: $.param({'username': username, 'password': password, '_csrf': csrf}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        }).success(function(data, status, headers, config) {
-        
         }).error(function(data, status, headers, config) {
-        	callback();
+        	// the login page sends a page not available after login -> ugly fix
+        	if(status === 404) {
+        		succ();
+        	} else {
+        		err();
+        	}
         });
     };
 
+    this.logout = function() {    
+    	var csrf = $cookies['XSRF-TOKEN'];
+    	
+        $http({
+            method: "post",
+            url: pureAppBase + 'logout',
+            data: $.param({'_csrf': csrf}),
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        });
+    };
+    
+
+    this.getCurrentUser = function(succ, err) {
+        $http.get(userUrlBase + 'getCurrentUser')
+        .success(function(data, status, headers, config) {
+        	succ(data);
+        }).error(function(data, status, headers, config) {
+        	err();
+        });
+    };    
+    
 }]);

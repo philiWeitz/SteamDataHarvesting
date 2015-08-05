@@ -92,7 +92,6 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
             $scope.getAppDlcs($scope.appId);
             $scope.getAppData($scope.appId);
         }
-
     };
     
     $scope.setFilterCriteria = function(criteria){
@@ -220,12 +219,20 @@ angular.module('steamDataApp').controller('GameCtrl', function ($scope, $locatio
 });
 
 
-angular.module('steamDataApp').controller('LoginCtrl', function ($scope, _, $location, $cookies, SteamDataService) {
+angular.module('steamDataApp').controller('LoginCtrl', function ($scope, _, $location, SteamDataService) {
 
+	var init = function() {
+
+	}
+	
     $scope.login = function() {
-    	SteamDataService.login($scope.username, $scope.password, $cookies['XSRF-TOKEN'], function() {
-    		$location.path('');
+    	SteamDataService.login($scope.username, $scope.password, function() {
+    		$location.path('/watchlist');
+    	}, function() {
+    		$scope.loginError = true;
     	});
     };
-    
+
+	init();
+	
 });

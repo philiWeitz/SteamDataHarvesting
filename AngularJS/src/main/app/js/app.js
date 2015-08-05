@@ -4,7 +4,7 @@
 
 var app = angular.module('steamDataApp', ['ngResource', 'ngRoute', 'ngCookies']);
 
-app.config(function($routeProvider){
+app.config(function($routeProvider){	
     $routeProvider
 
         .when('/', {
@@ -31,7 +31,23 @@ app.config(function($routeProvider){
             controller: 'LoginCtrl',
             templateUrl: 'login.html'
         })
+        
+}).run(function($rootScope, $location, SteamDataService) {
+    // every route change
+	$rootScope.$on('$routeChangeSuccess', function () {
+    	SteamDataService.getCurrentUser(function(user) {
+    		// user is already logged in
+    		$rootScope.authenticated = true;
+    	}, function() {
+    		// user is not logged in
+    		$rootScope.authenticated = false;
+    		$location.path("/login");
+    	});
+    });
+
+	$rootScope.logout = SteamDataService.logout;
 });
+
 
 app.constant('Config', {
     serverUrl : 'localhost:8080'
