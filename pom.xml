@@ -12,8 +12,8 @@
 	<properties>
 		<proj.version>0.0.1-SNAPSHOT</proj.version>
 
-		<spring.version>4.1.7.RELEASE</spring.version>
-		<spring.securtiy.version>4.0.1.RELEASE</spring.securtiy.version>
+		<spring.version>4.0.0.RELEASE</spring.version>
+		<spring.securtiy.version>4.0.0.RELEASE</spring.securtiy.version>
 		<jsoup.version>1.7.2</jsoup.version>
 		<log4j.version>2.0-rc1</log4j.version>
 		<quartz.version>2.2.1</quartz.version>
@@ -48,6 +48,10 @@
 				<plugin>
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>3.1</version>
+					<configuration>
+						<source>1.7</source>
+						<target>1.7</target>
+					</configuration>
 				</plugin>
 
 				<plugin>

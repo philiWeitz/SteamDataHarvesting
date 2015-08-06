@@ -32,8 +32,8 @@ app.config(function($routeProvider){
             templateUrl: 'login.html'
         })
         
-}).run(function($rootScope, $location, SteamDataService) {
-    // every route change
+}).run(function($rootScope, SteamDataService, LocationService) {  
+	// every route change
 	$rootScope.$on('$routeChangeSuccess', function () {
     	SteamDataService.getCurrentUser(function(user) {
     		// user is already logged in
@@ -41,7 +41,7 @@ app.config(function($routeProvider){
     	}, function() {
     		// user is not logged in
     		$rootScope.authenticated = false;
-    		$location.path("/login");
+    		LocationService.redirectToLoginPage();
     	});
     });
 

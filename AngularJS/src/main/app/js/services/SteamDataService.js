@@ -11,7 +11,14 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
       , reviewUrlBase = urlBase + 'review/'
       , userUrlBase = urlBase + 'user/';
 
+    
+    function getCsrfToken() {
+    	return $cookies['XSRF-TOKEN'];
+    }
+    
+    
     //App services
+    
     this.getAllApps = function () {
         return $http.get(appUrlBase + 'getAllApps')
             .then(function(response){
@@ -120,7 +127,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
 
     this.login = function(username, password, succ, err) {
     	
-    	var csrf = $cookies['XSRF-TOKEN'];
+    	var csrf = getCsrfToken();
     	
         $http({
             method: "post",
@@ -138,7 +145,7 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     };
 
     this.logout = function() {    
-    	var csrf = $cookies['XSRF-TOKEN'];
+    	var csrf = getCsrfToken();
     	
         $http({
             method: "post",

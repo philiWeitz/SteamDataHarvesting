@@ -28,6 +28,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout()
 				.and()
 			.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
+		
+		// TODO: security risk -> needs to be removed
+		http.csrf().disable();
 	}
 	
     
