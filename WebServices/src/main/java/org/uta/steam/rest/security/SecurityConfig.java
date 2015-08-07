@@ -31,6 +31,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 		
+		http.authenticationProvider(new CustomAuthenticationProvider());
+		
 		http.csrf().csrfTokenRepository(csrfTokenRepository());
 		
 		// only deactivate CSRF protection while development!
