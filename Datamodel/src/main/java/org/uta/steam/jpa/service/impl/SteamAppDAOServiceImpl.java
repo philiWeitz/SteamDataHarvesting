@@ -117,7 +117,7 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 	}
 
 	public boolean addAppToUpdateList(Long appId) {
-		SteamApp app = getAppByAppIdLazyLoading(appId);
+		SteamApp app = getWholeAppByAppId(appId);
 		
 		if(null != app) {
 			app.setGetsUpdated(true);
@@ -129,7 +129,7 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 	}
 
 	public boolean removeAppFromUpdateList(Long appId) {
-		SteamApp app = getAppByAppIdLazyLoading(appId);
+		SteamApp app = getWholeAppByAppId(appId);
 		
 		if(null != app) {
 			app.setGetsUpdated(false);
