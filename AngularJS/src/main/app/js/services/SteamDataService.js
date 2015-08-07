@@ -2,7 +2,7 @@
  * Created by silvia on 06/05/15.
  */
 
-angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', '$cookies', function ($http, $window, $cookies) {
+angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', function ($http, $window) {
 
     var pureAppBase = '/SteamDataHarvestingWebServices/'
       , urlBase = pureAppBase + 'service/'
@@ -11,11 +11,6 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
       , reviewUrlBase = urlBase + 'review/'
       , userUrlBase = urlBase + 'user/';
 
-    
-    function getCsrfToken() {
-    	return $cookies['XSRF-TOKEN'];
-    }
-    
     
     //App services
     
@@ -125,14 +120,11 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
             });
     };
 
-    this.login = function(username, password, succ, err) {
-    	
-    	var csrf = getCsrfToken();
-    	
+    this.login = function(username, password, succ, err) {	
         $http({
             method: "post",
             url: pureAppBase + 'login',
-            data: $.param({'username': username, 'password': password, '_csrf': csrf}),
+            data: $.param({'username': username, 'password': password}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         }).error(function(data, status, headers, config) {
         	// the login page sends a page not available after login -> ugly fix
@@ -145,12 +137,9 @@ angular.module('steamDataApp').service('SteamDataService', ['$http', '$window', 
     };
 
     this.logout = function() {    
-    	var csrf = getCsrfToken();
-    	
         $http({
             method: "post",
             url: pureAppBase + 'logout',
-            data: $.param({'_csrf': csrf}),
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         });
     };

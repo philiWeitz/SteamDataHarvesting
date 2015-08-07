@@ -6,6 +6,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.csrf.CsrfFilter;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
 import org.uta.steam.bl.util.PropUtil;
 
 
@@ -29,8 +31,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.and()
 			.addFilterAfter(new CsrfHeaderFilter(), CsrfFilter.class);
 		
-		// TODO: security risk -> needs to be removed
-		http.csrf().disable();
+		http.csrf().csrfTokenRepository(csrfTokenRepository());
+		
+		// only deactivate CSRF protection while development!
+		//http.csrf().disable();
 	}
 	
     
@@ -41,5 +45,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         	.password(PropUtil.getProperty("secret.admin.password"))
         	.roles("ADMIN");
     }
+	
+
+	/* angular sets the CSRF token with the name "X-XSRF-TOKEN" but spring expects
+	 * it with a different name -> change the name */
+	private CsrfTokenRepository csrfTokenRepository() {
+		HttpSessionCsrfTokenRepository repository = new HttpSessionCsrfTokenRepository();
+		repository.setHeaderName("X-XSRF-TOKEN");
+		
+		return repository;
+	}
 }
 

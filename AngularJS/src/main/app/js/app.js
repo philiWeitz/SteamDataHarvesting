@@ -2,7 +2,7 @@
  * Created by silvia on 06/05/15.
  */
 
-var app = angular.module('steamDataApp', ['ngResource', 'ngRoute', 'ngCookies']);
+var app = angular.module('steamDataApp', ['ngResource', 'ngRoute']);
 
 app.config(function($routeProvider){	
     $routeProvider

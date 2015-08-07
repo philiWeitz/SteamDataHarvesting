@@ -14,6 +14,12 @@ import org.springframework.web.util.WebUtils;
 
 public class CsrfHeaderFilter extends OncePerRequestFilter {
 
+	/*
+	 * Angularjs expects a cookie called "XSRF-TOKEN" for CRSF protection. 
+	 * Each http call will take the value of the cookie and add it to the 
+	 * header with the name "X-XSRF-TOKEN".
+	 */
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request,
 			HttpServletResponse response, FilterChain filterChain)
