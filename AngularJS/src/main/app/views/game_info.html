@@ -1,270 +1,274 @@
-<h1 class="text-center">{{appName}}</h1>
 
-<div class="col col-md-offset-1 col-md-10 ">
-
-    <table class="table table-bordered table-condensed game-info-table">
-
-        <tbody>
-
-            <!--App data header-->
-
-            <tr class="title-row clickable" >
-                <td ng-init="openData = false" ng-click="openData = !openData">
-                    <i class="fa fa-chevron-down pull-right" ng-hide="openData" ng-click="openData = true"></i>
-                    <i class="fa fa-chevron-up pull-right" ng-show="openData" ng-click="openData = false"></i>
-                    <h3 class="title">App Data</h3>
-                </td>
-            </tr>
-
-            <tr ng-if= "openData && !gameData.length" class="text-center"><td>No data found</td></tr>
-
-            <tr ng-repeat="data in gameData" ng-if="openData && gameData.length">
-
-                <td>
-                    <div class="content-text">
-                        <h3>{{data.created | date: 'medium'}}</h3>
-                        <div><span class="bold-text">Price:</span> {{data.price}}</div>
-                        <div><span class="bold-text">Reviews:</span>
-                            <i class="fa fa-thumbs-up recommendation-icon green-text">{{data.positiveReviews}}</i>
-                            <i class="fa fa-thumbs-down recommendation-icon red-text">{{data.negativeReviews}}</i>
-                        </div>
-
-                        <div><span class="bold-text">Tags:</span></div>
-                        <span class="label tag-label" ng-class-odd="'purple-background'" ng-class-even="'light-purple-background'" ng-repeat="tag in data.tags">{{tag}}</span>
-                    </div>
-                </td>
-
-            </tr>
-
-
-            <!--No version header-->
-
-            <tr class="title-row clickable" ng-click="openNoVersion = !openNoVersion">
-                <td ng-init="openNoVersion = false">
-                    <i class="fa fa-chevron-down pull-right" ng-hide="openNoVersion" ng-click="openNoVersion = true"></i>
-                    <i class="fa fa-chevron-up pull-right" ng-show="openNoVersion" ng-click="openNoVersion = false"></i>
-                    <h3 class="title">No version</h3>
-                </td>
-            </tr>
-
-            <!--No version content-->
-
-            <tr ng-if="openNoVersion">
-                <td>
-
-                    <h3 class="title">Unversioned reviews</h3>
-
-                    <div class="reviews-header clickable" ng-hide="showReview" ng-click="showReview = true; getUnversionedReviews();">
-                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
-                    </div>
-                    
-                    <div class="reviews-header clickable" class="clickable" ng-show="showReview" ng-click="showReview = false">
-                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
-                    </div>
-
-
-                    <div class="reviews-panel" ng-show= "showReview">
-
-                        <span ng-if="!unversionedReviews.length">
-                            No reviews found
-                        </span>
-
-                        <ul class="nav nav-tabs" ng-if="unversionedReviews.length">
-                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
-                        </ul>
-
-                        <div class="well review" ng-repeat="review in filteredUnversionedReviews = (unversionedReviews | filter : {listName: filterCriteria})" ng-if="unversionedReviews.length">
-						
-                            <span class="bold-text">
-                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
-                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
-                                {{'Author: '+ review.author}}                    
-                            </span>
-
-                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
-                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
-                            
-                            <div class="pull-right text-right bold-text">
-                            	
-                            	<div>Played: {{review.playTimeAll}} h</div>
-                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
-                    
-                            </div>
-
-                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
-
-                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
-                        </div>
-                        
-                        <div class="well review" ng-hide="filteredUnversionedReviews.length">No {{filterCriteria}} reviews found</div>
-
-                    </div>
-
-                </td>
-            </tr>
-
-            <!--Versions header-->
-
-            <tr class="title-row clickable" ng-click="openVersions = !openVersions">
-                <td ng-init="openVersions = false">
-                    <i class="fa fa-chevron-down pull-right" ng-hide="openVersions" ng-click="openVersions = true"></i>
-                    <i class="fa fa-chevron-up pull-right" ng-show="openVersions" ng-click="openVersions = false"></i>
-                    <h3 class="title">Versions</h3>
-                </td>
-            </tr>
-
-            <!--Versions content-->
-
-            <tr ng-if= "openVersions && !gameVersions.length" class="text-center"><td>No versions found</td></tr>
-
-            <tr ng-repeat="version in gameVersions" ng-if="openVersions && gameVersions.length">
-                <td>
-                    <div class="content-text" ng-init="showAllText = false" >
-                        <h3>{{version.versionInfo.title}}</h3>
-                        <h4>{{version.versionInfo.published | date: 'medium'}}</h4>
-                        <div ng-show="showAllText">{{version.versionInfo.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
-                        <div ng-hide="showAllText">{{version.versionInfo.content | truncate : true : 400 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                    </div>
-
-                    <div class="reviews-header clickable" ng-hide= "showReview" ng-click="showReview = true; getVersionReviews(version.versionInfo.published);">
-                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
-                    </div>
-
-                   <div class="reviews-header clickable" ng-show= "showReview" ng-click="showReview = false">
-                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
-                   </div>
-
-                    <!--<div class="well review" ng-hide="version.reviews.length">No reviews found for this version</div>-->
-
-                    <div class="reviews-panel" ng-show= "showReview">
-
-                        <span ng-if="!version.reviews.length">
-                            No reviews found
-                        </span>
-                        
-                        <ul class="nav nav-tabs" ng-if="version.reviews.length">
-                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
-                        </ul>
-
-                        <div class="well review" ng-repeat="review in filteredVersionReviews = (version.reviews | filter : {listName: filterCriteria})" ng-if="version.reviews.length">
-
-                            <span class="bold-text">
-                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
-                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
-                                {{'Author: '+ review.author}}
-                            </span>
-                            
-                            <span ng-if="!review.updated" class="bold-text">Published: {{review.posted | date: 'mediumDate'}}</span>
-                            <span ng-if="review.updated" class="bold-text"> Updated: {{review.updated | date: 'mediumDate'}}</span>
-                            
-                            <div class="pull-right text-right bold-text">
-                            	
-                            	<div>Played: {{review.playTimeAll}} h</div>
-                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
-                    
-                            </div>
-
-                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
-
-                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
-                        </div>
-                        
-                        <div class="well review" ng-hide="filteredVersionReviews.length">No {{filterCriteria}} reviews found</div>
-
-                    </div>
-
-                </td>
-
-
-            </tr>
-
-            <!--Dlcs heading-->
-
-            <tr class="title-row clickable" >
-                <td ng-init="openDlcs = false" ng-click="openDlcs = !openDlcs">
-                    <i class="fa fa-chevron-down pull-right" ng-hide="openDlcs" ng-click="openDlcs = true"></i>
-                    <i class="fa fa-chevron-up pull-right" ng-show="openDlcs" ng-click="openDlcs = false"></i>
-                    <h3 class="title">DLCs</h3>
-                </td>
-            </tr>
-
-            <!--Dlcs content-->
-
-            <tr ng-if= "openDlcs && !gameDlcs.length" ><td class="text-center">No DLCs found</td></tr>
-
-            <tr ng-repeat="dlc in gameDlcs" ng-if="openDlcs && gameDlcs.length">
-                <td>
-                    <div class="content-text" ng-init="showAllText = false">
-                        <h3>{{dlc.dlcInfo.name}}</h3>
-                        <h4>{{dlc.dlcInfo.releaseDate | date: 'medium'}}</h4>
-                        <!--<div ng-show="showAllText">{{dlc.dlcInfo.content}}<span class="link-text clickable" ng-click="showAllText = false">Less</span></div>-->
-                        <!--<div ng-hide="showAllText">{{dlc.dlcInfo.content | truncate : true : 400 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">Read more</span></div>-->
-                    </div>
-
-
-                    <div class="reviews-header clickable" ng-hide="showReview" ng-click="showReview = true;getDlcReviews(dlc.dlcInfo.dlcId);">
-                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
-                    </div>
-
-                    <div class="reviews-header clickable" ng-show= "showReview" ng-click="showReview = false">
-                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
-                    </div>
-                    
-
-                    <div class="reviews-panel" ng-show= "showReview">
-
-                        <span ng-if="!dlc.reviews.length">
-                            No reviews found
-                        </span>
-                        
-                        <ul class="nav nav-tabs" ng-if="dlc.reviews.length">
-                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
-                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
-                        </ul>
-
-                        <div class="well review" ng-repeat="review in filteredDlcReviews = (dlc.reviews | filter : {listName: filterCriteria})" ng-if="dlc.reviews.length">
-
-                            <span class="bold-text">
-                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
-                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
-                                {{'Author: '+ review.author}}
-                            </span>
-                           
-                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
-                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
-                            
-                            <div class="pull-right text-right bold-text">
-                            	
-                            	<div>Played: {{review.playTimeAll}} h</div>
-                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
-                    
-                            </div>
-
-                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
-
-                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
-                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
-                        </div>
-                        
-                        <div class="well review" ng-hide="filteredDlcReviews.length">No {{filterCriteria}} reviews found</div>
-                    </div>
-
-                </td>
-
-
-            </tr>
-
-
-
-        </tbody>
-
-    </table>
-
+<div class="game_info" ng-show="authenticated">
+
+	<h1 class="text-center">{{appName}}</h1>
+	
+	<div class="col col-md-offset-1 col-md-10 ">
+	
+	    <table class="table table-bordered table-condensed game-info-table">
+	
+	        <tbody>
+	
+	            <!--App data header-->
+	
+	            <tr class="title-row clickable" >
+	                <td ng-init="openData = false" ng-click="openData = !openData">
+	                    <i class="fa fa-chevron-down pull-right" ng-hide="openData" ng-click="openData = true"></i>
+	                    <i class="fa fa-chevron-up pull-right" ng-show="openData" ng-click="openData = false"></i>
+	                    <h3 class="title">App Data</h3>
+	                </td>
+	            </tr>
+	
+	            <tr ng-if= "openData && !gameData.length" class="text-center"><td>No data found</td></tr>
+	
+	            <tr ng-repeat="data in gameData" ng-if="openData && gameData.length">
+	
+	                <td>
+	                    <div class="content-text">
+	                        <h3>{{data.created | date: 'medium'}}</h3>
+	                        <div><span class="bold-text">Price:</span> {{data.price}}</div>
+	                        <div><span class="bold-text">Reviews:</span>
+	                            <i class="fa fa-thumbs-up recommendation-icon green-text">{{data.positiveReviews}}</i>
+	                            <i class="fa fa-thumbs-down recommendation-icon red-text">{{data.negativeReviews}}</i>
+	                        </div>
+	
+	                        <div><span class="bold-text">Tags:</span></div>
+	                        <span class="label tag-label" ng-class-odd="'purple-background'" ng-class-even="'light-purple-background'" ng-repeat="tag in data.tags">{{tag}}</span>
+	                    </div>
+	                </td>
+	
+	            </tr>
+	
+	
+	            <!--No version header-->
+	
+	            <tr class="title-row clickable" ng-click="openNoVersion = !openNoVersion">
+	                <td ng-init="openNoVersion = false">
+	                    <i class="fa fa-chevron-down pull-right" ng-hide="openNoVersion" ng-click="openNoVersion = true"></i>
+	                    <i class="fa fa-chevron-up pull-right" ng-show="openNoVersion" ng-click="openNoVersion = false"></i>
+	                    <h3 class="title">No version</h3>
+	                </td>
+	            </tr>
+	
+	            <!--No version content-->
+	
+	            <tr ng-if="openNoVersion">
+	                <td>
+	
+	                    <h3 class="title">Unversioned reviews</h3>
+	
+	                    <div class="reviews-header clickable" ng-hide="showReview" ng-click="showReview = true; getUnversionedReviews();">
+	                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
+	                    </div>
+	                    
+	                    <div class="reviews-header clickable" class="clickable" ng-show="showReview" ng-click="showReview = false">
+	                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
+	                    </div>
+	
+	
+	                    <div class="reviews-panel" ng-show= "showReview">
+	
+	                        <span ng-if="!unversionedReviews.length">
+	                            No reviews found
+	                        </span>
+	
+	                        <ul class="nav nav-tabs" ng-if="unversionedReviews.length">
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+	                        </ul>
+	
+	                        <div class="well review" ng-repeat="review in filteredUnversionedReviews = (unversionedReviews | filter : {listName: filterCriteria})" ng-if="unversionedReviews.length">
+							
+	                            <span class="bold-text">
+	                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+	                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
+	                                {{'Author: '+ review.author}}                    
+	                            </span>
+	
+	                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
+	                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+	                            
+	                            <div class="pull-right text-right bold-text">
+	                            	
+	                            	<div>Played: {{review.playTimeAll}} h</div>
+	                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+	                    
+	                            </div>
+	
+	                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+	
+	                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
+	                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+	                        </div>
+	                        
+	                        <div class="well review" ng-hide="filteredUnversionedReviews.length">No {{filterCriteria}} reviews found</div>
+	
+	                    </div>
+	
+	                </td>
+	            </tr>
+	
+	            <!--Versions header-->
+	
+	            <tr class="title-row clickable" ng-click="openVersions = !openVersions">
+	                <td ng-init="openVersions = false">
+	                    <i class="fa fa-chevron-down pull-right" ng-hide="openVersions" ng-click="openVersions = true"></i>
+	                    <i class="fa fa-chevron-up pull-right" ng-show="openVersions" ng-click="openVersions = false"></i>
+	                    <h3 class="title">Versions</h3>
+	                </td>
+	            </tr>
+	
+	            <!--Versions content-->
+	
+	            <tr ng-if= "openVersions && !gameVersions.length" class="text-center"><td>No versions found</td></tr>
+	
+	            <tr ng-repeat="version in gameVersions" ng-if="openVersions && gameVersions.length">
+	                <td>
+	                    <div class="content-text" ng-init="showAllText = false" >
+	                        <h3>{{version.versionInfo.title}}</h3>
+	                        <h4>{{version.versionInfo.published | date: 'medium'}}</h4>
+	                        <div ng-show="showAllText">{{version.versionInfo.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+	                        <div ng-hide="showAllText">{{version.versionInfo.content | truncate : true : 400 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
+	                    </div>
+	
+	                    <div class="reviews-header clickable" ng-hide= "showReview" ng-click="showReview = true; getVersionReviews(version.versionInfo.published);">
+	                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
+	                    </div>
+	
+	                   <div class="reviews-header clickable" ng-show= "showReview" ng-click="showReview = false">
+	                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
+	                   </div>
+	
+	                    <!--<div class="well review" ng-hide="version.reviews.length">No reviews found for this version</div>-->
+	
+	                    <div class="reviews-panel" ng-show= "showReview">
+	
+	                        <span ng-if="!version.reviews.length">
+	                            No reviews found
+	                        </span>
+	                        
+	                        <ul class="nav nav-tabs" ng-if="version.reviews.length">
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+	                        </ul>
+	
+	                        <div class="well review" ng-repeat="review in filteredVersionReviews = (version.reviews | filter : {listName: filterCriteria})" ng-if="version.reviews.length">
+	
+	                            <span class="bold-text">
+	                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+	                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
+	                                {{'Author: '+ review.author}}
+	                            </span>
+	                            
+	                            <span ng-if="!review.updated" class="bold-text">Published: {{review.posted | date: 'mediumDate'}}</span>
+	                            <span ng-if="review.updated" class="bold-text"> Updated: {{review.updated | date: 'mediumDate'}}</span>
+	                            
+	                            <div class="pull-right text-right bold-text">
+	                            	
+	                            	<div>Played: {{review.playTimeAll}} h</div>
+	                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+	                    
+	                            </div>
+	
+	                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+	
+	                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
+	                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+	                        </div>
+	                        
+	                        <div class="well review" ng-hide="filteredVersionReviews.length">No {{filterCriteria}} reviews found</div>
+	
+	                    </div>
+	
+	                </td>
+	
+	
+	            </tr>
+	
+	            <!--Dlcs heading-->
+	
+	            <tr class="title-row clickable" >
+	                <td ng-init="openDlcs = false" ng-click="openDlcs = !openDlcs">
+	                    <i class="fa fa-chevron-down pull-right" ng-hide="openDlcs" ng-click="openDlcs = true"></i>
+	                    <i class="fa fa-chevron-up pull-right" ng-show="openDlcs" ng-click="openDlcs = false"></i>
+	                    <h3 class="title">DLCs</h3>
+	                </td>
+	            </tr>
+	
+	            <!--Dlcs content-->
+	
+	            <tr ng-if= "openDlcs && !gameDlcs.length" ><td class="text-center">No DLCs found</td></tr>
+	
+	            <tr ng-repeat="dlc in gameDlcs" ng-if="openDlcs && gameDlcs.length">
+	                <td>
+	                    <div class="content-text" ng-init="showAllText = false">
+	                        <h3>{{dlc.dlcInfo.name}}</h3>
+	                        <h4>{{dlc.dlcInfo.releaseDate | date: 'medium'}}</h4>
+	                        <!--<div ng-show="showAllText">{{dlc.dlcInfo.content}}<span class="link-text clickable" ng-click="showAllText = false">Less</span></div>-->
+	                        <!--<div ng-hide="showAllText">{{dlc.dlcInfo.content | truncate : true : 400 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">Read more</span></div>-->
+	                    </div>
+	
+	
+	                    <div class="reviews-header clickable" ng-hide="showReview" ng-click="showReview = true;getDlcReviews(dlc.dlcInfo.dlcId);">
+	                        <span><i class="fa fa-chevron-down"></i>Show reviews</span>
+	                    </div>
+	
+	                    <div class="reviews-header clickable" ng-show= "showReview" ng-click="showReview = false">
+	                        <span><i class="fa fa-chevron-up"></i>Hide reviews</span>
+	                    </div>
+	                    
+	
+	                    <div class="reviews-panel" ng-show= "showReview">
+	
+	                        <span ng-if="!dlc.reviews.length">
+	                            No reviews found
+	                        </span>
+	                        
+	                        <ul class="nav nav-tabs" ng-if="dlc.reviews.length">
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'recent'}" ng-click="setFilterCriteria('recent')"><a>Recent</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'positive'}" ng-click="setFilterCriteria('positive')"><a>Positive</a></li>
+	                            <li role="presentation" ng-class="{active : filterCriteria == 'negative'}" ng-click="setFilterCriteria('negative')"><a>Negative</a></li>
+	                        </ul>
+	
+	                        <div class="well review" ng-repeat="review in filteredDlcReviews = (dlc.reviews | filter : {listName: filterCriteria})" ng-if="dlc.reviews.length">
+	
+	                            <span class="bold-text">
+	                                <i class="fa fa-thumbs-up recommendation-icon green-text" ng-if="review.recommended"></i>
+	                                <i class="fa fa-thumbs-down recommendation-icon red-text" ng-if="!review.recommended"></i>
+	                                {{'Author: '+ review.author}}
+	                            </span>
+	                           
+	                            <span ng-if="!review.updated" class="bold-text">- Published: {{review.posted | date: 'mediumDate'}}</span>
+	                            <span ng-if="review.updated" class="bold-text">- Updated: {{review.updated | date: 'mediumDate'}}</span>
+	                            
+	                            <div class="pull-right text-right bold-text">
+	                            	
+	                            	<div>Played: {{review.playTimeAll}} h</div>
+	                            	<div>Played in last two weeks: {{review.playTimeLast2Weeks}} h</div>
+	                    
+	                            </div>
+	
+	                            <div class="review-content" ng-show="showAllText">{{review.content}}<span class="link-text clickable" ng-click="showAllText = false">[Less]</span></div>
+	
+	                            <div ng-hide="showAllText">{{review.content | truncate : true : 250 :' ... '}}<span class="link-text clickable" ng-click="showAllText = true">[Read more]</span></div>
+	                            <span class="bold-text blue-text">{{'Seen by: '+ review.peopleSeen + ' Helpful: ' + review.peopleHelpful}}</span>
+	                        </div>
+	                        
+	                        <div class="well review" ng-hide="filteredDlcReviews.length">No {{filterCriteria}} reviews found</div>
+	                    </div>
+	
+	                </td>
+	
+	
+	            </tr>
+	
+	
+	
+	        </tbody>
+	
+	    </table>
+	
+	</div>
 </div>

@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,6 +23,9 @@ import org.uta.steam.jpa.service.SteamAppDAOService;
 class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		SteamAppDAOService {
 
+	private static final String GET_APP_BY_APP_ID = "SELECT a.data FROM " 
+			+ SteamApp.class.getSimpleName() + " a where a.appId = ";
+	
 	private static Logger LOG = LogManager
 			.getLogger(SteamAppDAOServiceImpl.class);
 	
@@ -40,10 +44,7 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 	
 	public SteamApp getAppByAppIdLazyLoading(long appId) {
 		
-		SteamApp result = issueQuerySingleResult("SELECT a FROM "
-				+ SteamApp.class.getSimpleName() + " a " + "where a.appId = "
-				+ appId);
-
+		SteamApp result = issueQuerySingleResult(GET_APP_BY_APP_ID + appId);
 		removeLazyLoadedSets(result);		
 		return result;
 	}
@@ -117,27 +118,11 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 	}
 
 	public boolean addAppToUpdateList(Long appId) {
-		SteamApp app = getWholeAppByAppId(appId);
-		
-		if(null != app) {
-			app.setGetsUpdated(true);
-			saveOrUpdate(app);
-			return true;
-		}
-		
-		return false;
+		return setGetsUpdated(appId, true);
 	}
 
 	public boolean removeAppFromUpdateList(Long appId) {
-		SteamApp app = getWholeAppByAppId(appId);
-		
-		if(null != app) {
-			app.setGetsUpdated(false);
-			saveOrUpdate(app);
-			return true;
-		}
-		
-		return false;
+		return setGetsUpdated(appId, false);
 	}
 
 	public List<SteamApp> getAllAppsAndUpdateList(String searchTerm, int max) {
@@ -174,5 +159,31 @@ class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		app.setDlcs(Collections.<AppDLC> emptySet());
 		app.setVersions(Collections.<AppVersion> emptySet());
 		app.setReviews(Collections.<Review> emptySet());	
+	}
+	
+	private boolean setGetsUpdated(long appId, boolean getsUpdated) {
+		boolean result = false;
+		
+		EntityManager em = getEntityManager();
+
+		try {
+			em.getTransaction().begin();
+			Query query = em.createQuery(GET_APP_BY_APP_ID + appId);
+			SteamApp app = (SteamApp) query.getSingleResult();
+			
+			if(null != app) {
+				app.setGetsUpdated(getsUpdated);
+				em.merge(app);
+				em.getTransaction().commit();
+			}
+
+		} catch (Exception e) {
+			em.getTransaction().rollback();
+			LOG.error("Error while getting app.setGetsUpdated", e);
+		} finally {
+			em.close();
+		}
+		
+		return result;
 	}
 }

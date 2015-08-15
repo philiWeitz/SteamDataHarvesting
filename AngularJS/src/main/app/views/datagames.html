@@ -1,20 +1,23 @@
-<div class="row">
-    <div class="input-group center-block search-panel">
-        <label for="search-field">Search</label>
-        <input class="form-control" type="text" placeholder="Enter game name or ID" id="search-field" ng-model="searchText" ng-change="getGames()"/>
-    </div>
-</div>
+<div class="datagames" ng-show="authenticated">
 
-<div class="datagames-container">
-
-    <h3 class="text-center"> Games with Data </h3>
-
-    <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="gamesWithData.length"></i>
-
-    <div class="col col-md-8 col-md-offset-2">
-
-        <div game-table games="gamesWithData" search-text="searchText" other="true" show="showAppVersions(appId, appName)" get-csv="getCsvFile(appId)"></div>
-
-    </div>
-
+	<div class="row">
+	    <div class="input-group center-block search-panel">
+	        <label for="search-field">Search</label>
+	        <input class="form-control" type="text" placeholder="Enter game name or ID" id="search-field" ng-model="searchText" ng-change="getGames()"/>
+	    </div>
+	</div>
+	
+	<div class="datagames-container">
+	
+	    <h3 class="text-center"> Games with Data </h3>
+	
+	    <i class="fa fa-spin fa-refresh text-center refresh-icon" ng-hide="gamesWithData.length"></i>
+	
+	    <div class="col col-md-8 col-md-offset-2">
+	
+	        <div game-table games="gamesWithData" search-text="searchText" other="true" show="showAppVersions(appId, appName)" get-csv="getCsvFile(appId)"></div>
+	
+	    </div>
+	
+	</div>
 </div>

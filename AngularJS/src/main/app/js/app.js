@@ -34,13 +34,13 @@ app.config(function($routeProvider){
         
 }).run(function($rootScope, SteamDataService, LocationService) {  
 	// every route change
-	$rootScope.$on('$routeChangeSuccess', function () {
+	$rootScope.$on('$locationChangeStart', function (event, newUrl, oldUrl) {
     	SteamDataService.getCurrentUser(function(user) {
     		// user is already logged in
     		$rootScope.authenticated = true;
     	}, function() {
     		// user is not logged in
-    		$rootScope.authenticated = false;
+    		$rootScope.authenticated = false;   		
     		LocationService.redirectToLoginPage();
     	});
     });
