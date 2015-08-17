@@ -23,7 +23,7 @@ import org.uta.steam.jpa.service.SteamAppDAOService;
 class SteamAppDAOServiceImpl extends AbstractDAOServiceImpl<SteamApp> implements
 		SteamAppDAOService {
 
-	private static final String GET_APP_BY_APP_ID = "SELECT a.data FROM " 
+	private static final String GET_APP_BY_APP_ID = "SELECT a FROM " 
 			+ SteamApp.class.getSimpleName() + " a where a.appId = ";
 	
 	private static Logger LOG = LogManager
